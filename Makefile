@@ -10,3 +10,4 @@ analyse:
 
 fix:
 	./vendor/bin/phpinsights --fix
+
