@@ -51,6 +51,7 @@ return [
     */
 
     'exclude' => [
+        'migrations',
         'src/Kernel.php',
         'src/Migrations',
         'phpinsights.php',
@@ -72,6 +73,12 @@ return [
         //  ExampleInsight::class => [
         //      'key' => 'value',
         ],
+        \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class => [
+            'lineLimit' => 100,
+            'absoluteLineLimit' => 100,
+            'ignoreComments' => false,
+        ]
+
     ],
 
     /*
