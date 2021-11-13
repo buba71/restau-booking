@@ -1,6 +1,7 @@
 ###> phpstorm ###
 .idea/
 ###< phpstorm ###
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -37,3 +38,7 @@ yarn-error.log
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> typesense ###
+typesense-data/
+###< typesense ###
