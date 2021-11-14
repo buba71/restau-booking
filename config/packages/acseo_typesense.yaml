@@ -1,0 +1,59 @@
+acseo_typesense:
+  typesense:
+    url: '%env(resolve:TYPESENSE_URL)%'
+    key: '%env(resolve:TYPESENSE_API_KEY)%'
+
+  collections:
+    restaurants:
+      entity: 'App\Entity\Restaurant'
+      fields:
+        id:
+          name: id
+          type: primary
+
+        sortable_id:
+          entity_attribute: id 
+          name: sortable_id    
+          type: int32
+
+        name:
+          name: name
+          type: string
+
+        address:
+          name: address
+          type: string
+
+        zipcode:
+          name: zipcode
+          type: string
+
+        city:
+          name: city
+          type: string
+          
+        phone:
+          name: phone
+          type: string
+
+        speciality:
+          name: speciality
+          type: string
+
+      default_sorting_field: sortable_id 
+
+      finders:
+        restaurants_autocomplete:
+          finder_parameters:
+            query_by: name, speciality
+            limit: 10
+            prefix: true
+            nums_typos: 1
+            drop_tokens_threshold: 1
+        cities_autocomplete:
+          finder_parameters:
+            query_by: city
+            limit: 10
+            prefix: true
+            nums_typos: 1
+            drop_tokens_threshold: 1

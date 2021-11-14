@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <form action='#' method='POST'>
+        <select class="form-control restauAutocomplete" name="restaurant" placeholder="Cuisine, restaurant" type="text" autocomplete="off"></select>
+        <select class="form-control cityAutocomplete" name="city" placeholder="City" type="text" autocomplete="off"></select>
+        <button class="btn btn-info">rechercher</button>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(e) {
+        $('.restauAutocomplete').autoComplete({
+            minLength: 2,
+            resolverSettings: {
+                // Route to the autocomplete Controller, and name of the finder to use
+                url: "{{path('autocomplete', {'finder_name' : 'restaurants.restaurants_autocomplete'})}}",
+            },
+            bootstrapVersion: '4',
+            events: {
+                searchPost: function (resultFromServer) {
+                    // Manipulate returned data in order to display title in the search result
+                    results = new Array();
+                    resultFromServer.forEach((element) => {
+                        results.push({'value': element.document.id, 'text': element.document.name + ', ' + element.document.city });
+                    });
+                    console.log(results);
+                    return results;
+                }            
+            }
+        });
+
+        $('.cityAutocomplete').autoComplete({
+            minLength: 2,
+            resolverSettings: {
+                // Route to the autocomplete Controller, and name of the finder to use
+                url: "{{path('autocomplete', {'finder_name' : 'restaurants.cities_autocomplete'})}}",
+            },
+            bootstrapVersion: '4',
+            events: {
+                searchPost: function (resultFromServer) {
+                    // Manipulate returned data in order to display title in the search result
+                    results = new Array();
+                    resultFromServer.forEach((element) => {
+                        results.push({'value': element.document.id, 'text': element.document.city });
+                    });
+                    console.log(results);
+                    return results;
+                }            
+            }
+        });
+    });
+</script>
+{% endblock %}

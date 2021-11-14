@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Restaurant;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,11 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $restaurant = $this->getDoctrine()->getRepository(Restaurant::class)->findBy(['id' => 1]);
-        dd($restaurant);
+        if ($request->getMethod() === 'POST' && $request->get('restaurant')) {
+            echo 'it\'s ok ';
+        }
 
-        return $this->render('base.html.twig');
+        return $this->render('Home/home.html.twig');
     }
 }
