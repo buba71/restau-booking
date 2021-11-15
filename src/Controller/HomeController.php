@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Services\RestaurantSearch\RestaurantProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,13 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class HomeController extends AbstractController
 {
-    #[Route('/', name: 'index')]
-    public function index(Request $request): Response
+    #[Route('/', name: 'home')]
+    public function index(Request $request, RestaurantProvider $provider): Response
     {
-        if ($request->getMethod() === 'POST' && $request->get('restaurant')) {
-            echo 'it\'s ok ';
+        $restaurants = null;
+
+        if ($request->getMethod() === 'POST') {
+            $restaurants = $provider->serve($request);
         }
 
-        return $this->render('Home/home.html.twig');
+        return $this->render('Frontend/Home/home.html.twig', ['restaurants' => $restaurants]);
     }
 }
