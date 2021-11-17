@@ -1,3 +1,11 @@
+@import'footer.css';
+@import'header.css';
+@import'pagination.css';
+
+body {
+    background: #f7f7f7;
+}
+
 .container {
     min-height: 100vh; /* will cover the 100% of viewport */
     overflow: hidden;
@@ -6,17 +14,6 @@
     padding-bottom: 100px; /* height of your footer */
 }
 
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
-
-.navbar-nav.navbar-center {
-    position: absolute;
-    left: 50%;
-    transform: translatex(-50%);
-}
 
 .search-restaurant {
     margin: auto;
