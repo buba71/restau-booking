@@ -19,8 +19,8 @@ final class RestaurantProvider
     public function serve(Request $request): ?array
     {
         return match (true) {
-            $request->request->has('restaurant_text') && !empty($request->get('restaurant_text')) => $this->nameOrSpecialtiyLoader->getRestaurants($request->get('restaurant_text')),
-            $request->request->has('city_text') && !empty($request->get('city_text')) => $this->citiesLoader->getRestaurants($request->get('city_text')),
+            $request->query->has('restaurant_text') && !empty($request->query->get('restaurant_text')) => $this->nameOrSpecialtiyLoader->getRestaurants($request->query->get('restaurant_text')),
+            $request->query->has('city_text') && !empty($request->query->get('city_text')) => $this->citiesLoader->getRestaurants($request->query->get('city_text')),
             default => null
         };
     }

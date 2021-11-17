@@ -3,40 +3,70 @@
 
 {% block body %}
 
-    <form class="search-restaurant mt-5" action='#' method='POST'>
-        <div class="mb-2">
-            <select class="form-control restauAutocomplete" name="restaurant" placeholder="Spécialité, nom de restaurant" type="text" autocomplete="off"></select>
-        </div>
-        <div>
-            <select class="form-control cityAutocomplete" name="city" placeholder="City" type="text" autocomplete="off"></select>
-        </div>     
-        
-        <button class="btn btn-info mt-3">rechercher</button>
-    </form>
+    <!--search restaurants for -->
+
+    <div class="search-form text-center">
+        <h1 class="mt-5 text-muted">Trouver un restaurant</h1>
+        <form class="search-restaurant mt-2" action='#' method='GET'>
+            <div class="mb-2">
+                <select class="form-control restauAutocomplete" name="restaurant" placeholder="Spécialité, nom de restaurant" type="text" autocomplete="off"></select>
+            </div>
+            <div>
+                <select class="form-control cityAutocomplete" name="city" placeholder="City" type="text" autocomplete="off"></select>
+            </div>     
+
+            <button class="btn btn-info mt-3">rechercher</button>
+        </form>
+    </div>
+
+
+    <!-- search content -->
     
-    <div class="search-result">
-    <div class="row justify-content-center my-5">{{ restaurants|length }} resultat</div>
-        {% if restaurants is defined %}
-        <div class="row mt-5 justify-content-center">
+    <section class="search-content">
+
+        
+
+        {% if restaurants is not null and restaurants is defined %}
+
+        <div class="row justify-content-center my-5">
+
+            {% set searchResult = restaurants.getTotalItemCount > 1 ? 'résultats' : 'résultat' %}
+
+
+            <h2>{{ restaurants.getTotalItemCount }} {{ searchResult }}</h2>
+
+        </div>
+        <div class="row row-cols-3 mt-5">
+
             {% for restaurant in restaurants %}
-                <div class= "col">
-                    <div class="card border-info mt-5" style="width: 18rem;">
+
+                <div class= "col d-flex justify-content-center">
+                    <div class="card mt-5" style="width: 18rem;">
                         <div class="card-header">{{ restaurant.name }}</div>
                         <div class="card-body">
                           <!--<h5 class="card-title"></h5> -->
                           <p class="card-text">{{ restaurant.address }}</p>
                           <p class="card-text">{{ restaurant.zipcode }} {{ restaurant.city }}</p>
                           <p class="card-text">Tél: {{ restaurant.phone }}</p>
-                          <a href="#" class="btn btn-info">Réserver</a>
-                          <a href="#" class="btn btn-info">Commander</a>
+                          <div class="submit-controls d-flex justify-content-between">
+                            <a href="#" class="btn btn-info">Réserver</a>
+                            <a href="#" class="btn btn-info">Commander</a>
+                          </div>
                         </div>
                     </div> 
                 </div>
                                             
             {% endfor %}
-        </div>    
+        </div>   
+        <!-- pagination -->
+        <div class="row justify-content-center navigation mt-5">
+            {{ knp_pagination_render(restaurants, 'Base/pagination.html.twig') }}
+        </div> 
+
         {% endif %}
-    </div>
+
+    </section>
+    
 {% endblock %}
 
 {% block javascripts %}
