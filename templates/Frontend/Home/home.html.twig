@@ -7,15 +7,22 @@
 
     <div class="search-form text-center">
         <h1 class="mt-5 text-muted">Trouver un restaurant</h1>
-        <form class="search-restaurant mt-2" action='#' method='GET'>
+        <form class="search-restaurant mt-5" action='#' method='GET'>
             <div class="mb-2">
-                <select class="form-control restauAutocomplete" name="restaurant" placeholder="Spécialité, nom de restaurant" type="text" autocomplete="off"></select>
+                <input type="text" class="form-control restauAutocomplete" name="restaurant" placeholder="Nom de restaurant" autocomplete="off">
             </div>
-            <div>
-                <select class="form-control cityAutocomplete" name="city" placeholder="City" type="text" autocomplete="off"></select>
+
+            <span>ou</span>
+
+            <div class="mb-2 mt-2">
+                <input type="text" class="form-control specialityAutocomplete" name="speciality" placeholder="Spécialité" autocomplete="off">
+            </div>  
+            <span>ou/et</span>
+            <div class="mt-2">
+                <input type="text" class="form-control cityAutocomplete" name="city" placeholder="Ville" autocomplete="off">
             </div>     
 
-            <button class="btn btn-info mt-3">rechercher</button>
+            <button type="submit" class="btn btn-info mt-3">rechercher</button>
         </form>
     </div>
 
@@ -30,10 +37,10 @@
 
         <div class="row justify-content-center my-5">
 
-            {% set searchResult = restaurants.getTotalItemCount > 1 ? 'résultats' : 'résultat' %}
+            {% set searchResultCounter = restaurants.getTotalItemCount > 1 ? 'résultats' : 'résultat' %}
 
 
-            <h2>{{ restaurants.getTotalItemCount }} {{ searchResult }}</h2>
+            <h2>{{ restaurants.getTotalItemCount }} {{ searchResultCounter }}</h2>
 
         </div>
         <div class="row row-cols-3 mt-5">
@@ -78,7 +85,7 @@
             minLength: 2,
             resolverSettings: {
                 // Route to the autocomplete Controller, and name of the finder to use
-                url: "{{path('autocomplete', {'finder_name' : 'restaurants.restaurants_autocomplete'})}}",
+                url: "{{path('restaurant_autocomplete')}}",
             },
             bootstrapVersion: '4',
             events: {
@@ -86,9 +93,29 @@
                     // Manipulate returned data in order to display title in the search result
                     results = new Array();
                     resultFromServer.forEach((element) => {
-                        results.push({'value': element.document.id, 'text': element.document.name });
+                        results.push({'text': element.name });
                     });
-                    console.log(results);
+                
+                    return results;
+                }            
+            }
+        });
+
+        $('.specialityAutocomplete').autoComplete({
+            minLength: 2,
+            resolverSettings: {
+                // Route to the autocomplete Controller, and name of the finder to use
+                url: "{{path('speciality_autocomplete')}}",
+            },
+            bootstrapVersion: '4',
+            events: {
+                searchPost: function (resultFromServer) {
+                    // Manipulate returned data in order to display title in the search result
+                    results = new Array();
+                    resultFromServer.forEach((element) => {
+                        results.push({'text': element.speciality });
+                    });
+                
                     return results;
                 }            
             }
@@ -98,7 +125,7 @@
             minLength: 2,
             resolverSettings: {
                 // Route to the autocomplete Controller, and name of the finder to use
-                url: "{{path('autocomplete', {'finder_name' : 'restaurants.cities_autocomplete'})}}",
+                url: "{{path('city_autocomplete')}}",
             },
             bootstrapVersion: '4',
             events: {
@@ -106,9 +133,9 @@
                     // Manipulate returned data in order to display title in the search result
                     results = new Array();
                     resultFromServer.forEach((element) => {
-                        results.push({'value': element.document.id, 'text': element.document.city });
+                        results.push({'text': element.city });
                     });
-                    console.log(results);
+                   
                     return results;
                 }            
             }

@@ -49,4 +49,64 @@ final class RestaurantRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * 
+     * @return array<Restaurant>
+     */
+    public function findDistinctCities(string $query, int $limit): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.city')->distinct()  
+            ->andWhere('r.city LIKE :query')            
+            ->setParameter('query', '%'.$query.'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * 
+     * @return array<Restaurant>
+     */
+    public function findAllRestaurantsByName(string $query, int $limit): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.name, r.city')
+            ->andWhere('r.name LIKE :query')            
+            ->setParameter('query', '%'.$query.'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * 
+     * @return array<Restaurant>
+     */
+    public function findDistinctSpecialities(string $query, int $limit): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.speciality')->distinct()  
+            ->andWhere('r.speciality LIKE :query')            
+            ->setParameter('query', '%'.$query.'%')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * 
+     * @return array<Restaurant>
+     */
+    public function findBySpecialityAndCity(array $query): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.speciality = :speciality')
+            ->andWhere('r.city = :city')
+            ->setParameter('speciality', $query['speciality'])
+            ->setParameter('city', $query['city'])
+            ->getQuery()
+            ->getResult();
+    }
 }
