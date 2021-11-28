@@ -27,10 +27,12 @@ acseo_typesense:
         zipcode:
           name: zipcode
           type: string
+          facet: true
 
         city:
           name: city
           type: string
+          facet: true
           
         phone:
           name: phone
@@ -39,21 +41,31 @@ acseo_typesense:
         speciality:
           name: speciality
           type: string
+          facet: true
 
       default_sorting_field: sortable_id 
 
       finders:
+
         restaurants_autocomplete:
           finder_parameters:
-            query_by: name, speciality
+            query_by: name
             limit: 10
             prefix: true
             nums_typos: 1
             drop_tokens_threshold: 1
+        specialities_autocomplete:
+          finder_parameters:
+            query_by: speciality
+            limit: 10
+            prefix: true
+            nums_typos: 1
+            drop_tokens_threshold: 1
+
         cities_autocomplete:
           finder_parameters:
             query_by: city
-            limit: 10
+            limit: 1
             prefix: true
             nums_typos: 1
             drop_tokens_threshold: 1
