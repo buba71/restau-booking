@@ -2,12 +2,20 @@
 
 ## Installation
 
-````
+```
 git clone https://github.com/buba71/restau-booking.git
 
 cd restau-booking
 
 composer install 
+
+```
+
+```
+
+yarn install
+
+yarn run production
 
 ````
 
@@ -16,6 +24,7 @@ composer install
 ## Tests
 
 ````
+
 make tests
 
 ````
@@ -27,6 +36,7 @@ make tests
 This run phpstan and phpinsights.
 
 ````
+
 make anlalyse
 
 ````

@@ -2,8 +2,14 @@
 @import'header.css';
 @import'pagination.css';
 
+/* Reset css */
+
 body {
     background: #f7f7f7;
+}
+
+p {
+    margin: 0;
 }
 
 .container {

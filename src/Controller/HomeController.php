@@ -24,8 +24,9 @@ final class HomeController extends AbstractController
 
         if ($request->getMethod() === 'GET') {
             $restaurants = $provider->serve($request);
+            $city = $request->query->get('city');
         }
 
-        return $this->render('Frontend/Home/home.html.twig', ['restaurants' => $restaurants]);
+        return $this->render('Frontend/Home/home.html.twig', ['restaurants' => $restaurants, 'city' => $city]);
     }
 }

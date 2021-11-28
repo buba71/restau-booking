@@ -35,40 +35,68 @@
 
         {% if restaurants is not null and restaurants is defined %}
 
+
+        <!-- Display number of search results -->
+
         <div class="row justify-content-center my-5">
 
-            {% set searchResultCounter = restaurants.getTotalItemCount > 1 ? 'résultats' : 'résultat' %}
+            {% set searchResultCounter = restaurants.getTotalItemCount > 1 ? 'restaurants' : 'restaurant' %}
+            
+            {% if city is empty %} 
+
+                <h2>Il éxiste {{ restaurants.getTotalItemCount }} {{ searchResultCounter }}</h2>
+
+            {% else %}
 
 
-            <h2>{{ restaurants.getTotalItemCount }} {{ searchResultCounter }}</h2>
+                <h2>Il éxiste {{ restaurants.getTotalItemCount }} {{ searchResultCounter }} à {{ city }}</h2>
+
+            {% endif %}
 
         </div>
-        <div class="row row-cols-3 mt-5">
+        
+        <!--  Display number of search results -->
 
-            {% for restaurant in restaurants %}
+        <!-- Display restaurants cards -->
 
+        {% for restaurant in restaurants %}
+            <div class="row mt-5">
                 <div class= "col d-flex justify-content-center">
-                    <div class="card mt-5" style="width: 18rem;">
-                        <div class="card-header">{{ restaurant.name }}</div>
-                        <div class="card-body">
-                          <!--<h5 class="card-title"></h5> -->
-                          <p class="card-text">{{ restaurant.address }}</p>
-                          <p class="card-text">{{ restaurant.zipcode }} {{ restaurant.city }}</p>
-                          <p class="card-text">Tél: {{ restaurant.phone }}</p>
-                          <div class="submit-controls d-flex justify-content-between">
-                            <a href="#" class="btn btn-info">Réserver</a>
-                            <a href="#" class="btn btn-info">Commander</a>
-                          </div>
-                        </div>
-                    </div> 
+                    <div class="card mt-5" style="width: 100%;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                              <img src="{{ asset('/images/restaurant.png') }}" class="img-fluid" alt="image-restaurant">
+                            </div>
+                            <div class="col-md-8">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ restaurant.name }}</h5>
+                                <p class="card-text">{{ restaurant.address}}</p>
+                                <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
+                                <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
+                                <p class="card-text">Téléphone: {{ restaurant.phone}}</p>
+                                
+                              </div>
+                            </div>
+                        </div>                        
+                    </div>                   
+                </div>                
+            </div>
+            <div class="row mt-1">
+                <div class="col d-flex justify-content-end">
+                    <button class="btn btn-info">Réserver</button>
+                    <button class="btn btn-info ml-2">Commander</button>
                 </div>
-                                            
-            {% endfor %}
-        </div>   
+            </div>
+                                             
+        {% endfor %}
+        
+        <!-- Display restaurants cards -->
+           
         <!-- pagination -->
         <div class="row justify-content-center navigation mt-5">
             {{ knp_pagination_render(restaurants, 'Base/pagination.html.twig') }}
         </div> 
+        <!-- pagination -->
 
         {% endif %}
 
