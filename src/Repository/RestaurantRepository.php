@@ -54,7 +54,7 @@ final class RestaurantRepository extends ServiceEntityRepository
      * 
      * @return array<Restaurant>
      */
-    public function findDistinctCities(string $query, int $limit): array
+    public function findDistinctCities(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
             ->select('r.city')->distinct()  
@@ -69,7 +69,7 @@ final class RestaurantRepository extends ServiceEntityRepository
      * 
      * @return array<Restaurant>
      */
-    public function findAllRestaurantsByName(string $query, int $limit): array
+    public function findAllRestaurantsByName(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
             ->select('r.name, r.city')
@@ -84,7 +84,7 @@ final class RestaurantRepository extends ServiceEntityRepository
      * 
      * @return array<Restaurant>
      */
-    public function findDistinctSpecialities(string $query, int $limit): array
+    public function findDistinctSpecialities(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
             ->select('r.speciality')->distinct()  
