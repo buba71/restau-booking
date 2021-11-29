@@ -6,5 +6,6 @@ parameters:
   excludePaths:
     - vendor
     - src/Entity/Restaurant.php
-    - src/Repository/RestaurantRepository.php
+    - src/Controller/AutocompleteController.php
+    - src/Repository/
   

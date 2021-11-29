@@ -13,7 +13,6 @@ final class ByCityLoader extends RestaurantLoader
      */
     /**
      * @param array<string> $query
-     * 
      */
     public function getRestaurants(array $query): array
     {

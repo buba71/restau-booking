@@ -21,6 +21,7 @@ final class HomeController extends AbstractController
     public function index(Request $request, RestaurantProvider $provider): Response
     {
         $restaurants = null;
+        $city = null;
 
         if ($request->getMethod() === 'GET') {
             $restaurants = $provider->serve($request);

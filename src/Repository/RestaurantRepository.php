@@ -51,14 +51,13 @@ final class RestaurantRepository extends ServiceEntityRepository
     */
 
     /**
-     * 
      * @return array<Restaurant>
      */
-    public function findDistinctCities(string $query, int $limit): array
+    public function findDistinctCities(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
-            ->select('r.city')->distinct()  
-            ->andWhere('r.city LIKE :query')            
+            ->select('r.city')->distinct()
+            ->andWhere('r.city LIKE :query')
             ->setParameter('query', '%'.$query.'%')
             ->setMaxResults($limit)
             ->getQuery()
@@ -66,14 +65,13 @@ final class RestaurantRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
      * @return array<Restaurant>
      */
-    public function findAllRestaurantsByName(string $query, int $limit): array
+    public function findAllRestaurantsByName(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
             ->select('r.name, r.city')
-            ->andWhere('r.name LIKE :query')            
+            ->andWhere('r.name LIKE :query')
             ->setParameter('query', '%'.$query.'%')
             ->setMaxResults($limit)
             ->getQuery()
@@ -81,14 +79,13 @@ final class RestaurantRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
      * @return array<Restaurant>
      */
-    public function findDistinctSpecialities(string $query, int $limit): array
+    public function findDistinctSpecialities(mixed $query, int $limit): array
     {
         return $this->createQueryBuilder('r')
-            ->select('r.speciality')->distinct()  
-            ->andWhere('r.speciality LIKE :query')            
+            ->select('r.speciality')->distinct()
+            ->andWhere('r.speciality LIKE :query')
             ->setParameter('query', '%'.$query.'%')
             ->setMaxResults($limit)
             ->getQuery()
@@ -96,7 +93,6 @@ final class RestaurantRepository extends ServiceEntityRepository
     }
 
     /**
-     * 
      * @return array<Restaurant>
      */
     public function findBySpecialityAndCity(array $query): array
