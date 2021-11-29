@@ -10,7 +10,7 @@ final class BySpecialityLoader extends RestaurantLoader
 {
     /**
      * @param array<string> $query
-     * 
+     *
      * @return array<Restaurant>
      */
     public function getRestaurants(array $query): array

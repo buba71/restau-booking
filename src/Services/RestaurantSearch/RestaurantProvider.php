@@ -27,24 +27,24 @@ final class RestaurantProvider
     public function serve(Request $request): ?PaginationInterface
     {
         $query = $request->query->all();
-        
+
         return match (true) {
             !empty($query['restaurant']) => $this->withPagination(
                 $this->nameLoader->getRestaurants($query),
                 $request
             ),
-            !empty($query['speciality']) && !empty($query['city']) => $this->withPagination(
+            !empty($query['speciality']) && ! empty($query['city']) => $this->withPagination(
                 $this->specialityAndCityLoader->getRestaurants($query),
                 $request
             ),
             !empty($query['speciality']) => $this->withPagination(
                 $this->specialityLoader->getRestaurants($query),
                 $request
-            ),            
+            ),
             !empty($query['city']) => $this->withPagination(
                 $this->cityLoader->getRestaurants($query),
                 $request
-            ),            
+            ),
             default => null
         };
     }
