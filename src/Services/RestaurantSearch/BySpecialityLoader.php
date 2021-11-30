@@ -15,6 +15,6 @@ final class BySpecialityLoader extends RestaurantLoader
      */
     public function getRestaurants(array $query): array
     {
-        return $this->repository->findBy(['speciality' => $query]);
+        return $this->repository->findBy(['speciality' => $query], ['name' => 'ASC']);
     }
 }

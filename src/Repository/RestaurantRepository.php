@@ -93,6 +93,8 @@ final class RestaurantRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param $query
+     *
      * @return array<Restaurant>
      */
     public function findBySpecialityAndCity(array $query): array
@@ -100,6 +102,7 @@ final class RestaurantRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->where('r.speciality = :speciality')
             ->andWhere('r.city = :city')
+            ->orderBy('r.name', 'ASC')
             ->setParameter('speciality', $query['speciality'])
             ->setParameter('city', $query['city'])
             ->getQuery()

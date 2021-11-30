@@ -9,13 +9,12 @@ use App\Entity\Restaurant;
 final class ByNameLoader extends RestaurantLoader
 {
     /**
-     * @return array<Restaurant>
-     */
-    /**
      * @param array<string> $query
+     *
+     * @return array<Restaurant>
      */
     public function getRestaurants(array $query): array
     {
-        return $this->repository->findBy(['name' => $query]);
+        return $this->repository->findBy(['name' => $query], ['name' => 'ASC']);
     }
 }
