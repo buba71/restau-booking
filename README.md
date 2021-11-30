@@ -9,6 +9,20 @@ cd restau-booking
 
 composer install 
 
+yarn install
+
+yar run build
+
+````
+
+---
+
+## Create Database
+
+````
+symfony console doctrine:database:create
+
+symfony console doctrine:schema: update --force
 ````
 
 ---
@@ -17,7 +31,6 @@ composer install
 
 ````
 make tests
-
 ````
 
 ---
@@ -27,6 +40,9 @@ make tests
 This run phpstan and phpinsights.
 
 ````
-make anlalyse
-
+make analyse
 ````
+
+---
+
+## Run tests
