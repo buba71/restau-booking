@@ -97,7 +97,7 @@ final class RestaurantRepository extends ServiceEntityRepository
      *
      * @return array<Restaurant>
      */
-    public function findBySpecialityAndCity(array $query): array
+    public function findBySpecialityAndCity(array $query): ?array
     {
         return $this->createQueryBuilder('r')
             ->where('r.speciality = :speciality')

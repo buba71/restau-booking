@@ -27,10 +27,10 @@ symfony console doctrine:schema: update --force
 
 ---
 
-## Tests
+## Run tests
 
 ````
-make tests
+make test
 ````
 
 ---
@@ -44,5 +44,3 @@ make analyse
 ````
 
 ---
-
-## Run tests

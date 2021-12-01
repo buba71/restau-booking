@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * Class HomeControllerTest
  * @package tests\functional
  */
-class HomeControllerTest extends WebTestCase
+final class HomeControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 
@@ -34,7 +34,7 @@ class HomeControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('rechercher')->form();
         
-        $form['restaurant'] = 'le Restau 10';
+        $form['restaurant'] = 'Le Restau 10';
         $this->client->submit($form);
 
         static::assertResponseIsSuccessful();

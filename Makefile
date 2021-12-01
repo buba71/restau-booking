@@ -8,6 +8,9 @@ analyse:
 	make phpstan
 	make phpinsights
 
+test:
+	php bin/phpunit
+
 fix:
 	./vendor/bin/phpinsights --fix
 
