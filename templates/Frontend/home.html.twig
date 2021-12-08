@@ -67,14 +67,13 @@
                             <div class="col-md-4">
                               <img src="{{ asset('/images/restaurant.png') }}" class="img-fluid" alt="image-restaurant">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8 restaurant-infos">
                               <div class="card-body">
                                 <h5 class="card-title">{{ restaurant.name }}</h5>
                                 <p class="card-text">{{ restaurant.address}}</p>
                                 <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
                                 <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
-                                <p class="card-text">Téléphone: {{ restaurant.phone}}</p>
-                                
+                                <p class="card-text">Téléphone: {{ restaurant.phone}}</p>                                
                               </div>
                             </div>
                         </div>                        
@@ -83,8 +82,8 @@
             </div>
             <div class="row mt-1">
                 <div class="col d-flex justify-content-end">
-                    <button class="btn btn-info">Réserver</button>
-                    <button class="btn btn-info ml-2">Commander</button>
+                    <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info">Réserver</a>
+                    <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info ml-2">Commander</a>
                 </div>
             </div>
                                              
