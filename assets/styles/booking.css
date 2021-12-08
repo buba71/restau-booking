@@ -1,0 +1,15 @@
+.card.booking-details {
+    padding: 0;
+    height: inherit;
+}
+
+.card.restaurant-infos {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.booking-controls {
+    position: absolute;
+    bottom: 0;
+}
