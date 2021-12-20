@@ -2,10 +2,10 @@ parameters:
   level: 9
   paths:
     - src
-    - tests
   excludePaths:
     - vendor
-    - src/Entity/Restaurant.php
+    - src/Entity/
     - src/Controller/AutocompleteController.php
     - src/Repository/
+
   

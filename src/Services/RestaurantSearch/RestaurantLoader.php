@@ -16,7 +16,7 @@ abstract class RestaurantLoader
     /**
      * @param array<string> $query
      *
-     * @return array<Restaurant>
+     * @return array<Restaurant>|null
      */
-    abstract public function getRestaurants(array $query): array;
+    abstract public function getRestaurants(array $query): ?array;
 }

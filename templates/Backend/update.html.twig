@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+
+{% form_theme form _self %}
+
+
+
+{% block _time_slots_timeSlots_entry_row %}
+{% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
+    <tr>
+        <th class="time_slot-day pr-5" scope="row" ></th>
+        <td class="p-3">{{ form_row(form.serviceStartAt)}}</td>
+        <td class="p-3">{{ form_row(form.serviceCloseAt)}}</td>
+        <td class="p-3">{{ form_row(form.intervalTime|date('%i'))}}</td>
+    </tr>
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<div class="mt-5">
+    {{ form_start(form)}}      
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="p-3" scope="col">Début de service</th>
+                    <th class="p-3" scope="col">Fin de service</th>
+                    <th class="p-3" scope="col">Interval</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{ form_widget(form.timeSlots)}}
+            </tbody>
+        </table>  
+        {{ form_widget(form.Valider)}}
+    {{ form_end(form) }}  
+</div> 
+
+<button class="btn btn-info mt-2"><a href="{{ path('update_timeSlots', { id : 1 })}}">mettre à jour</a></button>
+
+    
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+{{ parent() }}
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+    
+    const $collectionHolder = $('div#time_slots_timeSlots');
+    const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche' ]
+    
+    let j = 0;
+    for(let index = 7; index > 0; index--) {              
+        
+        // Add collection form and row class.
+        addDayTimeSlots($collectionHolder, index);
+        $('#time_slots_timeSlots_' + index).attr({class: 'row'});    
+
+        // Add days header to table.
+        const theaderleft = $('th.time_slot-day');
+        const theaderleftArray = Array.from(theaderleft);
+        $(theaderleftArray[j]).text(days[j]);
+        j++;              
+    }
+    
+    function addDayTimeSlots(collectionHolder, index, days){
+                    const template = $collectionHolder.attr('data-prototype').replace(/__name__label__/g, index).replace(/__name__/g, index);
+                    const $prototype = $(template);                    
+                    const tbody = $('tbody');                    
+                    tbody.append($prototype);                    
+                }
+    });
+
+</script>
+
+
+
+
+
+
+{% endblock %}
