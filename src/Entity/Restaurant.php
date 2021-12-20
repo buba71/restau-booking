@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\RestaurantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,15 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @package App\Entity
  *
- * @ORM\Entity(repositoryClass=RestaurantRepository::class)
+ * @ORM\Entity()
  */
 final class Restaurant
 {
     /**
      * @ORM\Id
-     *
      * @ORM\GeneratedValue
-     *
      * @ORM\Column(type="integer")
      */
     private int $id;
@@ -54,6 +53,17 @@ final class Restaurant
      * @ORM\Column(type="string", length=255)
      */
     private string $speciality;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Collection $timeSlots;
+
+    public function __construct()
+    {
+        $this->timeSlots = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -130,5 +140,24 @@ final class Restaurant
         $this->speciality = $speciality;
 
         return $this;
+    }
+
+    public function getTimeSlots(): Collection
+    {
+        return $this->timeSlots;
+    }
+
+    public function addTimeSlot(TimeSlot $timeSlot): void
+    {
+        if(!$this->timeSlots->contains($timeSlot)){
+            $this->timeSlots->add($timeSlot);
+        }
+    }
+
+    public function removeTimeSlot(TimeSlot $timeSlot): void
+    {
+        if($this->timeSlots->contains($timeSlot)){
+            $this->timeSlots->remove($timeSlot);
+        }
     }
 }
