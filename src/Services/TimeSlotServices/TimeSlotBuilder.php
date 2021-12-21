@@ -6,6 +6,7 @@ namespace App\Services\TimeSlotServices;
 
 use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
+use DateInterval;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,8 +19,9 @@ final class TimeSlotBuilder
         $this->entityManager = $entityManager;
     }
 
-    public function buildTimeSlots(int $restaurantId): array
+    public function buildTimeSlots(int $restaurantId, $data): array
     {
+        dump($data);
         // retrieve restaurant id as function parameter.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
 
@@ -37,7 +39,7 @@ final class TimeSlotBuilder
         $start = $timeSlot->getServiceStartAt();
         $startTime = $start->format('H:i');
         $end = $timeSlot->getServiceCloseAt();
-        $interval =  $timeSlot->getIntervalTime();
+        $interval =  new DateInterval('PT'.$timeSlot->getIntervalTime().'M');
 
         $timeSlot = [];
         $timeSlot[] = $startTime;

@@ -55,7 +55,7 @@ final class Restaurant
     private string $speciality;
 
     /**
-     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private Collection $timeSlots;
@@ -150,6 +150,7 @@ final class Restaurant
     public function addTimeSlot(TimeSlot $timeSlot): void
     {
         if(!$this->timeSlots->contains($timeSlot)){
+            $timeSlot->setRestaurant($this);
             $this->timeSlots->add($timeSlot);
         }
     }
