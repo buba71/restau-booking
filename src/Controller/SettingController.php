@@ -66,8 +66,7 @@ final class SettingController extends AbstractController
             return $this->render('Backend/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
-        }
-    
+        }    
         
         return $this->renderForm('Backend/update_time_slots.html.twig',  [
             'form' => $form
