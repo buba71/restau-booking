@@ -7,33 +7,74 @@ namespace App\Services\TimeSlotServices;
 use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
 use DateInterval;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class TimeSlotBuilder
 {
-    private EntityManager $entityManager;
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @param int $restaurantId
+     * @param mixed $data
+     * 
+     * @return array
+     */
+    public function buildTimeSlots(int $restaurantId, $dateToDisplay): array
     {
-        $this->entityManager = $entityManager;
-    }
+        $dayName = (substr($dateToDisplay, 0, 3));
+        $dayNumber = (int)(date("w", strtotime($dayName)));
+        // Get first day of week: "2021-12-21T21:00:25.780Z".
+        
 
-    public function buildTimeSlots(int $restaurantId, $data): array
-    {
-        dump($data);
+
+
         // retrieve restaurant id as function parameter.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
 
-        $timeSlots = [];
+        /**
+         * Refactorer
+         */
+        $timeSlotsArray = ($restaurant->getTimeSlots())->toArray();
+        $tmp_array = $timeSlotsArray[6];
 
-        foreach($restaurant->getTimeSlots() as $timeSlot ) {
-            $timeSlots[] = $this->generateTimeSlot($timeSlot);
+        //Sort $timeSlotsArray by dayOfWeek(0 => 6).
+        unset($timeSlotsArray[6]);
+        array_unshift($timeSlotsArray, $tmp_array);
+        
+        $array_2 = [];
+
+        for($index = 0; $index < count($timeSlotsArray); $index++) {
+            if (($timeSlotsArray[$index])->getDayOfWeek() === $dayNumber) {
+                $array_1 = array_slice($timeSlotsArray, $index, 1);
+            }
+            if (($timeSlotsArray[$index])->getDayOfWeek() > $dayNumber) {
+                array_push($array_1, $timeSlotsArray[$index]);
+            } else if (($timeSlotsArray[$index])->getDayOfWeek() < $dayNumber){
+                $array_2[] = $timeSlotsArray[$index];
+            }            
         }
 
+        $result = [...$array_1, ...$array_2];
+        /**
+         * Refactorer
+         */
+
+
+
+
+        $timeSlots = [];
+
+        foreach($result as $timeSlot) {
+            $timeSlots[] = $this->generateTimeSlot($timeSlot);
+        }
         return $timeSlots;
     }
-
+ 
+    /**
+     * @param TimeSlot $timeSlot
+     * 
+     * @return array
+     */
     private function generateTimeSlot(TimeSlot $timeSlot): array
     {
         $start = $timeSlot->getServiceStartAt();
@@ -54,5 +95,4 @@ final class TimeSlotBuilder
 
         return $timeSlot;
     }
-
 }
