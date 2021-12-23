@@ -54,9 +54,9 @@ final class TimeSlot
     private ?DateTime $serviceCloseAt;
 
     /**
-     * @ORM\Column(type="dateinterval")
+     * @ORM\Column(type="integer")
      */
-    private ?DateInterval $intervalTime;
+    private ?int $intervalTime;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -65,7 +65,7 @@ final class TimeSlot
 
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="timeSlots")
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName ="id")
+     * @ORM\JoinColumn(name="restaurant_id", nullable=false)
      */
     private Restaurant $restaurant;
 
@@ -109,12 +109,12 @@ final class TimeSlot
         $this->serviceCloseAt = $serviceCloseAt;
     }
 
-    public function getIntervalTime(): DateInterval
+    public function getIntervalTime(): int
     {
         return $this->intervalTime;
     }
 
-    public function setIntervalTime(?DateInterval $intervalTime)
+    public function setIntervalTime(?int $intervalTime)
     {
         $this->intervalTime = $intervalTime;
     }

@@ -3,14 +3,13 @@
 {% form_theme form _self %}
 
 
-
 {% block _time_slots_timeSlots_entry_row %}
-{% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
     <tr>
         <th class="time_slot-day pr-5" scope="row" ></th>
         <td class="p-3">{{ form_row(form.serviceStartAt)}}</td>
         <td class="p-3">{{ form_row(form.serviceCloseAt)}}</td>
-        <td class="p-3">{{ form_row(form.intervalTime|date('%i'))}}</td>
+        <td class="p-3">{{ form_row(form.intervalTime)}}</td>
+        <td>{{ form_row(form.dayOfWeek) }}</td>
     </tr>
 {% endblock %}
 
@@ -37,10 +36,7 @@
         </table>  
         {{ form_widget(form.Valider)}}
     {{ form_end(form) }}  
-</div> 
-
-<button class="btn btn-info mt-2"><a href="{{ path('update_timeSlots', { id : 1 })}}">mettre à jour</a></button>
-
+</div>
     
 
 {% endblock %}
@@ -54,7 +50,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-    
+    // Collection form build.
     const $collectionHolder = $('div#time_slots_timeSlots');
     const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche' ]
     
@@ -63,13 +59,44 @@
         
         // Add collection form and row class.
         addDayTimeSlots($collectionHolder, index);
-        $('#time_slots_timeSlots_' + index).attr({class: 'row'});    
+        $('#time_slots_timeSlots_' + index).attr({class: 'row'});
+        let dayOfWeek =$('#time_slots_timeSlots_' + index + '_dayOfWeek');
+        // Set value of day(0 to 6).
+        dayOfWeek.val(setDayOfWeek(index));
 
         // Add days header to table.
         const theaderleft = $('th.time_slot-day');
         const theaderleftArray = Array.from(theaderleft);
         $(theaderleftArray[j]).text(days[j]);
         j++;              
+    }
+
+
+    // Functions
+
+    function setDayOfWeek(index) {
+        switch(index) {
+            case 7:
+                return 1;
+                break;
+            case 6:
+                return 2;
+                break;
+            case 5:
+                return 3;
+                break;
+            case 4:
+                return 4;
+                break;
+            case 3:
+                return 5;
+                break;
+            case 2:
+                return 6;
+                break;
+            case 1:
+                return 0;            
+        }
     }
     
     function addDayTimeSlots(collectionHolder, index, days){

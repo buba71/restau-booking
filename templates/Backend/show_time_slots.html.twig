@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+{% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
+{% set index = 0 %}
+<div>    
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th class="p-3">Début du service</th>
+                <th class="p-3">Fin du service</th>
+                <th class="p-3">Interval</th>
+            </tr>
+        </thead>
+       
+        <tbody>
+
+            {% for timeSlot in timeSlots %}  
+            <tr>
+                <th class="time_slot_day pr-5">{{ days[index] }}</th>
+                <td class="p-3">{{ timeSlot.serviceStartAt|date('H:i') }}</td>
+                <td class="p-3">{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
+                <td class="p-3">{{ timeSlot.intervalTime }}</td>
+            </tr>
+            {% set index = index + 1 %}
+            {% endfor %}
+
+        </tbody>
+        
+    </table>
+
+    <button class="btn btn-info"><a href="{{ path('update_timeSlots', { id: 1 }) }}">Modifier</a></button>
+
+    
+</div>
+
+    
+
+{% endblock %}
