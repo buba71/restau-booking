@@ -76,7 +76,7 @@ final class TimeSlot
 
     public function hasDate(): bool
     {
-        return $this->hasDate();
+        return $this->hasDate;
     }
 
     public function getDayOfWeek(): int

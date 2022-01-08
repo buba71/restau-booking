@@ -168,37 +168,31 @@ const nextHtml = `
 
 const startDate = new Date();
 
-// TODO
-const DateData = {
-  year: startDate.getFullYear(),
-  monthDay: startDate.getDate(),
-  dayNumber: startDate.getDay(),
-  dayHours: startDate.getHours(),
-  dayMinutes: startDate.getMinutes()  
-}
-
 // Make calendar sync with backend data.
-const calendar = async () => {
-  const response = await fetch('{{ path('timeSlots') }}', {
-                      headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                      },
-                      method: 'POST',
-                      body: JSON.stringify(startDate)
-                    });
-  const hours = await response.json();
+const calendar = () => {
+  fetch('{{ path('timeSlots') }}', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    method: 'POST',
+    body: JSON.stringify(startDate)
+  })
+  .then((response) => response.json())
+  .then((data) => {
 
-  $('#picker').markyourcalendar({
-    startDate: new Date(),
-    availability: hours,
+    
+
+    $('#picker').markyourcalendar({
+    startDate: startDate,
+    availability: data,
     isMultiple: false,
     months: months,
     prevHtml: prevHtml,
     nextHtml: nextHtml,
     weekdays: weekdays,
     onClickNavigator: function(ev, instance) {
-
+      
       const daysNumberHeader = document.querySelectorAll('.myc-date-number');
       const daysNameHeader = document.querySelectorAll('.myc-date-display');
       const daysName = [];
@@ -218,14 +212,10 @@ const calendar = async () => {
       const englishMonth = convertMonthsToEnglish(frenchMonth.trim());
 
       const navigateStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
+      
+      const timeSlot = [];        
 
-      const timeSlot = [];      
-
-      const currentWeek = {
-        restaurantId: {{ restaurant.id }},
-      };
-
-        
+      setTimeSlots(instance);
 
       // On click next or prev, make ajax call to fetch time Slots from backend and set calendar with it.
       function setTimeSlots (instance) {
@@ -240,15 +230,43 @@ const calendar = async () => {
           .then((response) => response.json())
           .then((data) => {
             instance.setAvailability(data);
+
+            // Calendar is loaded => get timeSlots for applying style.
+            const times = document.querySelectorAll('.myc-available-time');
+            const today = new Date();
+            Array.from(times).forEach(element => {
+              const date = element.getAttribute('data-date');
+              const dateTime = element.getAttribute('data-time');
+              if (today.getTime() > new Date(date + 'T' + dateTime)) {
+                element.classList.remove("myc-available-time");
+                element.classList.add("myc-disabled-time");
+              }
+
+            });
+            
           })
           .catch(error => console.log(error));
-      }    
+      } 
+    }
 
-      setTimeSlots(instance);
+    });
 
-    }  
+    // Calendar is loaded => get timeSlots for applying style.
+    const times = document.querySelectorAll('.myc-available-time');
+    const today = new Date();
+    Array.from(times).forEach(element => {
+      const date = element.getAttribute('data-date');
+      const dateTime = element.getAttribute('data-time');
+      
+      if (today.getTime() > new Date(date + 'T' + dateTime)) {
+        
+        element.classList.remove("myc-available-time");
+        element.classList.add("myc-disabled-time");
+      }      
+    });
 
-  });
+  })
+  .catch(error => console.log(error));  
 }
 
 calendar()

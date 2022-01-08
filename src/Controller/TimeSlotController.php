@@ -16,13 +16,13 @@ final class TimeSlotController extends AbstractController
     public function retrieveTimeSlotAjax(Request $request, TimeSlotBuilder $timeSlotBuilder): JsonResponse
     {
         if($request->getMethod() === 'POST') {
-            $data = json_decode($request->getContent(), true);
-            $dateToDisplay = date('D m Y', strtotime($data));
+            $dateTime = json_decode($request->getContent(), true);
+            
 
             // static restaurant id = 1.
             $restaurantId = 1;
         
-            $timeSlots = $timeSlotBuilder->buildTimeSlots($restaurantId, $dateToDisplay);
+            $timeSlots = $timeSlotBuilder->buildTimeSlots($restaurantId, $dateTime);
 
             return new JsonResponse($timeSlots, 200);
         }        

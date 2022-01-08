@@ -1,0 +1,176 @@
+{% extends 'BackOffice/back_layout.html.twig' %}
+
+
+{% form_theme timeSlotcollectionForm _self %}
+{% block _time_slots_timeSlots_entry_row %}
+    <tr>
+        <th class="time_slot-day pr-5" scope="row" ></th>
+        <td class="p-3">{{ form_row(form.serviceStartAt)}}</td>
+        <td class="p-3">{{ form_row(form.serviceCloseAt)}}</td>
+        <td class="p-3">{{ form_row(form.intervalTime)}}</td>
+        <td>{{ form_row(form.dayOfWeek) }}</td>
+    </tr>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">            
+{% endblock %}
+
+{% block body %}
+
+    <div class="mt-5 text-muted">
+          <h1>Modifier vos horaires</h1>
+    </div>
+
+    <section class="card mt-5 p-3" id="week-days-schedule">
+        <h3 class="py-5">Modifier vos horaires d'ouverture hebdomadaires</h2>
+        {{ form_start(timeSlotcollectionForm)}}      
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="p-3" scope="col">Début de service</th>
+                        <th class="p-3" scope="col">Fin de service</th>
+                        <th class="p-3" scope="col">Interval</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{ form_widget(timeSlotcollectionForm.timeSlots)}}
+                </tbody>
+            </table>
+            <div>
+                {{ form_widget(timeSlotcollectionForm.Valider)}}
+            </div>            
+        {{ form_end(timeSlotcollectionForm) }} 
+    </section>
+
+{{form_start(timeSlotForm)}}
+    <section class="card mt-5 p-3">      
+        <h3 class="py-5">Modifer vos horaires d'ouverture à une date spécifique</h2>  
+        <div class="d-flex flex-row">
+            <div class="mr-3">{{ form_row(timeSlotForm.dateOfDay)}}</div>
+            <div class="mr-3">{{ form_row(timeSlotForm.serviceStartAt)}}</div>
+            <div class="mr-3">{{ form_row(timeSlotForm.serviceCloseAt)}}</div>
+            <div class="mr-3">{{ form_row(timeSlotForm.intervalTime)}}</div>
+            <div class="mr-3">{{ form_row(timeSlotForm.dayOfWeek)}}</div>
+            <div class="mr-3"><button type="submit" class="btn btn-info">ajouter</button></div>   
+        </div>     
+    </section>
+
+    {% if datedTimeSlots is defined %}
+        <section id="dated-time-slots">
+            <table>
+                <thead>
+                    <tr>
+                        <th>date</th>
+                        <th>Début de service</th>
+                        <th>Fin de service</th>
+                        <th>Intervalle</th>
+                    </tr>
+                </thead>
+            {% for datedTimeSlot in datedTimeSlots %}
+                <tbody>
+                    <tr>
+                        <td>{{ datedTimeSlot.date }}</td>
+                        <td>{{ datedTimeSlot.serviceStartAt }}</td>
+                        <td>{{ datedTimeSlot.serviceCloseAt }}</td>
+                        <td>{{ datedTimeSlot.intervalTime }}</td>
+                    </tr>
+            {% endfor %}
+            </table>
+        </section>
+    {% else %}
+        <section id="dated-time-slots">
+            <p>Aucun date n'a été définie pour le moment</p>
+        </section>
+    {% endif %} 
+
+{% endblock %}
+
+{% block javascripts %}
+
+{{ parent() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+<script type="text/javascript">
+
+    // initialize datepicker.
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            language: 'fr',
+            format: 'dd-mm-yyyy',            
+            autoclose: true,
+        });
+
+        // Collection form builder.
+        const $collectionHolder = $('div#time_slots_timeSlots');
+        const days = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche' ]
+        
+        let j = 0;
+        for(let index = 7; index > 0; index--) {              
+        
+            //Add collection form and row class.
+            //addDayTimeSlots($collectionHolder, index);
+            let dayOfWeek =$('#time_slots_timeSlots_' + (7 - index) + '_dayOfWeek');
+            // Set value of day(0 to 6).
+            dayOfWeek.val(setDayOfWeek(index));
+
+            // Add days header to table.
+            const theaderleft = $('th.time_slot-day');
+            const theaderleftArray = Array.from(theaderleft);
+            $(theaderleftArray[j]).text(days[j]);
+            j++;              
+        }
+
+        // Styling table cells.
+        $('select').addClass('form-control').css('width', '65px');
+        $('select').parent().addClass('d-flex');
+        $('input').addClass('form-control').css('width', '45px');
+        $('#dated_time_slot_dateOfDay').addClass('form-control').css('width', '120px');
+
+        /**
+        * Functions
+        * Set the value of day number to hidden form with propriety dayOfWeek (0(sunday) to 6(saturday)).
+        */
+
+        function setDayOfWeek(index) {
+            switch(index) {
+                case 7:
+                    day = 1;
+                    break;
+                case 6:
+                    day = 2;
+                    break;
+                case 5:
+                    day = 3;
+                    break;
+                case 4:
+                    day = 4;
+                    break;
+                case 3:
+                    day = 5;
+                    break;
+                case 2:
+                    day = 6;
+                    break;
+                case 1:
+                    day = 0; 
+                    break           
+            }
+            return day;
+        }
+        // Hold collection and add form collection item from symfony form.
+        function addDayTimeSlots(collectionHolder, index, days){
+                        const template = $collectionHolder.attr('data-prototype').replace(/__name__label__/g, index).replace(/__name__/g, index);
+                        const $prototype = $(template);                    
+                        const tbody = $('tbody');                    
+                        tbody.append($prototype);                    
+                    }
+    });
+
+</script>
+
+{% endblock %}
