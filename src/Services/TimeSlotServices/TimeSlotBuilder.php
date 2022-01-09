@@ -7,6 +7,7 @@ namespace App\Services\TimeSlotServices;
 use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
 use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class TimeSlotBuilder
@@ -19,55 +20,90 @@ final class TimeSlotBuilder
      * 
      * @return array
      */
-    public function buildTimeSlots(int $restaurantId, $dateToDisplay): array
+    public function buildTimeSlots(int $restaurantId, $startDay): array
     {
-        $dayName = (substr($dateToDisplay, 0, 3));
-        $dayNumber = (int)(date("w", strtotime($dayName)));
         // Get first day of week: "2021-12-21T21:00:25.780Z".
-        
+        //dd($dateTime);
+        $dateToDisplay = date('D m Y', strtotime($startDay));
+        $dayName = (substr($dateToDisplay, 0, 3));
+        $dayNumber = intval(date("w", strtotime($dayName)));
+
+
+        // Dates calendar to display.
+        $weekDays = [];
+
+        $startDate = new DateTime($startDay);
+        for($i = 0; $i < 7; $i++) {
+            $weekDays[] = $startDate->format('Y-m-d');
+            $startDate->add(new DateInterval('P1D'));
+        }
 
 
 
         // retrieve restaurant id as function parameter.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
 
+
         /**
-         * Refactorer
+         * Refactorer TimeSlotFormater ************************************
          */
-        $timeSlotsArray = ($restaurant->getTimeSlots())->toArray();
-        $tmp_array = $timeSlotsArray[6];
 
-        //Sort $timeSlotsArray by dayOfWeek(0 => 6).
-        unset($timeSlotsArray[6]);
-        array_unshift($timeSlotsArray, $tmp_array);
-        
-        $array_2 = [];
+        $restaurantTimeSlots = ($restaurant->getTimeSlots())->toArray();
 
-        for($index = 0; $index < count($timeSlotsArray); $index++) {
-            if (($timeSlotsArray[$index])->getDayOfWeek() === $dayNumber) {
-                $array_1 = array_slice($timeSlotsArray, $index, 1);
-            }
-            if (($timeSlotsArray[$index])->getDayOfWeek() > $dayNumber) {
-                array_push($array_1, $timeSlotsArray[$index]);
-            } else if (($timeSlotsArray[$index])->getDayOfWeek() < $dayNumber){
-                $array_2[] = $timeSlotsArray[$index];
+        $timeSlotsWithDate = [];
+        foreach($weekDays as $day) {
+            foreach($restaurantTimeSlots as $timeSlot) {
+                if($timeSlot->hasDate() && ($timeSlot->getDateOfDay())->format('Y-m-d') === $day) {   
+                    $restaurantTimeSlots = array_filter($restaurantTimeSlots, fn($item) => $item->getDayOfWeek() !== $timeSlot->getDayOfWeek());    
+                    $timeSlotsWithDate[] = $timeSlot;
+                } 
             }            
         }
 
-        $result = [...$array_1, ...$array_2];
+        $timeSlotsWithoutDate = array_filter($restaurantTimeSlots, fn ($item) => !$item->hasDate());        
+        $timeSlots = [...$timeSlotsWithoutDate, ...$timeSlotsWithDate];
+
+        // Sort by day of week number (0 => 6).
+        usort($timeSlots, function ($a, $b) {
+            if($a->getDayOfWeek() === $b->getDayOfWeek()) {
+                return 0;
+            }
+            return ($a->getDayOfWeek() < $b->getDayOfWeek()) ? -1: +1;
+        });
+
+
+        // Resolve timeSlots starting from first day of calendar.
+        $array_back = [];
+
+        for($index = 0; $index < count($timeSlots); $index++) {
+            if (($timeSlots[$index])->getDayOfWeek() === $dayNumber) {
+                // Get the start day of calendar.
+                $array_front = array_slice($timeSlots, $index, 1);
+            }
+            if (($timeSlots[$index])->getDayOfWeek() > $dayNumber) {
+                // Get the remaining days.
+                array_push($array_front, $timeSlots[$index]);
+            } else if (($timeSlots[$index])->getDayOfWeek() < $dayNumber){
+                // Get the days before the start day of calendar.
+                $array_back[] = $timeSlots[$index];
+            }            
+        }
+
+        $formattedTimeSlots = [...$array_front, ...$array_back];
+
         /**
-         * Refactorer
+         * Refactorer TimeSlotFormater *************************************
          */
 
 
 
 
-        $timeSlots = [];
+        $timeSlotsViewModel = [];
 
-        foreach($result as $timeSlot) {
-            $timeSlots[] = $this->generateTimeSlot($timeSlot);
+        foreach($formattedTimeSlots as $timeSlot) {
+            $timeSlotsViewModel[] = $this->generateTimeSlot($timeSlot);
         }
-        return $timeSlots;
+        return $timeSlotsViewModel;
     }
  
     /**

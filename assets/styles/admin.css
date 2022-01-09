@@ -1,0 +1,18 @@
+#admin-side-bar .list-group-item {
+    border-radius: 0;
+}
+
+#admin-side-bar .list-group-item.active{
+    border-radius: 0;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+
+#admin-side-bar a:hover, #admin-side-bar a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+#admin-side-bar a:hover {
+    background-color: #5bc0de;
+}

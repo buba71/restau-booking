@@ -135,6 +135,18 @@
     text-align: center;
 }
 
+.myc-disabled-time {    
+    background-color: #5bc0de;
+    border-radius: 5px;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 15px;
+    padding: 5px 0px 5px 0px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 .myc-available-time.selected, .myc-available-time:hover {
     background-color: #222;
 }

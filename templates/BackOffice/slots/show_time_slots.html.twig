@@ -1,5 +1,4 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'BackOffice/back_layout.html.twig' %}
 {% block body %}
 
 {% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
@@ -16,6 +15,7 @@
                     <th class="p-3 text-center" scope="col">Début du service</th>
                     <th class="p-3 text-center" scope="col">Fin du service</th>
                     <th class="p-3 text-center" scope="col">Interval</th>
+                    <th class="p-3 text-center" scope="col">Actions</th>
                 </tr>
             </thead>
         
@@ -27,6 +27,7 @@
                     <td class="p-3 text-center">{{ timeSlot.serviceStartAt|date('H:i') }}</td>
                     <td class="p-3 text-center">{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
                     <td class="p-3 text-center">{{ timeSlot.intervalTime }}</td>
+                    <td class="p-3 text-center"> actions </td>
                 </tr>
                 {% set index = index + 1 %}
                 {% endfor %}

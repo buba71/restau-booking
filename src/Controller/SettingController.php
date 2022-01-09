@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Restaurant;
+use App\Entity\TimeSlot;
+use App\Form\DatedTimeSlotType;
 use App\Form\TimeSlotsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +25,7 @@ final class SettingController extends AbstractController
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
         $timeSlots = $restaurant->getTimeSlots();
 
-        return $this->render('Backend/show_time_slots.html.twig', [
+        return $this->render('BackOffice/slots/show_time_slots.html.twig', [
             'timeSlots' => $timeSlots
         ]);
     }
@@ -42,12 +44,12 @@ final class SettingController extends AbstractController
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();            
 
-            return $this->render('Backend/show_time_slots.html.twig', [
+            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
         }
 
-        return $this->renderForm('Backend/set_time_slots.html.twig',  [
+        return $this->renderForm('BackOffice/slots/set_time_slots.html.twig',  [
             'form' => $form,
         ]);
     } 
@@ -55,21 +57,43 @@ final class SettingController extends AbstractController
     #[Route('/update_time_slots/{id}', name: 'update_timeSlots')]
     public function updateTimeSlot(Restaurant $restaurant, Request $request) 
     {   
-        $form = $this->createForm(TimeSlotsType::class, $restaurant);
+        //dump($request);
+        $datedTimeSlot = new TimeSlot();
 
-        $form->handleRequest($request);
+        $timeSlotcollectionForm = $this->createForm(TimeSlotsType::class, $restaurant);
+        $timeSlotForm = $this->createForm(DatedTimeSlotType::class, $datedTimeSlot);   
 
-        if ($form->isSubmitted()) {
+        
+          
+        
+        $timeSlotcollectionForm->handleRequest($request);
+        $timeSlotForm->handleRequest($request);
+        //dd($timeSlotForm);
+
+        if ($timeSlotcollectionForm->isSubmitted()) {
+            
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
 
-            return $this->render('Backend/show_time_slots.html.twig', [
+            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
-        }    
+        }
         
-        return $this->renderForm('Backend/update_time_slots.html.twig',  [
-            'form' => $form
+        if ($timeSlotForm->isSubmitted()) {
+            //dd($datedTimeSlot);
+            
+            $dayOfWeek = intval(date('w', strtotime(($datedTimeSlot->getDateOfDay())->format('Y-m-d H:i:s'))));
+            $datedTimeSlot->setDayOfWeek($dayOfWeek);
+
+            $restaurant->addTimeSlot($datedTimeSlot);
+            $this->entityManager->persist($restaurant);
+            $this->entityManager->flush();           
+        }
+        
+        return $this->renderForm('BackOffice/slots/update_time_slots.html.twig',  [
+            'timeSlotcollectionForm' => $timeSlotcollectionForm,
+            'timeSlotForm' => $timeSlotForm,
         ]);
     }
 
