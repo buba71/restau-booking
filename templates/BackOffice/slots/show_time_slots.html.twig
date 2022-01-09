@@ -3,12 +3,13 @@
 
 {% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
 {% set index = 0 %}
-    <div class="text-center mt-5 text-muted">
+    <div class="mt-5 text-muted">
         <h1>Horaires</h1>
     </div>
 
-    <div>    
-        <table class="table mt-5">
+    <section class="card mt-5 p-3">  
+        <h3 class="card-title py-5 text-muted">Mes horaires hebdomadaires</h3>  
+        <table class="table">
             <thead>
                 <tr>
                     <th></th>
@@ -22,13 +23,15 @@
             <tbody>
 
                 {% for timeSlot in timeSlots %}  
-                <tr>
-                    <th class="time_slot_day pr-5" scope"row">{{ days[index] }}</th>
-                    <td class="p-3 text-center">{{ timeSlot.serviceStartAt|date('H:i') }}</td>
-                    <td class="p-3 text-center">{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
-                    <td class="p-3 text-center">{{ timeSlot.intervalTime }}</td>
-                    <td class="p-3 text-center"> actions </td>
-                </tr>
+                    {% if timeSlot.hasDate == false %}
+                        <tr>
+                            <th class="time_slot_day pr-5" scope"row">{{ days[index] }}</th>
+                            <td class="p-3 text-center">{{ timeSlot.serviceStartAt|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.intervalTime }}</td>
+                            <td class="p-3 text-center"> actions </td>
+                        </tr>
+                    {% endif %}
                 {% set index = index + 1 %}
                 {% endfor %}
 
@@ -36,9 +39,38 @@
             
         </table>
 
-        <div class="d-flex justify-content-center">
+        <div class="">
             <a href="{{ path('update_timeSlots', { id: 1 }) }}" class="btn btn-info">Modifier</a>
         </div>      
-</div>    
+    </section>  
+
+    
+    <section class="card p-3" id="dated-time-slots">
+        <caption><h3 class="py-5 text-muted">Horaires d'ouverture à une date spécifique</h3>  </caption>
+        <table>
+            <thead>
+                <tr>
+                    <th>date</th>
+                    <th>Début de service</th>
+                    <th>Fin de service</th>
+                    <th>Intervalle</th>
+                </tr>
+            </thead>
+        {% for timeSlot in timeSlots %}
+            {% if timeSlot.hasDate == true %}
+        
+            <tbody>
+                <tr>
+                    <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
+                    <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
+                    <td>{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
+                    <td>{{ timeSlot.intervalTime }}</td>
+                </tr>
+            </tbody>
+            {% endif %}
+        {% endfor %}
+        </table>
+    </section>
+     
 
 {% endblock %}

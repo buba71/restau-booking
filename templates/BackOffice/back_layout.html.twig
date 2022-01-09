@@ -25,14 +25,13 @@
         
         <!-- main content -->
             <main class="content-wrapper">
-              <div class="container-fluid">
+              <div class="container-fluid" id="back-layout">
                 <div class="row mr-0">
                   <div class="col-2">
                     <nav id="admin-side-bar">
                       <ul class="nav flex-column list-group" aria-orientation="vertical">
                         <li><a class="list-group-item" href="{{ path('show_timeSlots', {'id': 1}) }}">Mes horaires</a></li>
-                        <li><a class="list-group-item" href="{{ path('set_timeSlots') }}">Réglage horaires</a></li>
-                        <li><a class="list-group-item" href="{{ path('update_timeSlots', {'id': 1}) }}">Modifier</a></li>
+                        <li><a class="list-group-item" href="{{ path('update_timeSlots', {'id': 1}) }}">Gérer les horaires</a></li>
                       </ul>
                     </nav>
                   </div>

@@ -18,6 +18,6 @@ final class BookingController extends AbstractController
      */
     public function bookTable(Restaurant $restaurant): Response
     {
-        return $this->render('Frontend/booking.html.twig', [ 'restaurant' => $restaurant ]);
+        return $this->render('FrontOffice/booking.html.twig', [ 'restaurant' => $restaurant ]);
     }
 }

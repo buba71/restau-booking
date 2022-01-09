@@ -16,3 +16,7 @@
 #admin-side-bar a:hover {
     background-color: #5bc0de;
 }
+
+.container-fluid#back-layout {
+    padding-left: 0;
+}
