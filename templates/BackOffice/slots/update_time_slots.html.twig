@@ -21,11 +21,11 @@
 {% block body %}
 
     <div class="mt-5 text-muted">
-          <h1>Modifier vos horaires</h1>
+          <h1>Gestion des horaires</h1>
     </div>
 
     <section class="card mt-5 p-3" id="week-days-schedule">
-        <h3 class="py-5">Modifier vos horaires d'ouverture hebdomadaires</h2>
+        <h3 class="card-title py-5 text-muted">Modifier vos horaires d'ouverture hebdomadaires</h2>
         {{ form_start(timeSlotcollectionForm)}}      
             <table class="table">
                 <thead>
@@ -47,9 +47,10 @@
         {{ form_end(timeSlotcollectionForm) }} 
     </section>
 
-{{form_start(timeSlotForm)}}
+    
     <section class="card mt-5 p-3">      
-        <h3 class="py-5">Modifer vos horaires d'ouverture à une date spécifique</h2>  
+        <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique</h2>
+        {{form_start(timeSlotForm)}}
         <div class="d-flex flex-row">
             <div class="mr-3">{{ form_row(timeSlotForm.dateOfDay)}}</div>
             <div class="mr-3">{{ form_row(timeSlotForm.serviceStartAt)}}</div>
@@ -57,11 +58,14 @@
             <div class="mr-3">{{ form_row(timeSlotForm.intervalTime)}}</div>
             <div class="mr-3">{{ form_row(timeSlotForm.dayOfWeek)}}</div>
             <div class="mr-3"><button type="submit" class="btn btn-info">ajouter</button></div>   
-        </div>     
+        </div>
+        {{ form_end(timeSlotForm) }} 
+
     </section>
+    
 
     {% if datedTimeSlots is defined %}
-        <section id="dated-time-slots">
+        <section class="card p-3" id="dated-time-slots">
             <table>
                 <thead>
                     <tr>
@@ -72,13 +76,15 @@
                     </tr>
                 </thead>
             {% for datedTimeSlot in datedTimeSlots %}
+            
                 <tbody>
                     <tr>
-                        <td>{{ datedTimeSlot.date }}</td>
-                        <td>{{ datedTimeSlot.serviceStartAt }}</td>
-                        <td>{{ datedTimeSlot.serviceCloseAt }}</td>
+                        <td>{{ datedTimeSlot.dateOfDay|date("d-M-Y") }}</td>
+                        <td>{{ datedTimeSlot.serviceStartAt|date('H:i') }}</td>
+                        <td>{{ datedTimeSlot.serviceCloseAt|date('H:i') }}</td>
                         <td>{{ datedTimeSlot.intervalTime }}</td>
                     </tr>
+                </tbody>
             {% endfor %}
             </table>
         </section>

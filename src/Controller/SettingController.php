@@ -57,18 +57,17 @@ final class SettingController extends AbstractController
     #[Route('/update_time_slots/{id}', name: 'update_timeSlots')]
     public function updateTimeSlot(Restaurant $restaurant, Request $request) 
     {   
-        //dump($request);
-        $datedTimeSlot = new TimeSlot();
+        $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
+            return $element->hasDate();
+        });
+        $nextDatedTimeSlot = new TimeSlot();
+
 
         $timeSlotcollectionForm = $this->createForm(TimeSlotsType::class, $restaurant);
-        $timeSlotForm = $this->createForm(DatedTimeSlotType::class, $datedTimeSlot);   
-
-        
-          
+        $timeSlotForm = $this->createForm(DatedTimeSlotType::class, $nextDatedTimeSlot);             
         
         $timeSlotcollectionForm->handleRequest($request);
         $timeSlotForm->handleRequest($request);
-        //dd($timeSlotForm);
 
         if ($timeSlotcollectionForm->isSubmitted()) {
             
@@ -81,22 +80,23 @@ final class SettingController extends AbstractController
         }
         
         if ($timeSlotForm->isSubmitted()) {
-            //dd($datedTimeSlot);
             
-            $dayOfWeek = intval(date('w', strtotime(($datedTimeSlot->getDateOfDay())->format('Y-m-d H:i:s'))));
-            $datedTimeSlot->setDayOfWeek($dayOfWeek);
+            $dayOfWeek = intval(date('w', strtotime(($nextDatedTimeSlot->getDateOfDay())->format('Y-m-d H:i:s'))));
+            $nextDatedTimeSlot->setDayOfWeek($dayOfWeek);
 
-            $restaurant->addTimeSlot($datedTimeSlot);
+            $restaurant->addTimeSlot($nextDatedTimeSlot);
             $this->entityManager->persist($restaurant);
-            $this->entityManager->flush();           
+            $this->entityManager->flush();
+            
+            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
+                'timeSlots' => $restaurant->getTimeSlots()
+            ]);
         }
         
         return $this->renderForm('BackOffice/slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,
             'timeSlotForm' => $timeSlotForm,
+            'datedTimeSlots' => $datedTimeSlots->toArray()
         ]);
     }
-
-
-
 }

@@ -35,6 +35,6 @@ final class HomeController extends AbstractController
             $city = $request->query->get('city');
         }
 
-        return $this->render('Frontend/home.html.twig', ['restaurants' => $data,'city' => $city]);
+        return $this->render('FrontOffice/home.html.twig', ['restaurants' => $data,'city' => $city]);
     }
 }
