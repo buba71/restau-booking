@@ -10,7 +10,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class TimeSlotBuilder
+final class TimeSlotFactory
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
@@ -20,24 +20,15 @@ final class TimeSlotBuilder
      * 
      * @return array
      */
-    public function buildTimeSlots(int $restaurantId, $startDay): array
+    public function create(int $restaurantId, $startDay): array
     {
         // Get first day of week: "2021-12-21T21:00:25.780Z".
         //dd($dateTime);
-        $dateToDisplay = date('D m Y', strtotime($startDay));
-        $dayName = (substr($dateToDisplay, 0, 3));
+        $firstDayToDisplay = date('D m Y', strtotime($startDay));
+        $dayName = (substr($firstDayToDisplay, 0, 3));
         $dayNumber = intval(date("w", strtotime($dayName)));
-
-
-        // Dates calendar to display.
-        $weekDays = [];
-
-        $startDate = new DateTime($startDay);
-        for($i = 0; $i < 7; $i++) {
-            $weekDays[] = $startDate->format('Y-m-d');
-            $startDate->add(new DateInterval('P1D'));
-        }
-
+        
+        $weekDays = $this->resolveCalendarDays($startDay);
 
 
         // retrieve restaurant id as function parameter.
@@ -101,7 +92,7 @@ final class TimeSlotBuilder
         $timeSlotsViewModel = [];
 
         foreach($formattedTimeSlots as $timeSlot) {
-            $timeSlotsViewModel[] = $this->generateTimeSlot($timeSlot);
+            $timeSlotsViewModel[] = $this->buildTimeSlot($timeSlot);
         }
         return $timeSlotsViewModel;
     }
@@ -111,7 +102,7 @@ final class TimeSlotBuilder
      * 
      * @return array
      */
-    private function generateTimeSlot(TimeSlot $timeSlot): array
+    private function buildTimeSlot(TimeSlot $timeSlot): array
     {
         $start = $timeSlot->getServiceStartAt();
         $startTime = $start->format('H:i');
@@ -130,5 +121,19 @@ final class TimeSlotBuilder
         }
 
         return $timeSlot;
+    }
+
+    private function resolveCalendarDays($startDay) 
+    {
+        // Calendar dates to display.
+        $weekDays = [];
+
+        $startDate = new DateTime($startDay);
+        for($i = 0; $i < 7; $i++) {
+            $weekDays[] = $startDate->format('Y-m-d');
+            $startDate->add(new DateInterval('P1D'));
+        }
+
+        return $weekDays;
     }
 }
