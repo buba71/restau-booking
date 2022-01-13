@@ -15,12 +15,13 @@ p {
     margin: 0;
 }
 
-.container {
-    min-height: 100vh; /* will cover the 100% of viewport */
-    overflow: hidden;
-    display: block;
+.container, .container-fluid {
     position: relative;
+    display: block;
+    min-height: 100vh; /* will cover the 100% of viewport */
     padding-bottom: 100px; /* height of your footer */
+    overflow: hidden;
+    padding-bottom: 4rem;   
 }
 
 
