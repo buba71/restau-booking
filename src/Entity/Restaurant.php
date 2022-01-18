@@ -60,9 +60,15 @@ final class Restaurant
      */
     private Collection $timeSlots;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="restaurant", cascade={"persist", "remove"})
+     */
+    private Collection $bookings;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,9 +153,29 @@ final class Restaurant
         return $this->timeSlots;
     }
 
+    public function getBookings()
+    { 
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): void
+    {
+        if(!$this->bookings->contains($booking)) {
+            $booking->setRestaurant($this);
+            $this->bookings->add($booking);
+        }
+    }
+
+    public function removeBooking(Booking $booking): void
+    {
+        if($this->bookings->contains($booking)) {
+            $this->bookings->remove($booking);
+        }
+    }
+
     public function addTimeSlot(TimeSlot $timeSlot): void
     {
-        if(!$this->timeSlots->contains($timeSlot)){
+        if(!$this->timeSlots->contains($timeSlot)) {
             $timeSlot->setRestaurant($this);
             $this->timeSlots->add($timeSlot);
         }
@@ -157,7 +183,7 @@ final class Restaurant
 
     public function removeTimeSlot(TimeSlot $timeSlot): void
     {
-        if($this->timeSlots->contains($timeSlot)){
+        if($this->timeSlots->contains($timeSlot)) {
             $this->timeSlots->remove($timeSlot);
         }
     }

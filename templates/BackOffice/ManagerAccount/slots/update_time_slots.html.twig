@@ -1,4 +1,4 @@
-{% extends 'BackOffice/back_layout.html.twig' %}
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
 
 
 {% form_theme timeSlotcollectionForm _self %}
@@ -15,7 +15,11 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
+    <!-- Bootstrap datepicker form -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">            
+    <!-- Bootstrap datepicker form -->
+
 {% endblock %}
 
 {% block body %}
