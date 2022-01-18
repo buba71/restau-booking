@@ -9,3 +9,10 @@
     border-right: none;
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
+
+.booking-controls
+{
+    position: relative;
+    top: 10px;
+}
+

@@ -1,0 +1,46 @@
+{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
+
+{% block body %}
+    <h1 class="text-muted">Mes réservations</h1>
+
+
+    <section class="card mt-5 p-3" id="booking">
+        <h3 class="card-title py-5 text-muted">Mes réservations</h3>
+
+        {% for message in app.flashes('success') %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        
+        {% endfor %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="p-3 text-center" scope="col">Date de réservation</th>
+                    <th class="p-3 text-center" scope="col">Heure de réservation</th>
+                    <th class="p-3 text-center" scope="col">Nombre de couverts</th>
+                    <th class="p-3 text-center" scope="col">Réservé le</th>
+                    {# <th class="p-3" scope="col">Actions</th> #}
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for booking in bookings %}
+                    <tr>
+                        <td class="p-3 text-center">{{ booking.bookingDate|date("d M Y") }}</td>
+                        <td class="p-3 text-center">{{ booking.bookingDate|date("H:i") }}</td>
+                        <td class="p-3 text-center">{{ booking.coversNumber }}</td>
+                        <td class="p-3 text-center">{{ booking.bookingAt|date("d M Y") }}</td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </section>
+    
+
+
+
+{% endblock %}

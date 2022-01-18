@@ -25,7 +25,7 @@ final class SettingController extends AbstractController
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
         $timeSlots = $restaurant->getTimeSlots();
 
-        return $this->render('BackOffice/slots/show_time_slots.html.twig', [
+        return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
             'timeSlots' => $timeSlots
         ]);
     }
@@ -39,17 +39,17 @@ final class SettingController extends AbstractController
         $form = $this->createForm(TimeSlotsType::class, $restaurant);
 
         $form->handleRequest($request);
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();            
 
-            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
+            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
         }
 
-        return $this->renderForm('BackOffice/slots/set_time_slots.html.twig',  [
+        return $this->renderForm('BackOffice/ManagerAccount/slots/set_time_slots.html.twig',  [
             'form' => $form,
         ]);
     } 
@@ -74,7 +74,7 @@ final class SettingController extends AbstractController
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
 
-            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
+            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
         }
@@ -88,12 +88,12 @@ final class SettingController extends AbstractController
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
             
-            return $this->render('BackOffice/slots/show_time_slots.html.twig', [
+            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
                 'timeSlots' => $restaurant->getTimeSlots()
             ]);
         }
         
-        return $this->renderForm('BackOffice/slots/update_time_slots.html.twig',  [
+        return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,
             'timeSlotForm' => $timeSlotForm,
             'datedTimeSlots' => $datedTimeSlots->toArray()

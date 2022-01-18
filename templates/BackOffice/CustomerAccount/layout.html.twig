@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>{% block title %}Bienvenue!{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            
+        {% endblock %}
+        <script src="https://use.fontawesome.com/47055b1d37.js"></script>        
+    </head>
+    <body>
+        <!-- header -->
+
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+              <a class="navbar-brand" href="{{ path('home')}}">Brand</a>              
+            </nav>            
+        </header>
+        
+        <!-- main content -->
+            
+              <div class="container-fluid" id="back-layout">
+                <div class="row mr-0">
+                  <div class="col-2">
+                    <nav id="admin-side-bar">
+                      <ul class="nav flex-column list-group" aria-orientation="vertical">
+                      <li><a class="list-group-item" href="">Mon profil</a></li>
+                        <li><a class="list-group-item" href="">Mes réservations</a></li>
+                        <li><a class="list-group-item" href="">Mes commandes</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                  
+                  <div class="col-10"> 
+                    <main class="content-wrapper">                   
+                    {% block body %}
+
+                    {% endblock %}
+                    </main>                                   
+                  </div>                 
+                </div>
+
+                <!-- footer -->
+                <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-5 border-top">
+                  <p class="col-md-4 mb-0 text-muted">&copy; 2021 Company, Inc</p>
+
+                  <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+                  </a>
+
+                  <ul class="nav col-md-4 justify-content-end">
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Accueil</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Espace Client</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Espace Professionnel</a></li>
+                  </ul>
+                </footer>
+                <!-- footer -->
+              </div>  
+                
+                    
+                   
+        
+        
+          
+          
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            
+        {% endblock %}
+        
+    </body>
+</html>

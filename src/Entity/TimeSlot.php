@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateInterval;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -59,7 +58,7 @@ final class TimeSlot
     private ?int $intervalTime;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, unique=true)
      */
     private DateTime $dateOfDay;
 
@@ -135,7 +134,7 @@ final class TimeSlot
         return $this->restaurant;
     }
 
-    public function setRestaurant(Restaurant $restaurant) 
+    public function setRestaurant(Restaurant $restaurant): void
     {
         $this->restaurant = $restaurant;
     }
