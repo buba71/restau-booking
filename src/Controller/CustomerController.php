@@ -4,33 +4,58 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Restaurant;
+use App\Entity\Booking;
+use App\Form\BookingType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/customer')]
 final class CustomerController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[Route('/customer/booking_details', name:'booking_details')]
+    #[Route('/show_bookings', name:'show_bookings')]
     public function showBookings(Request $request): Response
     {
-        // TODO get restaurant as request parameter.
-        $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
-
-        $bookings = $restaurant->getBookings();
+        // TODO get bookings by user parameter.
+        $bookings = $this->entityManager->getRepository(Booking::class)->findAll();
 
 
-        return $this->render('BackOffice/CustomerAccount/Booking//booking_details.html.twig', [
+        return $this->render('BackOffice/CustomerAccount/Booking/show_bookings.html.twig', [
             'bookings' => $bookings
         ]);
     }
 
-    public function bookWithOrder(Request $request): Response
+    #[Route('/edit_booking/{id}', name:'edit_booking')]
+    public function editBooking(Request $request, Booking $booking): Response
     {
+        $form = $this->createForm(BookingType::class, $booking);
 
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $this->entityManager->persist($booking);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('show_bookings');
+        }
+
+        return $this->renderForm('BackOffice/CustomerAccount/Booking/edit_booking.html.twig', [
+            'booking' => $booking,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/delete_booking/{id}', name:'delete_booking')]
+    public function deleteBooking(Request $request, Booking $booking): Response
+    {        
+        $this->entityManager->remove($booking);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('show_bookings');
     }
 }

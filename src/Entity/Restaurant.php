@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  */
-final class Restaurant
+class Restaurant
 {
     /**
      * @ORM\Id
