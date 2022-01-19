@@ -1,114 +1,52 @@
-{% extends 'base.html.twig' %}
-
-
-{% block stylesheets%}
-    {{ parent() }}    
-{% endblock %}
+{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
 
 {% block body %}
-<div class="text-center mt-5 text-muted">
-  <h1>Réserver</h1>
-</div>
 
-<div class="row mt-5 booking-container">
-  <div class="col-xl-7 col-lg-7 h-100">
 
-    <div class="row">
-
-      <section class="card booking-details col-12" style="height = 800px;">
-        <div class="restaurant-infos" style="width: 100%;">
-            <div class="row g-0">
-                <div class="col-md-6">
-                  <img src="{{ asset('/images/restaurant.png') }}" class="img-fluid" alt="image-restaurant">
-                </div>
-                <address class="col-md-6 py-2 restaurant-infos">                  
-                    <div class="card-body">
-                      <h5 class="card-title">{{ restaurant.name }}</h5>
-                      <p class="card-text">{{ restaurant.address}}</p>
-                      <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
-                      <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
-                      <p class="card-text">Téléphone: {{ restaurant.phone}}</p>
-                    </div>                                   
-                </address>                
-            </div>
-        </div>       
-      </section>
-
-    </div>
-
-    <div class="card row my-1 py-2">
-
-      <section class="restaurant-schedule col-12">
-      {% set days = ['Lundi', 'Mardi', 'Mercredi','Jeudi','Vendredi', 'Samedi', 'Dimanche'] %}
-      {% set index = 0 %}
-          
-          <h5 class="card-title text-center"><strong>Horaires d'ouverture</strong></h5>        
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modifier cette réservation</h5>     
         
-          <div class="d-flex justify-content-center">
-            <table cellpadding=0>
-              <tbody>
-                {% set i = 1 %}
-                {% for timeSlot in restaurant.timeSlots %}
-                  {% if timeSlot.hasDate == false %}
-                  <tr>
-                    <th class="text-muted" scope="row">{{ days[index] }}</th>
-                    <td class="px-2"><em>{{ timeSlot.serviceStartAt|date('H:i') }}-{{ timeSlot.serviceCloseAt|date('H:i') }}</em></td>
-                  </tr>
-                  {% endif %}
-                  {% set index = index + 1 %}
-                {% endfor %}            
-              </tbody>
-            </table> 
-          </div>       
-                   
-      </section>
+      </div>
+      <div class="modal-body">
 
-    </div>
+        <section class="card text-center my-2 py-2 alert alert-info" id="currentBooking-info">
+          <div>{{ booking.bookingDate|date('d M Y')}} à {{ booking.bookingDate|date('H:i')}}</div>
+          <div>Nombre de couverts: {{ booking.coversNumber }}</div>
+        </section>
 
-    <div class="card row py-5">
-    
-    {{ form_start(form) }}
-  
-      <section class="booking-form col-12 d-flex justify-content-center">  
+        <section class="card booking-schedule h-100" id="booking-schedule">
 
+              <div id="picker"></div>
+              
+              
+        </section>
+        {{ form_start(form)}}
+        <div class="card my-2 py-2 d-flex align-items-center booking-form">
+                
+                {{ form_row(form.coversNumber, {'attr': {'class': 'form-control'}} ) }}
+                {{ form_row(form.bookingDate) }}
+              
         
-          {{ form_row(form.coversNumber) }} 
-          {{ form_row(form.bookingDate) }}
-                           
-                        
-      </section> 
-
-    </div> 
-
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary">Annuler</button>
+        <button type="submit" class="btn btn-info">Valider</button>
+      </div>
+      {{ form_end(form) }}
+    </div>
   </div>
-    
-  <div class="col-xl-5 col-lg-5 pl-1 pr-1">
-  <!-- Booking calendar -->
-    <section class="card booking-schedule h-100">
-          <div id="picker">
-          </div>
-          
-          <div class="booking-controls my-2 d-flex justify-content-center">
-          
-            <button class="btn btn-info" type="submit">Réserver une table</button>
-            <button class="btn btn-info ml-2">Réserver et commander</button>
-    
-         
-          </div> 
-    </section>
-   {{ form_end(form)}}
-    
-  <!-- Booking calendar -->
-  </div>
-      
-       
-     
 </div>
-
 {% endblock %}
 
 {% block javascripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js"></script>
+    {{ parent () }}
+<script type="text/javascript">
+    $('#exampleModal').modal({show: true, backdrop: 'static', keyboard: false});
+</script>
 <!-- calendar library picker -->
 <script src="{{ asset("js/mark-your-calendar.js") }}"></script>
 
@@ -176,7 +114,8 @@ const nextHtml = `
             </div>
         `;
 
-const startDate = new Date();
+const startDate = new Date("{{ booking.bookingDate|date('Y') }}, {{ booking.bookingDate|date('m') }}, {{ booking.bookingDate|date('d') }}");
+
 
 // Make calendar sync with backend data.
 const calendar = () => {
@@ -201,6 +140,7 @@ const calendar = () => {
     prevHtml: prevHtml,
     nextHtml: nextHtml,
     weekdays: weekdays,
+    selectedDates: [],
     onClickNavigator: function(ev, instance) {
       
       const daysNumberHeader = document.querySelectorAll('.myc-date-number');
@@ -259,6 +199,7 @@ const calendar = () => {
       } 
     },
     onClick: function(event, data) {
+      console.log(data)
       const bookingDateInput = document.getElementById('booking_bookingDate');
       bookingDateInput.value = data;
       console.log(bookingDateInput)
@@ -266,7 +207,7 @@ const calendar = () => {
 
     });
 
-    // Calendar is loaded => get timeSlots for applying style.
+    // Calendar is loaded => get timeSlots for applying style(paste dates and times disabled).
     const times = document.querySelectorAll('.myc-available-time');
     const today = new Date();
     Array.from(times).forEach(element => {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Booking;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,8 +20,8 @@ final class BookingType extends AbstractType
     {
         $builder
             ->add('coversNumber', ChoiceType::class, [
-                'choices' => array_combine(range(1, 10, 1), range(1, 10, 1) ),
-                'label' => false,
+                'choices' => array_combine(range(1, 10, 1), range(1, 10, 1) ),        
+                'label' => 'Nombre de couverts',
                 'placeholder' => 'nombre de couverts',
                 'attr' => [
                     'class' => 'form-control'
@@ -29,18 +30,6 @@ final class BookingType extends AbstractType
             ->add('bookingDate', HiddenType::class, [
                 'required' => true
             ])
-            ->add('booking', SubmitType::class, [
-                'label' => 'réservation sans commande',
-                'attr' => [
-                    'class' => 'btn btn-info'
-                ]
-                ])
-            ->add('bookingOrder', SubmitType::class, [
-                'label' => 'réservation avec commande',
-                'attr' => [
-                    'class' => 'btn btn-info ml-2'
-                ]
-                ])
         ;
         
         $builder->get('coversNumber')
@@ -56,9 +45,10 @@ final class BookingType extends AbstractType
 
         $builder->get('bookingDate')
                 ->addModelTransformer(new CallbackTransformer(
-                    function ($dateTimeToString) {
-                        // TODO convert datetime to string.
-                        return $dateTimeToString;
+                    function (?DateTime $dateTimeToString) {
+                        if ($dateTimeToString !== null) {
+                            return $dateTimeToString->format('Y-m-d H:i');
+                        }                        
                     },
                     function ($stringToDateTime) {
                         if ($stringToDateTime === null)  {

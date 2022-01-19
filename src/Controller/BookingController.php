@@ -29,7 +29,6 @@ final class BookingController extends AbstractController
         $form = $this->createForm(BookingType::class, $booking);
 
         $form->handleRequest($request);
-        //dd($form);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $restaurant->addBooking($booking);
@@ -38,7 +37,7 @@ final class BookingController extends AbstractController
 
             $this->addFlash('success', 'Votre réservation a bien été prise en compte');
             
-            return $this->redirectToRoute('booking_details');
+            return $this->redirectToRoute('show_bookings');
         }
         
         return $this->renderForm('FrontOffice/booking.html.twig', [ 

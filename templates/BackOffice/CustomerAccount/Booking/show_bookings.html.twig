@@ -1,0 +1,104 @@
+{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
+
+{% block body %}
+    <h1 class="text-muted">Mes réservations</h1>
+
+
+    <section class="card mt-5 p-3" id="booking">
+        <h3 class="card-title py-5 text-muted">Mes réservations</h3>
+
+        {% for message in app.flashes('success') %}
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+            </div>
+        
+        {% endfor %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="p-3 text-center" scope="col">Date de réservation</th>
+                    <th class="p-3 text-center" scope="col">Heure de réservation</th>
+                    <th class="p-3 text-center" scope="col">Nombre de couverts</th>
+                    <th class="p-3 text-center" scope="col">Réservé le</th>
+                    <th class="p-3 text-center" scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for booking in bookings %}
+                    <tr>
+                        <td class="p-3 text-center">{{ booking.bookingDate|date("d M Y") }}</td>
+                        <td class="p-3 text-center">{{ booking.bookingDate|date("H:i") }}</td>
+                        <td class="p-3 text-center">{{ booking.coversNumber }}</td>
+                        <td class="p-3 text-center">{{ booking.bookingAt|date("d M Y") }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ path('edit_booking', {'id': booking.id }) }}">
+                                <button class="btn btn-info">Modifier</button>
+                            </a>
+                            <a href="{{ path('delete_booking', {'id': booking.id }) }}">
+                            <button class="btn btn-info">Annuler</button>
+                            </a>
+                        
+                            <!--<button class="btn btn-info" data-toggle="modal" data-target="#delete-modal" data-bookingId = "{{ booking.id }}" data-bookingDate = "{{ booking.bookingDate|date('d M Y')}}">Annuler</button>-->
+                        
+                        </td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+
+
+    </section>
+
+    
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Vous êtes sur le point d'annuler cette réservation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+                Le <span id="booking-date"></span>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <a href="">
+                <button type="button" class="btn btn-info">Confirmer</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    
+
+
+
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+
+/**
+$(document).ready(function () {
+    $('#delete-modal').on('show.bs.modal', function (event) {
+        
+        const bookingId  = event.relatedTarget.getAttribute("data-bookingId");
+        const bookingDate  = event.relatedTarget.getAttribute("data-bookingDate");
+        console.log(url);
+
+        $('#booking-date').append(bookingDate);
+    })
+})
+*/
+
+</script>
+{% endblock %}
