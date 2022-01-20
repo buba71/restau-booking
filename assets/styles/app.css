@@ -1,9 +1,10 @@
 @import 'admin.css';
-@import'booking.css';
-@import'calendar.css';
-@import'footer.css';
-@import'header.css';
-@import'pagination.css';
+@import 'booking.css';
+@import 'calendar.css';
+@import 'footer.css';
+@import 'header.css';
+@import 'pagination.css';
+@import 'sidebar.css';
 
 /* Reset css */
 
@@ -28,6 +29,14 @@ p {
 .search-restaurant {
     margin: auto;
     width: 50%;
+}
+
+.form-errors {
+    color: red;
+}
+
+.form-errors li {
+    list-style: none;
 }
 
 /* comments here */

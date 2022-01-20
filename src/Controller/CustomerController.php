@@ -41,6 +41,8 @@ final class CustomerController extends AbstractController
             $this->entityManager->persist($booking);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Votre réservation a été modifiée');
+
             return $this->redirectToRoute('show_bookings');
         }
 
@@ -55,6 +57,8 @@ final class CustomerController extends AbstractController
     {        
         $this->entityManager->remove($booking);
         $this->entityManager->flush();
+
+        $this->addFlash('success', 'Votre réservation a été annulée');
 
         return $this->redirectToRoute('show_bookings');
     }

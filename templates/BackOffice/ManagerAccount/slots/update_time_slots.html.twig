@@ -31,20 +31,22 @@
     <section class="card mt-5 p-3" id="week-days-schedule">
         <h3 class="card-title py-5 text-muted">Modifier vos horaires d'ouverture hebdomadaires</h2>
         {{ form_start(timeSlotcollectionForm)}}      
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th class="p-3" scope="col">Début de service</th>
-                        <th class="p-3" scope="col">Fin de service</th>
-                        <th class="p-3" scope="col">Interval</th>
-                    </tr>
-                </thead>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="p-3" scope="col">Début de service</th>
+                            <th class="p-3" scope="col">Fin de service</th>
+                            <th class="p-3" scope="col">Interval</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    {{ form_widget(timeSlotcollectionForm.timeSlots)}}
-                </tbody>
-            </table>
+                    <tbody>
+                        {{ form_widget(timeSlotcollectionForm.timeSlots)}}
+                    </tbody>
+                </table>
+            </div>
             <div>
                 {{ form_widget(timeSlotcollectionForm.Valider)}}
             </div>            
@@ -52,7 +54,7 @@
     </section>
 
     
-    <section class="card mt-5 p-3">      
+    <section class="card mt-2 p-3">      
         <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique</h2>
         {{form_start(timeSlotForm)}}
         <div class="d-flex flex-row">
@@ -69,8 +71,8 @@
     
 
     {% if datedTimeSlots is defined %}
-        <section class="card p-3" id="dated-time-slots">
-            <table>
+        <section class="card mt-2 p-3" id="dated-time-slots">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>date</th>

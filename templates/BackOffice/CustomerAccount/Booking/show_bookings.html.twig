@@ -9,7 +9,7 @@
 
         {% for message in app.flashes('success') %}
 
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success fade show" role="alert">
                 {{ message }}
             </div>
         
@@ -36,13 +36,15 @@
                         <td class="p-3 text-center">
                             <a href="{{ path('edit_booking', {'id': booking.id }) }}">
                                 <button class="btn btn-info">Modifier</button>
-                            </a>
-                            <a href="{{ path('delete_booking', {'id': booking.id }) }}">
-                            <button class="btn btn-info">Annuler</button>
-                            </a>
-                        
-                            <!--<button class="btn btn-info" data-toggle="modal" data-target="#delete-modal" data-bookingId = "{{ booking.id }}" data-bookingDate = "{{ booking.bookingDate|date('d M Y')}}">Annuler</button>-->
-                        
+                            </a>                        
+                            <button
+                                class="btn btn-info"
+                                data-toggle="modal"
+                                data-target="#delete-modal"
+                                data-bookingId = "{{ booking.id }}"
+                                data-bookingDate = "{{ booking.bookingDate|date('d M Y')}}"
+                                >Annuler
+                            </button>                        
                         </td>
                     </tr>
                 {% endfor %}
@@ -58,19 +60,21 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Vous êtes sur le point d'annuler cette réservation</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Annuler cette réservation</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <p>
-                Le <span id="booking-date"></span>
-            </p>
+          <div class="modal-body text-center m-2">
+            <section class="card my-2 py-2  alert alert-info">
+                <p>
+                    Le <span id="booking-date"></span>
+                </p>
+            </section>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-            <a href="">
+            <a href="" id="delete-booking">
                 <button type="button" class="btn btn-info">Confirmer</button>
             </a>
           </div>
@@ -87,18 +91,21 @@
 {{ parent() }}
 <script type="text/javascript">
 
-/**
-$(document).ready(function () {
-    $('#delete-modal').on('show.bs.modal', function (event) {
-        
-        const bookingId  = event.relatedTarget.getAttribute("data-bookingId");
-        const bookingDate  = event.relatedTarget.getAttribute("data-bookingDate");
-        console.log(url);
 
-        $('#booking-date').append(bookingDate);
+    $(document).ready(function () {
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const bookingId  = event.relatedTarget.getAttribute("data-bookingId");
+            const bookingDate  = event.relatedTarget.getAttribute("data-bookingDate");
+
+            $('#booking-date').append(bookingDate);
+
+            let url = `{{ path('delete_booking', {'id': 'booking_id' }) }}`;
+            url = url.replace('booking_id', bookingId)
+            $('#delete-booking').attr('href', url);            
+        })
     })
-})
-*/
+
 
 </script>
 {% endblock %}
