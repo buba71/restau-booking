@@ -14,11 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/manager')]
 final class SettingController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[Route('/show_time_slots/{id}', name: 'show_timeSlots')]
+    #[Route('/show_time_slots', name: 'show_timeSlots')]
     public function showTimeSlots(): Response
     {
         // Static restaurant id => 1.

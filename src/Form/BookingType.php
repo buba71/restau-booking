@@ -24,7 +24,7 @@ final class BookingType extends AbstractType
                 'label' => 'Nombre de couverts',
                 'placeholder' => 'nombre de couverts',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control m-auto w-50'
                 ]
             ])
             ->add('bookingDate', HiddenType::class, [

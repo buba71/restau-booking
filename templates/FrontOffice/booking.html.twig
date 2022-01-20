@@ -69,11 +69,16 @@
     
     {{ form_start(form) }}
   
-      <section class="booking-form col-12 d-flex justify-content-center">  
+      <section class="booking-form col-12 d-flex flex-column justify-content-center">  
 
-        
-          {{ form_row(form.coversNumber) }} 
-          {{ form_row(form.bookingDate) }}
+          <div class="form-errors text-center">
+            {{ form_errors(form) }}
+          </div>
+          <div class="text-center">
+            {{ form_row(form.coversNumber) }} 
+            {{ form_row(form.bookingDate) }}
+          </div>
+          
                            
                         
       </section> 
