@@ -22,6 +22,7 @@
                     <th class="p-3 text-center" scope="col">Heure de réservation</th>
                     <th class="p-3 text-center" scope="col">Nombre de couverts</th>
                     <th class="p-3 text-center" scope="col">Réservé le</th>
+                    <th class="p-3 text-center" scope="col">Restaurant</th>
                     <th class="p-3 text-center" scope="col">Actions</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                         <td class="p-3 text-center">{{ booking.bookingDate|date("H:i") }}</td>
                         <td class="p-3 text-center">{{ booking.coversNumber }}</td>
                         <td class="p-3 text-center">{{ booking.bookingAt|date("d M Y") }}</td>
+                        <td class="p-3 text-center">{{ booking.restaurant.name }}</td>
                         <td class="p-3 text-center">
                             <a href="{{ path('edit_booking', {'id': booking.id }) }}">
                                 <button class="btn btn-info">Modifier</button>
