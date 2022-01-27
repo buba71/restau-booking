@@ -45,6 +45,7 @@
           <h5 class="card-title text-center"><strong>Horaires d'ouverture</strong></h5>        
         
           <div class="d-flex justify-content-center">
+
             <table cellpadding=0>
               <tbody>
                 {% set i = 1 %}
@@ -59,6 +60,7 @@
                 {% endfor %}            
               </tbody>
             </table> 
+
           </div>       
                    
       </section>
@@ -97,8 +99,7 @@
           <div class="booking-controls mt-5 d-flex justify-content-around">
           
             <button class="btn btn-info" type="submit">Réserver une table</button>
-            <button class="btn btn-info">Réserver et commander</button>
-    
+            <a href="{{ path('show_menus') }}" type="button" class="btn btn-info">Réserver et commander</a>    
          
           </div> 
     </section>

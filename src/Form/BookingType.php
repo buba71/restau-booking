@@ -23,6 +23,7 @@ final class BookingType extends AbstractType
                 'choices' => array_combine(range(1, 10, 1), range(1, 10, 1) ),        
                 'label' => 'Nombre de couverts',
                 'placeholder' => 'nombre de couverts',
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control m-auto w-50'
                 ]

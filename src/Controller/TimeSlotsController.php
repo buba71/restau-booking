@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/manager')]
-final class SettingController extends AbstractController
+final class TimeSlotsController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 

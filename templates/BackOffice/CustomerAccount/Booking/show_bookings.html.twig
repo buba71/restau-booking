@@ -1,9 +1,10 @@
 {% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
 
 {% block body %}
-    <h1 class="text-muted">Mes réservations</h1>
-
-
+    <div class="text-muted">
+        <h1>Mes réservations</h1>
+    </div>
+    
     <section class="card mt-5 p-3" id="booking">
         <h3 class="card-title py-5 text-muted">Mes réservations</h3>
 
@@ -36,11 +37,11 @@
                         <td class="p-3 text-center">{{ booking.bookingAt|date("d M Y") }}</td>
                         <td class="p-3 text-center">{{ booking.restaurant.name }}</td>
                         <td class="p-3 text-center">
-                            <a href="{{ path('edit_booking', {'id': booking.id }) }}">
-                                <button class="btn btn-info">Modifier</button>
+                            <a href="{{ path('edit_booking', {'id': booking.id }) }}" type="button" class="btn btn-info btn-sm mx-1">
+                                Modifier
                             </a>                        
                             <button
-                                class="btn btn-info"
+                                class="btn btn-secondary btn-sm mx-1"
                                 data-toggle="modal"
                                 data-target="#delete-modal"
                                 data-bookingId = "{{ booking.id }}"
@@ -57,12 +58,13 @@
 
     </section>
 
+    <!-- Modal -->
     
     <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Annuler cette réservation</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Annuler cette réservation?</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -83,12 +85,11 @@
         </div>
       </div>
     </div>
+
     <!-- Modal -->
-    
-
-
 
 {% endblock %}
+
 {% block javascripts %}
 {{ parent() }}
 <script type="text/javascript">

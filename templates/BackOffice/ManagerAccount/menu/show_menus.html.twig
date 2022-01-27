@@ -1,0 +1,120 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block stylesheets%}
+    {{ parent() }}    
+{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('success') %}
+
+    <div class="alert alert-success fade show" role="alert">
+        {{ message }}
+    </div>
+
+{% endfor %}
+
+
+
+    <div>  
+        <div class="text-muted">
+              <h1>Gérer mes menus</h1>
+        </div> 
+
+{% if menus is defined and menus is not empty %}
+
+        <section class="card mt-5 p-3" id="categories-list">            
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="p-3 text-center" scope="col">Menu</th>
+                        <th class="p-3 text-center" scope="col">Description</th>
+                        <th class="p-3 text-center" scope="col">Composition</th>
+                        <th class="p-3 text-center" scope="col">Créé le</th>
+                        <th class="p-3 text-center" scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                {% for menu in menus %}
+
+                <tbody>                    
+                    <tr>
+                        <td class="p-3 text-center">{{ menu.name }}</td>
+                        <td class="p-3 text-center">{{ menu.description|u.truncate(30, '...') }}</td>
+                        <td class="p-3 text-center">{% for menuItem in menu.menuItems %}{{ menuItem }},{% endfor %}</td>
+                        <td class="p-3 text-center">{{ menu.createdAt|date('d-M-Y') }}</td>
+                        <td class="p-3 text-center">
+                            <a href="" type="button" class="btn btn-info btn-sm">Modifier</a>
+                            <button
+                                class="btn btn-secondary btn-sm mx-1"
+                                data-toggle="modal"
+                                data-target="#delete-modal"
+                                data-menuId ="{{ menu.id }}"
+                                >Suppimer
+                            </button>  
+                        </td>
+                    </tr>                                     
+                </tbody>
+
+                {% endfor %} 
+            </table>            
+
+        </section>
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        <p>Vous ne proposez pas de menu pour le moment.</p>
+    </div>
+
+{% endif %}
+
+    <section class="card mt-5 p-3">
+        <h2>Composer un nouveau menu</h2>     
+        {{ form(form) }}   
+    </section>
+
+    <!-- Modal -->
+    
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">          
+          <div class="modal-body text-center m-2">
+            <h5>Voulez vraiment supprimer ce menu?</h5>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <a href="" id="delete-menu">
+                <button type="button" class="btn btn-info">Confirmer</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const menuId  = event.relatedTarget.getAttribute("data-menuId");
+
+            let url = `{{ path('delete_menu', {'id': 'menu_id' }) }}`;
+            url = url.replace('menu_id', menuId)
+            $('#delete-menu').attr('href', url);            
+        })
+    })
+
+
+</script>
+{% endblock %}
