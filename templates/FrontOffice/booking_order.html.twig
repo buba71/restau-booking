@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Faites votre choix.</h5>     
+        
+      </div>
+      <div class="modal-body">
+
+        {{ form_start(form) }}
+        
+        <div class="my-2 py-2" id="order-type">
+
+             
+            <div>
+                {{ form_row(form.type)}}
+            </div>
+            <div>
+                <div class="w-50 m-auto">
+                    {{ form_row(form.card) }}
+                </div>
+                <div class="w-50 m-auto">
+                    {{ form_row(form.menu)}}
+                </div>
+            </div>
+              
+        
+        </div>
+
+        {{ form_end(form) }}
+
+      <div class="modal-footer">
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $('#exampleModal').modal({show: true, backdrop: 'static', keyboard: false});
+</script>
+<!-- calenda
+{% endblock %}

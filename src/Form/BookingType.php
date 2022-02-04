@@ -23,12 +23,21 @@ final class BookingType extends AbstractType
                 'choices' => array_combine(range(1, 10, 1), range(1, 10, 1) ),        
                 'label' => 'Nombre de couverts',
                 'placeholder' => 'nombre de couverts',
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control m-auto w-50'
                 ]
             ])
             ->add('bookingDate', HiddenType::class, [
                 'required' => true
+            ])
+            ->add('booking', SubmitType::class, [
+                'label' => 'Réserver une table',
+                'attr' =>  [ 'class' => 'btn btn-info']
+            ])
+            ->add('bookingOrder', SubmitType::class,  [
+                'label' => 'Réserver et commander',
+                'attr' =>  [ 'class' => 'btn btn-info']
             ])
         ;
         

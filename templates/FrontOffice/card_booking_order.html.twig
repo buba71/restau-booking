@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-8 p-0">
+        <section class="mt-5" id="menu-list">
+            <div>
+                <div class="mb-5">
+                    <h1 class="d-inline">Notre carte</h1><a href="{{ path('order_menu') }}" class="btn btn-outline-dark btn-sm mb-3 ml-5">Voir nos menus</a>
+                </div>
+
+                {% set categories = [] %}
+                
+                {% for menuItem in menuItems %}
+                    {% if menuItem.category not in categories %}
+                        {% set categories = categories|merge([menuItem.category]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% for category in categories %}
+                    <h2 class="text-center my-5">{{ category }}</h2>
+                    <div class="row no-gutters">
+                
+                    {% for menuItem in menuItems %}
+
+                        {% if menuItem.category == category %}
+                            <div class="col-4 mb-2">
+                                <div class="card h-100 m-1" id="menu-restaurant-item">
+                                    <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">{{ menuItem.name }}</h5>
+                                        <p>{{ menuItem.price | format_currency('EUR') }}</p>
+                                    </div>                                
+                                        <p class="card-text">{{ menuItem.description }}</p>
+
+                                        <button 
+                                            class="btn btn-info btn-sm w-100 mt-auto add-cartItem" 
+                                            data-menuItemId="{{ menuItem.id }}"
+                                            >Ajouter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+
+                {% endfor %}
+
+               
+
+            </div>
+        </section>
+    </div>
+    <div class="col-4">
+        <section class="card" id="restaurant-cart">
+            {{ render(path('cart_index')) }}
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+    $(document).ready(function () {
+        const addButton = $('.add-cartItem');
+        addButton.click(function() {
+            const menuItemId = $(this).attr('data-menuItemId');
+            let url = `{{ path('add_menu_item_to_cart', {'id': 'menuItem_id'}) }}`;
+            url = url.replace('menuItem_id', menuItemId);
+
+            fetch(url, {
+                method: 'post',                
+            })
+            .then((response) => response.text())
+            .then((data) => $('#restaurant-cart').html(data))
+        })
+    })
+
+</script>
+{% endblock %}

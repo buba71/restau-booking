@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class BookingController extends AbstractController
@@ -22,7 +23,7 @@ final class BookingController extends AbstractController
      * 
      * @return Response
      */
-    public function bookTable(Request $request, Restaurant $restaurant): Response
+    public function bookTable(Request $request, Restaurant $restaurant, SessionInterface $session): Response
     {
         $booking = new Booking();
 
@@ -30,14 +31,23 @@ final class BookingController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $restaurant->addBooking($booking);
-            $this->entityManager->persist($restaurant);
-            $this->entityManager->flush();
+        
 
-            $this->addFlash('success', 'Votre réservation a bien été prise en compte');
+        if ($form->isSubmitted() && $form->isValid()) {
+            if('booking' === $form->getClickedButton()->getName()) {
+                $restaurant->addBooking($booking);
+                $this->entityManager->persist($restaurant);
+                $this->entityManager->flush();
+
+                $this->addFlash('success', 'Votre réservation a bien été prise en compte');
+                
+                return $this->redirectToRoute('show_bookings');
+            } 
+
+            $session->set('booking', $booking);
+
+            return $this->redirectToRoute('order');
             
-            return $this->redirectToRoute('show_bookings');
         }
         
         return $this->renderForm('FrontOffice/booking.html.twig', [ 

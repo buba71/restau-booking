@@ -9,14 +9,15 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  */
-final class Menu
+final class Menu implements Product
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
@@ -24,11 +25,13 @@ final class Menu
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private string $description;
 
@@ -42,9 +45,15 @@ final class Menu
      */
     private Collection $menuItems;
 
+    /**
+     * @ORM\Column(type="float", nullable="false")
+     */
+    private float $price = 0;
+
     public function __construct()
     {
         $this->menuItems = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
     }
     
 
@@ -53,7 +62,7 @@ final class Menu
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -82,11 +91,14 @@ final class Menu
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function getPrice(): float
     {
-        $this->createdAt = $createdAt;
+        return $this->price;
+    }
 
-        return $this;
+    public function setPrice(float $price)
+    {
+        $this->price = $price;
     }
 
     public function getMenuItems(): Collection
@@ -99,6 +111,7 @@ final class Menu
         if(!$this->menuItems->contains($menuItem)) {
             $this->menuItems->add($menuItem);
             $menuItem->addMenu($this);
+
         }
     }
 

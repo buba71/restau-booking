@@ -39,6 +39,7 @@ final class Booking
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank
      */
     private string $coversNumber;
 

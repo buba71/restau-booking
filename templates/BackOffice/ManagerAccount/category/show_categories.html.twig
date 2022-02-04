@@ -1,0 +1,72 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block stylesheets%}
+    {{ parent() }}    
+{% endblock %}
+
+{% block body %}
+
+{% for message in app.flashes('success') %}
+
+                <div class="alert alert-success fade show" role="alert">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+{% if categories is defined and categories is not empty %}
+
+    <div>  
+        <div class="text-muted">
+              <h1>Gérer les categories de plats</h1>
+        </div> 
+
+        <section class="card mt-5 p-3" id="categories-list">            
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="p-3 text-center" scope="col">Type de plat</th>
+                        <th class="p-3 text-center" scope="col">Actions</th>
+                    </tr>
+                </thead>
+                {% for category in categories %}
+
+                <tbody>                    
+                    <tr>
+                        <td class="p-3 text-center">{{ category.name}}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ path('delete_category', {'id': category.id })}}" type="button" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>                                     
+                </tbody>
+
+                {% endfor %} 
+            </table>            
+
+        </section>
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        <p>Vous n'avez pas configuré de catégorie pour le moment.</p>
+    </div>
+
+{% endif %}
+
+    <section class="card mt-5 p-3">
+        <h2 class="text-center">Ajouter une catégorie</h2>
+        {{ form_start(form) }}
+            <div class="form-errors">
+                {{ form_errors(form) }}
+            </div>
+            <div>
+                {{ form_row(form.name) }}
+                
+            </div>
+        {{ form_end(form) }}        
+    </section>
+
+
+{% endblock %}
