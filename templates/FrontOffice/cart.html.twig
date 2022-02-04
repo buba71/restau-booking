@@ -1,0 +1,92 @@
+<div>
+    <h2 class="text-center mt-5">Votre panier</h2>
+    {% if cart | length > 0 %}
+        <table class="m-auto">
+            <thead>
+                <tr>
+                    <th class="px-2">produit</th>
+                    <th class="px-2">quantité</th>
+                    <th class="px-2 text-right">total</th>
+                    <th class="px-2">annuler</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for item in cart %}
+            {% set deleteClass = (item.product.menuItems is defined) ? 'delete-menu-cartItem' : 'delete-menuItem-cartItem' %}
+                <tr>
+                    <td class="px-2">{{ item.product.name }}</td>
+                    <td class="px-2 text-center">
+                        {# <span class="remove-cartItem" data-MenuId = {{ item.product.id }}>-</span> #}
+                        {{ item.quantity }} 
+                        {# <span class="add-cartItem" data-MenuId = {{ item.product.id }}>+</span> #}
+                    </td>
+                    <td class="px-2 text-right">{{ (item.product.price * item.quantity) | format_currency('EUR')  }}</td>
+                    <td class="px-2 text-center">
+                        
+                        <li class="fa fa-trash fa-sm {{ deleteClass }}" data-menuId = {{ item.product.id }}></li>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="text-right">Total </td>
+                    <td class="px-2">{{ total | format_currency('EUR') }}</td>                
+                </tr>
+            </tfoot>
+        </table>
+        {% for item in cart %}
+            
+        {% endfor %}
+
+        <div class="px-2 mt-5 text-center">
+            <a href="#" type="button" class="btn btn-dark btn-sm w-50 m-3">Valider le panier</a>            
+        </div>
+
+        
+    {% else %}
+        <p class="text-center">Votre panier est vide</p>
+    {% endif %}
+</div>
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+
+        // Delete Menu from cart.
+        const deleteMenuButton = $('.delete-menu-cartItem');
+        deleteMenuButton.click(function() {
+            const menuId = $(this).attr('data-menuId');
+            let url = `{{ path('delete_menu_from_cart', {'id': 'menu_id' })}}`;
+            url = url.replace('menu_id', menuId);
+
+            fetch(url, {
+                method: 'post',                
+            })
+            .then((response) => response.text())
+            .then((data) => $('#restaurant-cart').html(data))
+        })
+
+        // Delete MenuItem from cart.
+        const deleteMenuItemButton = $('.delete-menuItem-cartItem');
+        deleteMenuItemButton.click(function() {
+            const menuItemId = $(this).attr('data-menuId');
+            let url = `{{ path('delete_menuItem_from_cart', {'id': 'menuItem_id' })}}`;
+            url = url.replace('menuItem_id', menuItemId);
+
+            fetch(url, {
+                method: 'post',                
+            })
+            .then((response) => response.text())
+            .then((data) => $('#restaurant-cart').html(data))
+        })
+
+    })
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,11 @@
+
+#restaurant-cart {
+    position: fixed;
+    top: 0;
+    width: 348px;
+    height: 100vh;
+}
+
+td .remove-cartItem, td .add-cartItem {
+    cursor: pointer;
+}

@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=MenuRepository::class)
  */
-final class Menu
+final class Menu implements Product
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
@@ -45,6 +45,11 @@ final class Menu
      */
     private Collection $menuItems;
 
+    /**
+     * @ORM\Column(type="float", nullable="false")
+     */
+    private float $price = 0;
+
     public function __construct()
     {
         $this->menuItems = new ArrayCollection();
@@ -57,7 +62,7 @@ final class Menu
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -86,6 +91,16 @@ final class Menu
         return $this->createdAt;
     }
 
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price)
+    {
+        $this->price = $price;
+    }
+
     public function getMenuItems(): Collection
     {
         return $this->menuItems;
@@ -96,6 +111,7 @@ final class Menu
         if(!$this->menuItems->contains($menuItem)) {
             $this->menuItems->add($menuItem);
             $menuItem->addMenu($this);
+
         }
     }
 

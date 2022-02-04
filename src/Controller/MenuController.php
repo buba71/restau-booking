@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Menu;
 use App\Entity\MenuItem;
 use App\Form\MenuType;
+use App\Repository\MenuRepository;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,9 +22,9 @@ final class MenuController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_menus', name: 'show_menus')]
-    public function showDishes(Request $request): Response
+    public function showDishes(Request $request, MenuRepository $repository): Response
     {
-        $menus = $this->entityManager->getRepository(Menu::class)->findAll();
+        $menus = $repository->findAll();
 
         $menu = new Menu();
 
@@ -32,6 +33,14 @@ final class MenuController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $price = 0;
+            foreach($menu->getMenuItems() as $menuItem) {
+                $price = $price + $menuItem->getPrice();
+            }
+
+            $menu->setPrice($price);
+
             $this->entityManager->persist($menu);
             $this->entityManager->flush();
 

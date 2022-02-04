@@ -16,6 +16,8 @@
         
         {% endfor %}
 
+        {% if bookings | length > 0 %}
+
         <table class="table">
             <thead>
                 <tr>
@@ -54,6 +56,14 @@
                 
             </tbody>
         </table>
+
+        {% else %}
+
+        <div class="alert alert-info">
+            <p>Vous n'avez aucune réservation en cours pour le moment.</p>
+        </div>
+
+        {% endif %}
 
 
     </section>
@@ -104,7 +114,7 @@
             $('#booking-date').append(bookingDate);
 
             let url = `{{ path('delete_booking', {'id': 'booking_id' }) }}`;
-            url = url.replace('booking_id', bookingId)
+            url = url.replace('booking_id', bookingId);
             $('#delete-booking').attr('href', url);            
         })
     })

@@ -31,6 +31,14 @@ final class BookingType extends AbstractType
             ->add('bookingDate', HiddenType::class, [
                 'required' => true
             ])
+            ->add('booking', SubmitType::class, [
+                'label' => 'Réserver une table',
+                'attr' =>  [ 'class' => 'btn btn-info']
+            ])
+            ->add('bookingOrder', SubmitType::class,  [
+                'label' => 'Réserver et commander',
+                'attr' =>  [ 'class' => 'btn btn-info']
+            ])
         ;
         
         $builder->get('coversNumber')

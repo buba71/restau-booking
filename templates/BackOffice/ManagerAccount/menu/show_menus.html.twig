@@ -21,7 +21,7 @@
               <h1>Gérer mes menus</h1>
         </div> 
 
-{% if menus is defined and menus is not empty %}
+{% if menus | length > 0 %}
 
         <section class="card mt-5 p-3" id="categories-list">            
             
@@ -32,7 +32,8 @@
                         <th class="p-3 text-center" scope="col">Description</th>
                         <th class="p-3 text-center" scope="col">Composition</th>
                         <th class="p-3 text-center" scope="col">Créé le</th>
-                        <th class="p-3 text-center" scope="col">Actions</th>
+                        <th class="p-3 text-center" scope="col">Prix(Euros)</th>
+                        <th class="p-3 text-center" scope="col">Actions</th>                        
                     </tr>
                 </thead>
 
@@ -44,6 +45,7 @@
                         <td class="p-3 text-center">{{ menu.description|u.truncate(30, '...') }}</td>
                         <td class="p-3 text-center">{% for menuItem in menu.menuItems %}{{ menuItem }},{% endfor %}</td>
                         <td class="p-3 text-center">{{ menu.createdAt|date('d-M-Y') }}</td>
+                        <td class="p-3 text-center">{{ menu.price }}</td>
                         <td class="p-3 text-center">
                             <a href="" type="button" class="btn btn-info btn-sm">Modifier</a>
                             <button

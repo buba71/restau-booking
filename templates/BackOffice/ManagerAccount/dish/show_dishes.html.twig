@@ -19,7 +19,7 @@
         <div class="text-muted">
               <h1>Gérer mes produits</h1>
         </div> 
-{% if dishes is defined and dishes is not empty %}
+{% if dishes | length > 0 %}
 
         <section class="card mt-5 p-3" id="dishes-list">
             

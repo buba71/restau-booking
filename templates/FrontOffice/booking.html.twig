@@ -97,9 +97,12 @@
           </div>
           
           <div class="booking-controls mt-5 d-flex justify-content-around">
+
+          {{ form_row(form.booking) }}
+          {{ form_row(form.bookingOrder) }}
           
-            <button class="btn btn-info" type="submit">Réserver une table</button>
-            <a href="{{ path('show_menus') }}" type="button" class="btn btn-info">Réserver et commander</a>    
+            <!--<button class="btn btn-info" type="submit">Réserver une table</button>
+            <a href="{{ path('show_menus') }}" type="button" class="btn btn-info">Réserver et commander</a>     -->
          
           </div> 
     </section>

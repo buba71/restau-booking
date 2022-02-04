@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\MenuItemRepository;
-use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=MenuItemRepository::class)
  */
-final class MenuItem
-{
+final class MenuItem implements Product
+{ 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -65,7 +64,7 @@ final class MenuItem
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -89,7 +88,7 @@ final class MenuItem
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
