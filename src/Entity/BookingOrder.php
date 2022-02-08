@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\entity;
+namespace App\Entity;
 
 use App\Entity\Booking;
 use DateTimeImmutable;
@@ -30,7 +30,7 @@ final class BookingOrder
     private int $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private ?string $comment;
 
@@ -45,18 +45,18 @@ final class BookingOrder
     private float $amount;
 
     /**
-     * @ORM\Column(type="strinng", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private string $type;
 
     /**
-     * @ORM\OneToOne(targetEntity="Booking")
+     * @ORM\OneToOne(targetEntity="Booking", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
      */
     private ?Booking $booking;
 
     /**
-     * Relation...................................
+     * @ORM\OneToMany(targetEntity="OrderLine", mappedBy="bookingOrder", cascade={"persist", "remove"})
      */
     private Collection $orderlines;
 
@@ -78,7 +78,7 @@ final class BookingOrder
 
     public function getComment(): ?string
     {
-        return $this->string;
+        return $this->comment;
     }
 
     public function setComment(string $comment)
@@ -120,14 +120,14 @@ final class BookingOrder
     {
         if (!$this->orderlines->contains($orderline)) {
             $this->orderlines->add($orderline);
-            $orderline->setBookinOrder($this);
+            $orderline->setBookingOrder($this);
         }
     }
 
     public function removeOrderLine(OrderLine $orderLine)
     {
         if ($this->orderlines->contains($orderLine)) {
-            $this->orderlines->remove($orderLine);
+            $this->orderlines->removeElement($orderLine);
         }
     }
 
