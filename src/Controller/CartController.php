@@ -136,7 +136,7 @@ final class CartController extends AbstractController
     {
         $sessionCart = $session->get('cart', []);
 
-        if($sessionCart['menu'][$id]) {
+        if(isset($sessionCart['menu']) && $sessionCart['menu'][$id]) {
             unset($sessionCart['menu'][$id]);
         }
 
@@ -150,7 +150,7 @@ final class CartController extends AbstractController
     {
         $sessionCart = $session->get('cart', []);
 
-        if($sessionCart['menuItem'][$id]) {
+        if(isset($sessionCart['menuItem']) && $sessionCart['menuItem'][$id]) {
             unset($sessionCart['menuItem'][$id]);
         }
 

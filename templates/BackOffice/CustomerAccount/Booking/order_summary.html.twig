@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<section id="order-summary">
+
+    <div class="card my-5 p-3">
+        <h1 class="text-center">Récapitulatif de votre commande</h1>
+
+        <h4 class="my-5">Réservation pour le {{ order.booking.bookingDate | date('d M Y') }} {% if order.type == "onSpot" %} sur place. {% else %} à emporter. {% endif %}</h5>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produits</th>
+                    <th>Type</th>
+                    <th>Quantité</th>
+                    <th>Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for orderLine in order.orderLines %}
+
+                <tr>
+                    <td>{{ orderLine.name }}</td>
+                    <td></td>
+                    <td>{{ orderLine.quantity }}</td>
+                    <td>{{ orderLine.price | format_currency('EUR') }}</td>
+                </tr>
+
+            {% endfor %}
+                <tr>
+                    <td class="text-right font-weight-bold" colspan="3">Total:</td>
+                    <td>{{ order.amount | format_currency('EUR') }}</td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="order-comments">
+            <P>Informations complémentaires concernant la préparation de cette commande.</P>
+            <div class="order-form">
+                {{ form_start(form) }}
+
+                {{ form_row(form.comment) }}
+
+                <div class="d-inline-block">
+                    {{ form_row(form.submit) }}
+                </div>
+                <div class="d-inline">
+                    <a href="" type="button" class="btn btn-secondary">Annuler</a>
+                </div>
+                    
+
+                {{ form_end(form) }}
+                
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Booking;
 use App\Form\BookingType;
+use App\Repository\BookingOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ final class CustomerController extends AbstractController
     public function showBookings(Request $request): Response
     {
         // TODO get bookings by user parameter.
-        $bookings = $this->entityManager->getRepository(Booking::class)->findAll();
+        $bookings = $this->entityManager->getRepository(Booking::class)->findBy([], ['bookingDate' => 'asc']);
 
 
         return $this->render('BackOffice/CustomerAccount/Booking/show_bookings.html.twig', [
@@ -61,5 +62,15 @@ final class CustomerController extends AbstractController
         $this->addFlash('success', 'Votre réservation a été annulée');
 
         return $this->redirectToRoute('show_bookings');
+    }
+
+    #[Route('/show_bookingOrders', name: 'show_customer_orders')]
+    public function showBookingOrders(BookingOrderRepository $bookingOrderRepository): Response
+    {
+        $orders = $bookingOrderRepository->findAllOrderByBookingDate();
+
+        return $this->render('BackOffice/CustomerAccount/Booking/show_booking_orders.html.twig', [
+            'orders' => $orders
+        ]);
     }
 }

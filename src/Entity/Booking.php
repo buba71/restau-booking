@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 * 
 * @ORM\Entity()
 */
-final class Booking
+class Booking
 {
     /**
      * @ORM\Id
