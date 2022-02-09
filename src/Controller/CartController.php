@@ -20,26 +20,35 @@ final class CartController extends AbstractController
         $cart = $session->get('cart', []);
         
         $cartData = [];
+        $menuData =[];
+        $menuItemData = [];
         $total = 0;
         
         if (isset($cart['menu'])) {
-
             foreach ($cart['menu'] as $id => $quantity) {
-                $cartData[] = [
+                $menuData[] = [
                     'product' => $menuRepository->findOneBy(['id' => $id]),
                     'quantity' => $quantity
                 ];
             }
+
+            // Sort Menus by name asc.
+            uasort($menuData, fn ($a, $b) => $a['product']->getName() > $b['product']->getName());
         }
 
         if (isset($cart['menuItem'])) {
             foreach ($cart['menuItem'] as $id => $quantity) {
-                $cartData[] = [
+                $menuItemData[] = [
                     'product' => $menuItemRepository->findOneBy(['id' => $id]),
                     'quantity' => $quantity
                 ];
             }
-        }        
+
+            // Sort menuItem by name asc.
+            uasort($menuItemData, fn ($a, $b) => $a['product']->getName() > $b['product']->getName());
+        }  
+        
+        $cartData = [...$menuItemData, ...$menuData];
         
         $total = 0;
 
