@@ -19,7 +19,7 @@ final class CustomerController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_bookings', name:'show_bookings')]
-    public function showBookings(Request $request): Response
+    public function showBookings(): Response
     {
         // TODO get bookings by user parameter.
         $bookings = $this->entityManager->getRepository(Booking::class)->findBy([], ['bookingDate' => 'asc']);
