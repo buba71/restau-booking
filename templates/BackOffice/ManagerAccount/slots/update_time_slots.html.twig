@@ -28,6 +28,8 @@
           <h1>Gestion des horaires</h1>
     </div>
 
+<!-- Update schedule time slots -->
+
     <section class="card mt-5 p-3" id="week-days-schedule">
         <h3 class="card-title py-5 text-muted">Modifier vos horaires d'ouverture hebdomadaires</h2>
         {{ form_start(timeSlotcollectionForm)}}      
@@ -38,7 +40,7 @@
                             <th></th>
                             <th class="p-3" scope="col">Début de service</th>
                             <th class="p-3" scope="col">Fin de service</th>
-                            <th class="p-3" scope="col">Interval</th>
+                            <th class="p-3" scope="col">Intervalle(min)</th>
                         </tr>
                     </thead>
 
@@ -53,22 +55,44 @@
         {{ form_end(timeSlotcollectionForm) }} 
     </section>
 
+    <!-- Update schedule time slots -->
+
+
+    <!-- Update time slot on specific date -->
     
     <section class="card mt-2 p-3">      
         <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique</h2>
-        {{form_start(timeSlotForm)}}
-        <div class="d-flex flex-row">
-            <div class="mr-3">{{ form_row(timeSlotForm.dateOfDay)}}</div>
-            <div class="mr-3">{{ form_row(timeSlotForm.serviceStartAt)}}</div>
-            <div class="mr-3">{{ form_row(timeSlotForm.serviceCloseAt)}}</div>
-            <div class="mr-3">{{ form_row(timeSlotForm.intervalTime)}}</div>
-            <div class="mr-3">{{ form_row(timeSlotForm.dayOfWeek)}}</div>
-            <div class="mr-3"><button type="submit" class="btn btn-info">ajouter</button></div>   
-        </div>
-        {{ form_end(timeSlotForm) }} 
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Début de service</th>
+                    <th>Fin de service</th>
+                    <th>Intervalle(min)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
-    </section>
-    
+                {{form_start(timeSlotForm)}}
+                <tr>
+                    <td>{{ form_row(timeSlotForm.dateOfDay)}}</td>
+                    <td>{{ form_row(timeSlotForm.serviceStartAt)}}</td>
+                    <td>{{ form_row(timeSlotForm.serviceCloseAt)}}</td>
+                    <td>{{ form_row(timeSlotForm.intervalTime)}}</td>
+                    <td><button type="submit" class="btn btn-info btn-sm">ajouter</button></td>
+                    <td>{{ form_row(timeSlotForm.dayOfWeek)}}</td>
+                </tr>
+                {{ form_end(timeSlotForm) }}
+
+            </tbody>
+        </table>
+    </section>   
+
+    <!-- Update time slot on specific date -->
+
+
+    <!-- Dated time slots list -->
 
     {% if datedTimeSlots is defined %}
         <section class="card mt-2 p-3" id="dated-time-slots">
@@ -79,6 +103,7 @@
                         <th>Début de service</th>
                         <th>Fin de service</th>
                         <th>Intervalle</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
             {% for datedTimeSlot in datedTimeSlots %}
@@ -89,6 +114,7 @@
                         <td>{{ datedTimeSlot.serviceStartAt|date('H:i') }}</td>
                         <td>{{ datedTimeSlot.serviceCloseAt|date('H:i') }}</td>
                         <td>{{ datedTimeSlot.intervalTime }}</td>
+                        <td><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
                     </tr>
                 </tbody>
                 
@@ -100,6 +126,8 @@
             <p>Aucun date n'a été définie pour le moment</p>
         </section>
     {% endif %} 
+
+    <!-- Dated time slots list -->
 
 {% endblock %}
 

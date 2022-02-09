@@ -6,14 +6,12 @@ namespace App\Form;
 
 use App\Entity\TimeSlot;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class DatedTimeSlotType extends AbstractType
 {
@@ -43,7 +41,13 @@ final class DatedTimeSlotType extends AbstractType
                 'required' => false,
                 'label' => false
             ])
-            ->add('intervalTime', TextType::class, [                
+            ->add('intervalTime', ChoiceType::class, [
+                'choices'   => [
+                    '15 mn' => 15,
+                    '30 mn' => 30,
+                    '45 mn' => 45,
+                    '60 mn' => 60
+                ],             
                 'required' => false,
                 'label' => false
             ])
