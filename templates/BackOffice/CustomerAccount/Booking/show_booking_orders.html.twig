@@ -24,8 +24,8 @@
                 <tr>
                     <th class="p-3 text-center" scope="col">Date </th>
                     <th class="p-3 text-center" scope="col">Heure</th>
-                    <th class="p-3 text-center" scope="col">Type</th>
                     <th class="p-3 text-center" scope="col">Restaurant</th>
+                    <th class="p-3 text-center" scope="col">Type</th>                    
                     <th class="p-3 text-center" scope="col">Montant</th>
                     <th class="p-3 text-center" scope="col">Réservé le</th>
                     <th class="p-3 text-center" scope="col">Actions</th>
@@ -37,8 +37,8 @@
                     <tr>
                         <td class="p-3 text-center">{{ order.booking.bookingDate | date("d M Y") }}</td>
                         <td class="p-3 text-center">{{ order.booking.bookingDate | date("H:i")}}</td>
-                        <td class="p-3 text-center">{{ order.type }}</td>
                         <td class="p-3 text-center">{{ order.booking.restaurant.name }}</td>
+                        <td class="p-3 text-center">{% if order.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</td>                        
                         <td class="p-3 text-center">{{ order.amount | format_currency('EUR')}}</td>
                         <td class="p-3 text-center">{{ order.registeredAt | date("d M Y") }}</td>
                         <td class="p-3 text-center">
