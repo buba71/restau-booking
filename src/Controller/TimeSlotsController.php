@@ -25,9 +25,13 @@ final class TimeSlotsController extends AbstractController
         // Static restaurant id => 1.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
         $timeSlots = $restaurant->getTimeSlots();
+        $datedTimeSlots = $timeSlots->filter(function ($element) {
+            return $element->hasDate();
+        });
 
         return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-            'timeSlots' => $timeSlots
+            'timeSlots' => $timeSlots,
+            'datedTimeSlots' => $datedTimeSlots
         ]);
     }
 

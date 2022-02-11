@@ -20,7 +20,7 @@ final class DishController extends AbstractController
     #[Route('/show_dishes', name: 'show_dishes')]
     public function showDishes(Request $request): Response
     {
-        $dishes = $this->entityManager->getRepository(MenuItem::class)->findAll();
+        $dishes = $this->entityManager->getRepository(MenuItem::class)->findBy([], ['name' => 'asc']);
 
         $dish = new MenuItem();
 

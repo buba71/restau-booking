@@ -22,7 +22,7 @@ final class CategoryController extends AbstractController
     #[Route('/show_categories', name: 'show_categories')]
     public function showCategories(Request $request): Response
     {
-        $categories = $this->entityManager->getRepository(Category::class)->findAll();
+        $categories = $this->entityManager->getRepository(Category::class)->findBy([],['name' => 'asc']);
 
         $category = new Category();
 
