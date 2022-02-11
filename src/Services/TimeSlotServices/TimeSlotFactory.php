@@ -104,6 +104,11 @@ final class TimeSlotFactory
      */
     private function buildTimeSlot(TimeSlot $timeSlot): array
     {
+        // Restaurant is closed return empty array.
+        if ($timeSlot->getServiceStartAt() === null | $timeSlot->getServiceCloseAt() === null | $timeSlot->getIntervalTime() === null) {
+            return ['Fermé'];
+        }
+
         $start = $timeSlot->getServiceStartAt();
         $startTime = $start->format('H:i');
         $end = $timeSlot->getServiceCloseAt();

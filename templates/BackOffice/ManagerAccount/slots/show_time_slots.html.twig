@@ -44,7 +44,7 @@
 
     
     <section class="card p-3 mt-2" id="dated-time-slots">
-        <h3 class="py-5 text-muted">Horaires d'ouverture à une date spécifique</h3>
+        <h3 class="py-5 text-muted">Horaires d'ouverture à une date spécifique et dates fermeture.</h3>
         <div>
             <table class="table">
                 <thead>
@@ -55,18 +55,17 @@
                         <th>Intervalle</th>
                     </tr>
                 </thead>
-            {% for timeSlot in timeSlots %}
-                {% if timeSlot.hasDate == true %}
+            {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
 
                 <tbody>
                     <tr>
                         <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
-                        <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
-                        <td>{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
+                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
+                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
                         <td>{{ timeSlot.intervalTime }}</td>
                     </tr>
                 </tbody>
-                {% endif %}
+                
             {% endfor %}
             </table>
         </div>

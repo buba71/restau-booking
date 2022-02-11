@@ -43,19 +43,19 @@ final class TimeSlot
     private int $dayOfWeek;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $serviceStartAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $serviceCloseAt;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $intervalTime;
+    private ?int $intervalTime = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, unique=true)
@@ -88,7 +88,7 @@ final class TimeSlot
         $this->dayOfWeek = $dayOfWeek;
     }
 
-    public function getServiceStartAt(): DateTime
+    public function getServiceStartAt(): ?DateTime
     {
         return $this->serviceStartAt;
     }
@@ -98,7 +98,7 @@ final class TimeSlot
         $this->serviceStartAt = $serviceStartAt;
     }
 
-    public function getServiceCloseAt(): DateTime
+    public function getServiceCloseAt(): ?DateTime
     {
         return $this->serviceCloseAt;
     }
@@ -108,7 +108,7 @@ final class TimeSlot
         $this->serviceCloseAt = $serviceCloseAt;
     }
 
-    public function getIntervalTime(): int
+    public function getIntervalTime(): ?int
     {
         return $this->intervalTime;
     }

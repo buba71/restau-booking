@@ -37,9 +37,7 @@ final class MenuType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'multiple' => true,
-                'attr' => [
-                    'class' => 'form-control'
-                ]
+                 
             ])
             ->add('submit', SubmitType::class)
         ;

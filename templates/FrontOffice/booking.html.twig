@@ -252,13 +252,17 @@ const calendar = () => {
           .then((data) => {
             instance.setAvailability(data);
 
-            // Calendar is loaded => get timeSlots for applying style.
+            // Calendar is loaded => get timeSlots for applying style(Past dates and cloded dates).
             const times = document.querySelectorAll('.myc-available-time');
             const today = new Date();
             Array.from(times).forEach(element => {
               const date = element.getAttribute('data-date');
               const dateTime = element.getAttribute('data-time');
-              if (today.getTime() > new Date(date + 'T' + dateTime)) {
+
+              let isClosedDate = new Date(date + 'T' + dateTime);             
+
+              if ( (today.getTime() > new Date(date + 'T' + dateTime)) | (isClosedDate == 'Invalid Date')) {
+
                 element.classList.remove("myc-available-time");
                 element.classList.add("myc-disabled-time");
               }
@@ -277,15 +281,17 @@ const calendar = () => {
 
     });
 
-    // Calendar is loaded => get timeSlots for applying style.
+    // Calendar is loaded => get timeSlots for applying style(Past Dates and closed dates).
     const times = document.querySelectorAll('.myc-available-time');
     const today = new Date();
     Array.from(times).forEach(element => {
       const date = element.getAttribute('data-date');
       const dateTime = element.getAttribute('data-time');
+
+      let isClosedDate = new Date(date + 'T' + dateTime);       
       
-      if (today.getTime() > new Date(date + 'T' + dateTime)) {
-        
+      if  ((today.getTime() > new Date(date + 'T' + dateTime)) | (isClosedDate == 'Invalid Date')) {        
+
         element.classList.remove("myc-available-time");
         element.classList.add("myc-disabled-time");
       }      

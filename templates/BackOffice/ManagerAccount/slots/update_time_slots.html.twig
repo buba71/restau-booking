@@ -60,8 +60,8 @@
 
     <!-- Update time slot on specific date -->
     
-    <section class="card mt-2 p-3">      
-        <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique</h2>
+    <section class="card mt-2 p-3" id="dated-timeSlot-form">      
+        <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique ou indiquer une date de fermeture</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -91,6 +91,12 @@
 
     <!-- Update time slot on specific date -->
 
+    <section class="card mt-2 p-3" id="closed-date-form">
+        <table class="table">
+            
+        </table>
+    </section>
+
 
     <!-- Dated time slots list -->
 
@@ -106,14 +112,14 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-            {% for datedTimeSlot in datedTimeSlots %}
+            {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
             
                 <tbody>
                     <tr>
-                        <td>{{ datedTimeSlot.dateOfDay|date("d-M-Y") }}</td>
-                        <td>{{ datedTimeSlot.serviceStartAt|date('H:i') }}</td>
-                        <td>{{ datedTimeSlot.serviceCloseAt|date('H:i') }}</td>
-                        <td>{{ datedTimeSlot.intervalTime }}</td>
+                        <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
+                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
+                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
+                        <td>{{ timeSlot.intervalTime }}</td>
                         <td><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
                     </tr>
                 </tbody>

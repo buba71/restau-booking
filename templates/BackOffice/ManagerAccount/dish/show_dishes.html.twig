@@ -27,22 +27,22 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="p-3 text-center" scope="col">Assiette</th>
-                        <th class="p-3 text-center" scope="col">Catégorie</th>
-                        <th class="p-3 text-center" scope="col">Ajouté le</th>
-                        <th class="p-3 text-center" scope="col">Prix unitaire(Euros)</th>
-                        <th class="p-3 text-center" scope="col">Actions</th>
+                        <th class="p-3" scope="col">Produit</th>
+                        <th class="p-3" scope="col">Catégorie</th>                        
+                        <th class="p-3" scope="col">Prix unitaire(Euros)</th>
+                        <th class="p-3" scope="col">Ajouté le</th>
+                        <th class="p-3" scope="col">Actions</th>
                     </tr>
                 </thead>
                 {% for dish in dishes %}
 
                 <tbody>                    
                     <tr>
-                        <td class="p-3 text-center">{{ dish.name}}</td>
-                        <td class="p-3 text-center">{{ dish.category.name }}</td>
-                        <td class="p-3 text-center">{{ dish.addedAt|date('d-M-Y') }}</td>
-                        <td class="p-3 text-center">{{ dish.price|format_currency('EUR') }}</td>
-                        <td class="p-3 text-center">
+                        <td class="p-3">{{ dish.name}}</td>
+                        <td class="p-3">{{ dish.category.name }}</td>                        
+                        <td class="p-3">{{ dish.price|format_currency('EUR') }}</td>
+                        <td class="p-3">{{ dish.addedAt|date('d-M-Y') }}</td>
+                        <td class="p-3">
                             <a href="#" type="button" class="btn btn-danger btn-sm">Supprimer</a>
                         </td>
                     </tr>                                     

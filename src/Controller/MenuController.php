@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Menu;
 use App\Entity\MenuItem;
 use App\Form\MenuType;
+use App\Repository\MenuItemRepository;
 use App\Repository\MenuRepository;
 use DateTime;
 use DateTimeImmutable;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/manager')]
 final class MenuController extends AbstractController
@@ -22,36 +24,50 @@ final class MenuController extends AbstractController
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_menus', name: 'show_menus')]
-    public function showDishes(Request $request, MenuRepository $repository): Response
+    public function showDishes(Request $request, MenuRepository $menuRepository, MenuItemRepository $menuItemRepository, ValidatorInterface $validator): Response
     {
-        $menus = $repository->findAll();
+        $menus = $menuRepository->findAll();
+        $menuItems = $menuItemRepository->findAll();
+        $formData = $request->request->all();
+        $errors = [];
 
         $menu = new Menu();
 
-        $form = $this->createForm(MenuType::class, $menu);
+        if ($request->isMethod('POST')) {
 
-        $form->handleRequest($request);
+            if (isset($formData['menu']['name']) && isset($formData['menu']['description']) && isset($formData['menu']['menuItems'])) {
+                    
+                $menu->setName($formData['menu']['name']);
+                $menu->setDescription($formData['menu']['description']);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+                $price = 0;
+    
+                foreach ($formData['menu']['menuItems'] as $menuItem) {
+                    $menuItem = $menuItemRepository->findOneBy(['id' => $menuItem]);
+                    $menu->addMenuItem($menuItem);
+                    $price += $menuItem->getPrice();
+                }  
+                
+                $menu->setPrice($price);
+    
+                $errors = $validator->validate($menu);
 
-            $price = 0;
-            foreach($menu->getMenuItems() as $menuItem) {
-                $price = $price + $menuItem->getPrice();
+                if (count($errors) === 0) {
+                    $this->entityManager->persist($menu);
+                    $this->entityManager->flush();
+                    
+                    return $this->redirectToRoute('show_menus');
+                }
+
             }
-
-            $menu->setPrice($price);
-
-            $this->entityManager->persist($menu);
-            $this->entityManager->flush();
-
-            $this->addFlash('success', 'Votre menu a été créé!');
-
-            return $this->redirectToRoute('show_menus');
+            
         }
+        
 
-        return $this->renderForm('BackOffice/ManagerAccount/menu/show_menus.html.twig', [
+        return $this->render('BackOffice/ManagerAccount/menu/show_menus.html.twig', [
             'menus' => $menus,
-            'form' => $form
+            'menuItems' => $menuItems,
+            'errors' => $errors
         ]);
     }
 

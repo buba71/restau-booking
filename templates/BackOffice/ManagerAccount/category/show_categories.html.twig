@@ -26,7 +26,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="p-3 text-center" scope="col">Type de plat</th>
+                        <th class="p-3" scope="col">Type de plat</th>
                         <th class="p-3 text-center" scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -34,7 +34,7 @@
 
                 <tbody>                    
                     <tr>
-                        <td class="p-3 text-center">{{ category.name}}</td>
+                        <td class="p-3">{{ category.name}}</td>
                         <td class="p-3 text-center">
                             <a href="{{ path('delete_category', {'id': category.id })}}" type="button" class="btn btn-danger btn-sm">Supprimer</a>
                         </td>
