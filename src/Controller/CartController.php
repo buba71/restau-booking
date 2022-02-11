@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class CartController extends AbstractController
 {
     #[Route('/index', name: 'cart_index')]
-    public function index(MenuItemRepository $menuItemRepository, MenuRepository $menuRepository, SessionInterface $session)
+    public function index(MenuItemRepository $menuItemRepository, MenuRepository $menuRepository, SessionInterface $session): Response
     { 
         $cart = $session->get('cart', []);
         

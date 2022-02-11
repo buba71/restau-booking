@@ -16,11 +16,11 @@ final class TimeSlotFactory
 
     /**
      * @param int $restaurantId
-     * @param mixed $data
+     * @param string $startDay
      * 
-     * @return array
+     * @return array[]
      */
-    public function create(int $restaurantId, $startDay): array
+    public function create(int $restaurantId, string $startDay): array
     {
         // Get first day of week: "2021-12-21T21:00:25.780Z".
         //dd($dateTime);
@@ -64,6 +64,7 @@ final class TimeSlotFactory
 
 
         // Resolve timeSlots starting from first day of calendar.
+        $array_front = [];
         $array_back = [];
 
         for($index = 0; $index < count($timeSlots); $index++) {
@@ -100,7 +101,7 @@ final class TimeSlotFactory
     /**
      * @param TimeSlot $timeSlot
      * 
-     * @return array
+     * @return string[]
      */
     private function buildTimeSlot(TimeSlot $timeSlot): array
     {
@@ -128,7 +129,12 @@ final class TimeSlotFactory
         return $timeSlot;
     }
 
-    private function resolveCalendarDays($startDay) 
+    /**
+     * @param mixed $startDay
+     * 
+     * @return array<string>
+     */
+    private function resolveCalendarDays($startDay): array 
     {
         // Calendar dates to display.
         $weekDays = [];
