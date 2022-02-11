@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
-
 #[Route('/manager')]
 final class CategoryController extends AbstractController
 {
@@ -45,7 +43,7 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/delete_category/{id}', name: 'delete_category', requirements: ['id' => '\d+'])]
-    public function deleteCategory(Category $category) 
+    public function deleteCategory(Category $category): Response
     {
         
         $this->entityManager->remove($category);

@@ -72,7 +72,7 @@ final class MenuController extends AbstractController
     }
 
     #[Route('/delete_menu/{id}', name: 'delete_menu')]
-    public function deleteMenu(Menu $menu)
+    public function deleteMenu(Menu $menu): Response
     {
         $this->entityManager->remove($menu);
         $this->entityManager->flush();

@@ -96,7 +96,7 @@ final class OrderController extends AbstractController
 
             $order->setBooking($session->get('booking'));
 
-            // If cart have previous, clear previous order lines.
+            // If have previous session cart, clear previous order lines.
             if ($session->get('isNewCartSession')) {
                 foreach ($order->getOrderLines() as $orderLine) {
                     $order->removeOrderLine($orderLine);
