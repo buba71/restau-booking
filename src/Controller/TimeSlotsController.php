@@ -80,7 +80,9 @@ final class TimeSlotsController extends AbstractController
             $this->entityManager->flush();
 
             return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-                'timeSlots' => $restaurant->getTimeSlots()
+                'timeSlots' => $restaurant->getTimeSlots(),
+                'datedTimeSlots' => $datedTimeSlots->toArray()
+                
             ]);
         }
         
@@ -94,7 +96,8 @@ final class TimeSlotsController extends AbstractController
             $this->entityManager->flush();
             
             return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-                'timeSlots' => $restaurant->getTimeSlots()
+                'timeSlots' => $restaurant->getTimeSlots(),
+                'datedTimeSlots' => $datedTimeSlots->toArray()
             ]);
         }
         

@@ -8,6 +8,7 @@
         <title>{% block title %}Bienvenue!{% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}            
@@ -83,26 +84,32 @@
           
           
         
-      <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      <script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+      <script>        
+        
         (function($) {
 
-          "use strict";
+            // Enable bootstrap tool tips
+            $('[data-toggle="tooltip"]').tooltip()
 
-          var fullHeight = function() {
-          
-          $('.js-fullheight').css('height', $(window).height());
-          $(window).resize(function(){
-          $('.js-fullheight').css('height', $(window).height());
-          });
+            // Manage Side bar.
+            "use strict";
 
-          };
-          fullHeight();
+            var fullHeight = function() {
+              
+            $('.js-fullheight').css('height', $(window).height());
+            $(window).resize(function(){
+            $('.js-fullheight').css('height', $(window).height());
+            });
 
-          $('#sidebarCollapse').on('click', function () {
-          $('#sidebar').toggleClass('active');
-          });
+            };
+            fullHeight();
+
+            $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+            });
 
         })(jQuery);
       </script>
