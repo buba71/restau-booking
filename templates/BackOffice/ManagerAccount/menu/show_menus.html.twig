@@ -28,12 +28,12 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="p-3 text-center" scope="col">Menu</th>
-                        <th class="p-3 text-center" scope="col">Description</th>
-                        <th class="p-3 text-center" scope="col">Composition</th>                        
-                        <th class="p-3 text-center" scope="col">Prix(Euros)</th>
-                        <th class="p-3 text-center" scope="col">Ajouté le</th>
-                        <th class="p-3 text-center" scope="col">Actions</th>                        
+                        <th class="p-3" scope="col">Menu</th>
+                        <th class="p-3" scope="col">Description</th>
+                        <th class="p-3" scope="col">Composition</th>                        
+                        <th class="p-3" scope="col">Prix(Euros)</th>
+                        <th class="p-3" scope="col">Ajouté le</th>
+                        <th class="p-3" scope="col">Actions</th>                        
                     </tr>
                 </thead>
 
@@ -41,12 +41,12 @@
 
                 <tbody>                    
                     <tr>
-                        <td class="p-3 text-center">{{ menu.name }}</td>
-                        <td class="p-3 text-center">{{ menu.description|u.truncate(30, '...') }}</td>
-                        <td class="p-3 text-center">{% for menuItem in menu.menuItems %}{{ menuItem }},{% endfor %}</td>                        
-                        <td class="p-3 text-center">{{ menu.price }}</td>
-                        <td class="p-3 text-center">{{ menu.createdAt|date('d-M-Y') }}</td>
-                        <td class="p-3 text-center">
+                        <td class="p-3">{{ menu.name }}</td>
+                        <td class="p-3">{{ menu.description|u.truncate(30, '...') }}</td>
+                        <td class="p-3">{% for menuItem in menu.menuItems %}{{ menuItem }},{% endfor %}</td>                        
+                        <td class="p-3">{{ menu.price | format_currency('EUR')}}</td>
+                        <td class="p-3">{{ menu.createdAt|date('d-M-Y') }}</td>
+                        <td class="p-3">
                             <a href="" type="button" class="btn btn-info btn-sm">Modifier</a>
                             <button
                                 class="btn btn-secondary btn-sm mx-1"
