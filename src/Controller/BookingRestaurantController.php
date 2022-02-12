@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class BookingController extends AbstractController
+final class BookingRestaurantController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
@@ -50,7 +50,7 @@ final class BookingController extends AbstractController
             
         }
         
-        return $this->renderForm('FrontOffice/booking.html.twig', [ 
+        return $this->renderForm('FrontOffice/booking_restaurant.html.twig', [ 
             'restaurant' => $restaurant,
             'form' => $form
         ]);

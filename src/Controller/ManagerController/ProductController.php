@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\ManagerController;
 
 use App\Entity\MenuItem;
 use App\Form\MenuItemType;
@@ -13,33 +13,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/manager')]
-final class DishController extends AbstractController
+final class ProductController extends AbstractController
 {    
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[Route('/show_dishes', name: 'show_dishes')]
+    #[Route('/show_products', name: 'show_products')]
     public function showDishes(Request $request): Response
     {
-        $dishes = $this->entityManager->getRepository(MenuItem::class)->findBy([], ['name' => 'asc']);
+        $products = $this->entityManager->getRepository(MenuItem::class)->findBy([], ['name' => 'asc']);
 
-        $dish = new MenuItem();
+        $product = new MenuItem();
 
-        $form = $this->createForm(MenuItemType::class, $dish);
+        $form = $this->createForm(MenuItemType::class, $product);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($dish);
+            $this->entityManager->persist($product);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Votre produit a été ajouté.');
 
-            return $this->redirectToRoute('show_dishes');
+            return $this->redirectToRoute('show_products');
         }
 
 
-        return $this->renderForm('BackOffice/ManagerAccount/dish/show_dishes.html.twig', [
-            'dishes' => $dishes,
+        return $this->renderForm('BackOffice/ManagerAccount/product/show_products.html.twig', [
+            'dishes' => $products,
             'form' => $form
         ]);
     }

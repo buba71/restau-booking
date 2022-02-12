@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Repository\MenuItemRepository;
 use App\Repository\MenuRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/cart')]
 final class CartController extends AbstractController
 {
+    public function __construct(private RequestStack $request) {}
+
     #[Route('/index', name: 'cart_index')]
     public function index(MenuItemRepository $menuItemRepository, MenuRepository $menuRepository, SessionInterface $session): Response
     { 
@@ -64,21 +67,28 @@ final class CartController extends AbstractController
         ]);    
     }
 
+    /**
+     * Add Menu to cart line with id = $id.
+     */
     #[Route('/menu/add/{id}', name: 'add_menu_to_cart')]
     public function addMenu(int $id, SessionInterface $session): Response
-    {       
-        $sessionCart = $session->get('cart', []);
+    {      
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
 
-        if(!empty($sessionCart['menu'][$id])) {            
+            $sessionCart = $session->get('cart', []);
 
-            $sessionCart['menu'][$id]++;
+            if(!empty($sessionCart['menu'][$id])) {            
 
-        } else {
+                $sessionCart['menu'][$id]++;
 
-            $sessionCart['menu'][$id] = 1;
-        }
+            } else {
 
-        $session->set('cart', $sessionCart);      
+                $sessionCart['menu'][$id] = 1;
+            }
+
+            $session->set('cart', $sessionCart); 
+
+        }             
         
         return $this->redirectToRoute('cart_index');
     }
@@ -102,21 +112,27 @@ final class CartController extends AbstractController
     //     return $this->redirectToRoute('cart_index');
     // }
 
+    /**
+     * Add MenuItem to cart line with id = $id.
+     */
     #[Route('/menu-item/add/{id}', name: 'add_menu_item_to_cart')]
     public function addMenuItem(int $id, SessionInterface $session): Response
     {   
-        $sessionCart = $session->get('cart', []);
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
 
-        if(!empty($sessionCart['menuItem'][$id])) {            
+            $sessionCart = $session->get('cart', []);
 
-            $sessionCart['menuItem'][$id]++;
+            if(!empty($sessionCart['menuItem'][$id])) {            
 
-        } else {
+                $sessionCart['menuItem'][$id]++;
 
-            $sessionCart['menuItem'][$id] = 1;
-        }
+            } else {
 
-        $session->set('cart', $sessionCart);      
+                $sessionCart['menuItem'][$id] = 1;
+            }
+
+            $session->set('cart', $sessionCart);  
+        }            
         
         return $this->redirectToRoute('cart_index');
     }
@@ -140,30 +156,42 @@ final class CartController extends AbstractController
     //     return $this->redirectToRoute('cart_index');
     // }
 
+    /**
+     * Delete all Menu cart line with id = $id.
+     */
     #[Route('/menu/delete/{id}', name: 'delete_menu_from_cart')]
     public function deleteMenu(int $id, SessionInterface $session): Response
     {
-        $sessionCart = $session->get('cart', []);
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
 
-        if(isset($sessionCart['menu']) && $sessionCart['menu'][$id]) {
-            unset($sessionCart['menu'][$id]);
-        }
+            $sessionCart = $session->get('cart', []);
 
-        $session->set('cart', $sessionCart);        
+            if(isset($sessionCart['menu']) && $sessionCart['menu'][$id]) {
+                unset($sessionCart['menu'][$id]);
+            }
+
+            $session->set('cart', $sessionCart); 
+        }               
 
         return $this->redirectToRoute('cart_index');
     }
 
+    /**
+     * Delete all MenuItem cart line with id = $id.
+     */
     #[Route('/menuItem/delete/{id}', name: 'delete_menuItem_from_cart')]
     public function deleteMenuItem(int $id, SessionInterface $session): Response
     {
-        $sessionCart = $session->get('cart', []);
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
 
-        if(isset($sessionCart['menuItem']) && $sessionCart['menuItem'][$id]) {
-            unset($sessionCart['menuItem'][$id]);
-        }
+            $sessionCart = $session->get('cart', []);
 
-        $session->set('cart', $sessionCart);        
+            if(isset($sessionCart['menuItem']) && $sessionCart['menuItem'][$id]) {
+                unset($sessionCart['menuItem'][$id]);
+            }
+
+            $session->set('cart', $sessionCart);
+        }                
 
         return $this->redirectToRoute('cart_index');  
     }
