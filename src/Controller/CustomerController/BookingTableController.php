@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\CustomerController;
 
 use App\Entity\Booking;
 use App\Form\BookingType;
-use App\Repository\BookingOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
-final class CustomerController extends AbstractController
+final class BookingTableController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
@@ -62,15 +61,5 @@ final class CustomerController extends AbstractController
         $this->addFlash('success', 'Votre réservation a été annulée');
 
         return $this->redirectToRoute('show_bookings');
-    }
-
-    #[Route('/show_bookingOrders', name: 'show_customer_orders')]
-    public function showBookingOrders(BookingOrderRepository $bookingOrderRepository): Response
-    {
-        $orders = $bookingOrderRepository->findAllOrderByBookingDate();
-
-        return $this->render('BackOffice/CustomerAccount/Booking/show_booking_orders.html.twig', [
-            'orders' => $orders
-        ]);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\MenuItem;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -17,6 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class MenuItemType extends AbstractType
 {
+    public function __construct(private CategoryRepository $categoryRepository) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -32,6 +35,7 @@ final class MenuItemType extends AbstractType
             ])
             ->add('category',  EntityType::class, [
                 'class' => Category::class,
+                'choices' => $this->categoryRepository->findBy([], ['name' => 'ASC']),
                 'placeholder' => 'Choisissez une catégorie',
                 'required' => false,
                 'label' => false,
@@ -40,7 +44,11 @@ final class MenuItemType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('Ajouter', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-info'
+                ]
+            ])
         ;
         
     }
