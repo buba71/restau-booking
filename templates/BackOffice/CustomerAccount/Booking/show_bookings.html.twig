@@ -32,6 +32,8 @@
             <tbody>
 
                 {% for booking in bookings %}
+
+                    {% if booking.bookingOrder is null %}
                     <tr>
                         <td class="p-3 text-center">{{ booking.bookingDate|date("d M Y") }}</td>
                         <td class="p-3 text-center">{{ booking.bookingDate|date("H:i") }}</td>
@@ -52,6 +54,8 @@
                             </button>                        
                         </td>
                     </tr>
+                    {% endif %}
+                
                 {% endfor %}
                 
             </tbody>
