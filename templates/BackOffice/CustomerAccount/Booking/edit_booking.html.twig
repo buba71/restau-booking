@@ -25,10 +25,12 @@
               
         </section>
         {{ form_start(form)}}
+        
         <div class="card my-2 py-2 d-flex align-items-center booking-form">
                 
                 {{ form_row(form.coversNumber, {'attr': {'class': 'form-control'}} ) }}
                 {{ form_row(form.bookingDate) }}
+                {{ form_row(form._token) }}
               
         
         </div>
@@ -36,7 +38,8 @@
         <a href="{{ path('show_bookings') }}" type="button" class="btn btn-secondary">Annuler</a>
         <button type="submit" class="btn btn-info">Valider</button>
       </div>
-      {{ form_end(form) }}
+
+      {{ form_end(form, {'render_rest': false}) }}
     </div>
   </div>
 </div>

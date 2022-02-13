@@ -50,7 +50,7 @@ final class BookingOrder
     private string $type;
 
     /**
-     * @ORM\OneToOne(targetEntity="Booking", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Booking", inversedBy="bookingOrder", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="booking_id", referencedColumnName="id")
      */
     private ?Booking $booking;

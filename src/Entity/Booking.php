@@ -24,7 +24,7 @@ class Booking
      * @ORM\Column(type="integer")
      * 
      */
-    private int $id;
+    private int $id;    
 
     /**
      * @ORM\Column(type="datetime")
@@ -36,6 +36,11 @@ class Booking
      * @ORM\Column(type="datetime", nullable=false)
      */
     private  DateTime $bookingAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity="BookingOrder", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private ?BookingOrder $bookingOrder;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -69,9 +74,19 @@ class Booking
         $this->bookingDate = $bookingDate;
     }
 
-    public function getBookingAt() 
+    public function getBookingAt(): DateTime
     {
         return $this->bookingAt;
+    }
+
+    public function getBookingOrder(): ?BookingOrder
+    {
+        return $this->bookingOrder;
+    }
+
+    public function setBookingOrder(BookingOrder $bookingOrder): void
+    {
+        $this->bookingOrder = $bookingOrder;
     }
 
     public function getCoversNumber(): string
