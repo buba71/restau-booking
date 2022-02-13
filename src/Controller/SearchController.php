@@ -10,11 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class AutocompleteController extends AbstractController
+final class SearchController extends AbstractController
 {
-    public function __construct(private RestaurantRepository $repository)
-    {
-    }
+    public function __construct(private RestaurantRepository $repository) {}
 
     #[Route('/restaurant_autocomplete', name: 'restaurant_autocomplete')]
     public function restaurantFormAutocomplete(Request $request): JsonResponse

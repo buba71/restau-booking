@@ -12,7 +12,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class TimeSlotFactory
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+        date_default_timezone_set("Europe/Paris");
+    }
 
     /**
      * @param int $restaurantId
@@ -23,12 +26,11 @@ final class TimeSlotFactory
     public function create(int $restaurantId, string $startDay): array
     {
         // Get first day of week: "2021-12-21T21:00:25.780Z".
-        //dd($dateTime);
         $firstDayToDisplay = date('D m Y', strtotime($startDay));
         $dayName = (substr($firstDayToDisplay, 0, 3));
         $dayNumber = intval(date("w", strtotime($dayName)));
         
-        $weekDays = $this->resolveCalendarDays($startDay);
+        $weekDays = $this->resolveCalendarWeeklyDays($startDay);
 
 
         // retrieve restaurant id as function parameter.
@@ -43,7 +45,9 @@ final class TimeSlotFactory
 
         $timeSlotsWithDate = [];
         foreach($weekDays as $day) {
+
             foreach($restaurantTimeSlots as $timeSlot) {
+
                 if($timeSlot->hasDate() && ($timeSlot->getDateOfDay())->format('Y-m-d') === $day) {   
                     $restaurantTimeSlots = array_filter($restaurantTimeSlots, fn($item) => $item->getDayOfWeek() !== $timeSlot->getDayOfWeek());    
                     $timeSlotsWithDate[] = $timeSlot;
@@ -61,6 +65,8 @@ final class TimeSlotFactory
             }
             return ($a->getDayOfWeek() < $b->getDayOfWeek()) ? -1: +1;
         });
+
+        dump($timeSlots);
 
 
         // Resolve timeSlots starting from first day of calendar.
@@ -95,6 +101,7 @@ final class TimeSlotFactory
         foreach($formattedTimeSlots as $timeSlot) {
             $timeSlotsViewModel[] = $this->buildTimeSlot($timeSlot);
         }
+
         return $timeSlotsViewModel;
     }
  
@@ -134,7 +141,7 @@ final class TimeSlotFactory
      * 
      * @return array<string>
      */
-    private function resolveCalendarDays($startDay): array 
+    private function resolveCalendarWeeklyDays($startDay): array 
     {
         // Calendar dates to display.
         $weekDays = [];
