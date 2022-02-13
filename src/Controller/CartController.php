@@ -20,6 +20,7 @@ final class CartController extends AbstractController
     #[Route('/index', name: 'cart_index')]
     public function index(MenuItemRepository $menuItemRepository, MenuRepository $menuRepository, SessionInterface $session): Response
     { 
+        //$cart = $session->set('cart', []);
         $cart = $session->get('cart', []);
         
         $cartData = [];
@@ -93,24 +94,29 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    // #[Route('/remove-menu/{id}', name: 'remove_menu_from_cart')]
-    // public function removeMenu(int $id, SessionInterface $session): Response
-    // {
-    //     $sessionCart = $session->get('cart', []);
+    #[Route('/remove-menu/{id}', name: 'remove_menu_from_cart')]
+    public function removeMenu(int $id, SessionInterface $session): Response
+    {
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
+            
+            $sessionCart = $session->get('cart', []);
 
-    //     if($sessionCart[$id] && $sessionCart[$id] > 2) {
-    //         
-    //         $sessionCart[$id]--;
+            if($sessionCart['menu'][$id] && $sessionCart['menu'][$id] > 2) {
+                 
+                $sessionCart['menu'][$id]--;
+            
+            } else {
+                 
+                $sessionCart['menu'][$id] = 1;
+            }
+             
+            $session->set('cart', $sessionCart); 
 
-    //     } else {
-    //         
-    //         $sessionCart[$id] = 1;
-    //     }
-    //     
-    //     $session->set('cart', $sessionCart);        
-    //     
-    //     return $this->redirectToRoute('cart_index');
-    // }
+        }
+               
+         
+        return $this->redirectToRoute('cart_index');
+    }
 
     /**
      * Add MenuItem to cart line with id = $id.
@@ -137,29 +143,32 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    // #[Route('/remove-menuItem/{id}', name: 'remove_menu_item_from_cart')]
-    // public function removeMenuItem(int $id, SessionInterface $session): Response
-    // {
-    //     $sessionCart = $session->get('cart', []);
- 
-    //     if($sessionCart[$id] && $sessionCart[$id] > 2) {
-    //         
-    //         $sessionCart[$id]--;
- 
-    //     } else {
-    //         
-    //         $sessionCart[$id] = 1;
-    //     }
-    //     
-    //     $session->set('cart', $sessionCart);        
-    //     
-    //     return $this->redirectToRoute('cart_index');
-    // }
+    #[Route('/remove-menuItem/{id}', name: 'remove_menu_item_from_cart')]
+    public function removeMenuItem(int $id, SessionInterface $session): Response
+    {
+        if ($this->request->getCurrentRequest()->isMethod('POST')) {
+
+            $sessionCart = $session->get('cart', []);
+
+            if($sessionCart['menuItem'][$id] && $sessionCart['menuItem'][$id] > 2) {
+
+                $sessionCart['menuItem'][$id]--;
+            } else {
+
+                $sessionCart['menuItem'][$id] = 1;
+            }
+
+            $session->set('cart', $sessionCart);  
+
+        }              
+        
+        return $this->redirectToRoute('cart_index');
+    }
 
     /**
-     * Delete all Menu cart line with id = $id.
+     * Delete Menu cart line where menu id = $id.
      */
-    #[Route('/menu/delete/{id}', name: 'delete_menu_from_cart')]
+    #[Route('/menu/remove_cartLine/{id}', name: 'remove_menu_cart_line')]
     public function deleteMenu(int $id, SessionInterface $session): Response
     {
         if ($this->request->getCurrentRequest()->isMethod('POST')) {
@@ -177,9 +186,9 @@ final class CartController extends AbstractController
     }
 
     /**
-     * Delete all MenuItem cart line with id = $id.
+     * Delete all MenuItem cart line where menuItem id = $id.
      */
-    #[Route('/menuItem/delete/{id}', name: 'delete_menuItem_from_cart')]
+    #[Route('/menuItem/remove_cartLine/{id}', name: 'remove_menuItem_cart_line')]
     public function deleteMenuItem(int $id, SessionInterface $session): Response
     {
         if ($this->request->getCurrentRequest()->isMethod('POST')) {

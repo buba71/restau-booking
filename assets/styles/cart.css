@@ -6,6 +6,6 @@
     height: 100vh;
 }
 
-td .remove-cartItem, td .add-cartItem {
+.cart-control {
     cursor: pointer;
 }
