@@ -80,11 +80,7 @@ final class TimeSlotsController extends AbstractController
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
 
-            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-                'timeSlots' => $restaurant->getTimeSlots(),
-                'datedTimeSlots' => $datedTimeSlots->toArray()
-                
-            ]);
+            return $this->redirectToRoute('show_timeSlots');
         }
         
         if ($timeSlotForm->isSubmitted()) {
@@ -96,10 +92,7 @@ final class TimeSlotsController extends AbstractController
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
             
-            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-                'timeSlots' => $restaurant->getTimeSlots(),
-                'datedTimeSlots' => $datedTimeSlots->toArray()
-            ]);
+            return $this->redirectToRoute('show_timeSlots');
         }
         
         return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [

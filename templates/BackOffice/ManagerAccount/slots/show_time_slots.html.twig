@@ -61,7 +61,7 @@
                     <tr>
                         <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
                         <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
-                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
+                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceCloseAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
                         <td>{{ timeSlot.intervalTime }}</td>
                     </tr>
                 </tbody>
