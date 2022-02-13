@@ -13,7 +13,6 @@
             <thead>
                 <tr>
                     <th>Produits</th>
-                    <th>Type</th>
                     <th>Quantité</th>
                     <th>Montant</th>
                 </tr>
@@ -23,14 +22,13 @@
 
                 <tr>
                     <td>{{ orderLine.name }}</td>
-                    <td></td>
                     <td>{{ orderLine.quantity }}</td>
                     <td>{{ orderLine.price | format_currency('EUR') }}</td>
                 </tr>
 
             {% endfor %}
                 <tr>
-                    <td class="text-right font-weight-bold" colspan="3">Total:</td>
+                    <td class="text-right font-weight-bold" colspan="2">Total:</td>
                     <td>{{ order.amount | format_currency('EUR') }}</td>
                     
                 </tr>
