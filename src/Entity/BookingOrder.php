@@ -21,6 +21,9 @@ final class BookingOrder
 {
     private const TAKE_AWAY = "takeAway";
     private const ON_SPOT = "onSpot";
+    private const ORDER_PENDING = 0;
+    private const ORDER_VALIDATED = 1;
+    private const ORDER_PROCESSING = 2;
     
     /**
      * @ORM\Id()
@@ -43,6 +46,11 @@ final class BookingOrder
      * @ORM\Column(type="float")
      */
     private float $amount;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $status = self::ORDER_PENDING;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -91,9 +99,19 @@ final class BookingOrder
         return $this->amount;
     }
 
-    public function setAmount(float $amount)
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
+    }
+
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     public function getType(): string
