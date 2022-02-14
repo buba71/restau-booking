@@ -233,6 +233,8 @@ const calendar = () => {
       const englishMonth = convertMonthsToEnglish(frenchMonth.trim());
 
       const navigateStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
+      // fix temporarily the lag between frontend call date and backend date request.
+      navigateStartDate.setHours(1);
       
       const timeSlot = [];        
 

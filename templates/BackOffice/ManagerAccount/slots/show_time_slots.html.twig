@@ -8,7 +8,7 @@
     </div>
 
     <section class="card mt-5 p-3">  
-        <h3 class="card-title py-5 text-muted">Mes horaires hebdomadaires</h3>  
+        <h3 class="card-title text-muted py-5">Mes horaires hebdomadaires</h3>  
         <table class="table">
             <thead>
                 <tr>
@@ -41,7 +41,7 @@
             <a href="{{ path('update_timeSlots', { id: 1 }) }}" class="btn btn-info">Modifier</a>
         </div>      
     </section>  
-
+{{ dump(datedTimeSlots)}}
     
     <section class="card p-3 mt-2" id="dated-time-slots">
         <h3 class="py-5 text-muted">Horaires d'ouverture à une date spécifique et dates fermeture.</h3>

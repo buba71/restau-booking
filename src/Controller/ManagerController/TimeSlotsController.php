@@ -17,7 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/manager')]
 final class TimeSlotsController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+        date_default_timezone_set('Europe/Paris');
+    }
 
     #[Route('/show_time_slots', name: 'show_timeSlots')]
     public function showTimeSlots(): Response
@@ -25,14 +28,14 @@ final class TimeSlotsController extends AbstractController
         // Static restaurant id => 1.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
         
-        $timeSlots = $restaurant->getTimeSlots();
-        $datedTimeSlots = $timeSlots->filter(function ($element) {
+        $timeSlots = $restaurant->getTimeSlots()->toArray();
+        $datedTimeSlots = array_values(array_filter($timeSlots, function ($element) {
             return $element->hasDate();
-        });
+        }));
 
         return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
             'timeSlots' => $timeSlots,
-            'datedTimeSlots' => $datedTimeSlots
+            'datedTimeSlots' => $datedTimeSlots,
         ]);
     }
 
@@ -66,14 +69,15 @@ final class TimeSlotsController extends AbstractController
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
             return $element->hasDate();
         });
-        $nextDatedTimeSlot = new TimeSlot();
+        $nextDatedTimeSlot = new TimeSlot();       
 
 
+        // Forms to render.
         $timeSlotcollectionForm = $this->createForm(TimeSlotsType::class, $restaurant);
-        $timeSlotForm = $this->createForm(DatedTimeSlotType::class, $nextDatedTimeSlot);             
+        $datedTimeSlotForm = $this->createForm(DatedTimeSlotType::class, $nextDatedTimeSlot);                    
         
         $timeSlotcollectionForm->handleRequest($request);
-        $timeSlotForm->handleRequest($request);
+        $datedTimeSlotForm->handleRequest($request);
 
         if ($timeSlotcollectionForm->isSubmitted()) {
             
@@ -83,7 +87,7 @@ final class TimeSlotsController extends AbstractController
             return $this->redirectToRoute('show_timeSlots');
         }
         
-        if ($timeSlotForm->isSubmitted()) {
+        if ($datedTimeSlotForm->isSubmitted()) {
             
             $dayOfWeek = intval(date('w', strtotime(($nextDatedTimeSlot->getDateOfDay())->format('Y-m-d H:i:s'))));
             $nextDatedTimeSlot->setDayOfWeek($dayOfWeek);
@@ -94,10 +98,11 @@ final class TimeSlotsController extends AbstractController
             
             return $this->redirectToRoute('show_timeSlots');
         }
+
         
         return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,
-            'timeSlotForm' => $timeSlotForm,
+            'datedTimeSlotForm' => $datedTimeSlotForm,
             'datedTimeSlots' => $datedTimeSlots->toArray()
         ]);
     }

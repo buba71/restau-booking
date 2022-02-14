@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +44,17 @@ final class TimeSlot
     private int $dayOfWeek;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isClosed = false;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ClosedDate", inversedBy="timeSlots")
+     * @ORM\JoinColumn(name="closedDate_id", referencedColumnName="id")
+     */
+    private ClosedDate $closedDate;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $serviceStartAt;
@@ -78,6 +90,17 @@ final class TimeSlot
         return $this->hasDate;
     }
 
+    public function getClosedDate(): ClosedDate
+    {
+        return $this->closedDate;
+    }
+
+    public function setClosedDate(ClosedDate $closedDate): void
+    {
+        $this->isClosed = !$this->isClosed;
+        $this->closedDate = $closedDate;
+    }
+
     public function getDayOfWeek(): int
     {
         return $this->dayOfWeek;
@@ -86,6 +109,11 @@ final class TimeSlot
     public function setDayOfWeek(int $dayOfWeek)
     {
         $this->dayOfWeek = $dayOfWeek;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->isClosed;
     }
 
     public function getServiceStartAt(): ?DateTime

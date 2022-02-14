@@ -66,10 +66,16 @@ class Restaurant
      */
     private Collection $bookings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ClosedDate", mappedBy="restaurant", cascade={"persist", "remove"})
+     */
+    private Collection $closedDates;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->closedDates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +165,11 @@ class Restaurant
         return $this->bookings;
     }
 
+    public function getClosedDates(): Collection
+    {
+        return $this->closedDates;
+    }
+
     public function addBooking(Booking $booking): void
     {
         if(!$this->bookings->contains($booking)) {
@@ -171,6 +182,21 @@ class Restaurant
     {
         if($this->bookings->contains($booking)) {
             $this->bookings->remove($booking);
+        }
+    }
+
+    public function addClosedDate(ClosedDate $closedDate): void
+    {
+        if(!$this->bookings->contains($closedDate)) {
+            $closedDate->setRestaurant($this);
+            $this->bookings->add($closedDate);
+        }
+    }
+
+    public function removeClosedDate(Booking $closedDate): void
+    {
+        if($this->bookings->contains($closedDate)) {
+            $this->bookings->remove($closedDate);
         }
     }
 

@@ -32,13 +32,13 @@ final class DatedTimeSlotType extends AbstractType
             ->add('serviceStartAt', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
-                'required' => false,
+                'required' => true,
                 'label' => false
             ])
             ->add('serviceCloseAt', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
-                'required' => false,
+                'required' => true,
                 'label' => false
             ])
             ->add('intervalTime', ChoiceType::class, [
@@ -48,7 +48,7 @@ final class DatedTimeSlotType extends AbstractType
                     '45 mn' => 45,
                     '60 mn' => 60
                 ],             
-                'required' => false,
+                'required' => true,
                 'label' => false
             ])
             ->add('dayOfWeek', HiddenType::class)

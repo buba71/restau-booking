@@ -1,0 +1,102 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- Bootstrap datepicker form -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">            
+    <!-- Bootstrap datepicker form -->
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="text-muted">
+        <h1>Périodes de fermeture</h1>
+    </div>
+
+    <section class="card mt-5 p-3">
+
+        <h3 class="card-title text-muted py-5">Mes dates de fermeture</h3>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if closedDates | length > 0 %}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Du</th>
+                    <th>Au</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for closedDate in closedDates %}
+                    <tr>
+                        <td>{{ closedDate.startDate | date('d M Y') }}</th>
+                        <td>{{ closedDate.endDate | date('d M Y')}}</th> 
+                        <td>
+                            <a href="{{ path('delete_closed_date', {'id': closedDate.id}) }}" type="button" class="btn btn-danger btn-sm">supprimer</a>
+                        </td>                   
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <div class="alert alert-info">
+                <p>Vous n'avez pas programmé de période de fermeture pour le moment.</p>
+            </div>
+        {% endif %}
+    </section>
+    
+    <section class="card mt-2 p-3" id="closed-date-form">
+        <h3 class="card-title text-muted py-5">Ajouter une date ou une période de fermeture
+        <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Indiquer la même date de début et de fin pour une date spécifique"></i>.        
+        </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th></th>                    
+                </tr>
+            </thead>
+            <tbody>
+                {{form_start(form)}}
+                <tr>
+                    <td>{{ form_row(form.startdate)}}</td>
+                    <td>{{ form_row(form.endDate)}}</td>
+                    <td>{{ form_row(form.Valider)}}</td>
+                </tr>
+                {{ form_end(form) }}
+            </tbody>
+        </table>
+    </section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
+<script type="text/javascript">
+
+    // initialize datepicker.
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            language: 'fr',
+            format: 'dd-mm-yyyy',            
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+
+{% endblock %}
