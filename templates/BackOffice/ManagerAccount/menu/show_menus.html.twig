@@ -78,7 +78,7 @@
     
     {% for menuItem in menuItems %}
         {% if menuItem.category not in categories %}
-            {% set categories = categories|merge([menuItem.category]) %}
+            {% set categories = categories | merge([menuItem.category]) %}
         {% endif %}
     {% endfor %}
     {# set an array of item categories included on each category #}
@@ -100,6 +100,10 @@
                 <label for="menu_description" class="form-label">Description</label>
                 <textarea id="menu_description" name="menu[description]" class="form-control"></textarea>
             </div>
+            <div>
+                <label for="menu_price" class="form-label">Prix</label>
+                <input type="text" id="menu_price" name="menu[price]" class="form-control">
+            </div>
             <div class="my-3">
                 <fieldset>
 
@@ -115,7 +119,7 @@
                                     {% if menuItem.category == category %}
                                     <div>
                                         <input type="checkbox" id="menuItem_{{ menuItem.name }}" name="menu[menuItems][]" value="{{ menuItem.id }}" class="m-2">
-                                        <label for="meniItem_{{ menuItem.name }}">{{ menuItem.name }}</label> 
+                                        <label for="meniItem_{{ menuItem.name }}">{{ menuItem.name }} - <span class="badge badge-secondary">{{ menuItem.price | format_currency('EUR') }}</span></label> 
                                     </div>
                                     {% endif %} 
 

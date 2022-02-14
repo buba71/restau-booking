@@ -35,16 +35,12 @@ final class MenuController extends AbstractController
                     
                 $menu->setName($formData['menu']['name']);
                 $menu->setDescription($formData['menu']['description']);
-
-                $price = 0;
+                $menu->setPrice(floatval($formData['menu']['price']));
     
                 foreach ($formData['menu']['menuItems'] as $menuItem) {
                     $menuItem = $menuItemRepository->findOneBy(['id' => $menuItem]);
                     $menu->addMenuItem($menuItem);
-                    $price += $menuItem->getPrice();
-                }  
-                
-                $menu->setPrice($price);
+                }
     
                 $errors = $validator->validate($menu);
 
