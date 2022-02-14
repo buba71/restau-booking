@@ -94,40 +94,45 @@
 
 
     <!-- Dated time slots list -->
-
-    {% if datedTimeSlots is defined %}
+    
 
         <section class="card mt-2 p-3" id="dated-time-slots">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>date</th>
-                        <th>Début de service</th>
-                        <th>Fin de service</th>
-                        <th>Intervalle</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-            {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
-            
-                <tbody>
-                    <tr>
-                        <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
-                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
-                        <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
-                        <td>{{ timeSlot.intervalTime }}</td>
-                        <td><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
-                    </tr>
-                </tbody>
-                
-            {% endfor %}
-            </table>
+            {% if datedTimeSlots | length > 0 %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>date</th>
+                            <th>Début de service</th>
+                            <th>Fin de service</th>
+                            <th>Intervalle</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
+
+                    {% if timeSlot.isClosed == false %}
+                        <tbody>
+                            <tr>
+                                <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
+                                <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
+                                <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
+                                <td>{{ timeSlot.intervalTime }}</td>
+                                <td><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
+                            </tr>
+                        </tbody>
+                    {% endif %}
+
+                {% endfor %}
+                </table>
+
+            {% else %}
+
+                <div class="alert alert-info" id="dated-time-slots">
+                    <p>Aucune date n'a été définie pour le moment.</p>
+                </div>
+
+            {% endif %}
         </section>
-    {% else %}
-        <section id="dated-time-slots">
-            <p>Aucun date n'a été définie pour le moment</p>
-        </section>
-    {% endif %} 
 
     <!-- Dated time slots list -->
 

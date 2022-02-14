@@ -1,0 +1,46 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig'%}
+
+{% block body %}
+
+    <div class="text-muted">
+        <h1>Réservations</h1>
+    </div>
+
+    <section class="card mt-5 p-3" id="booking_list">        
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Réservé par</th>
+                            <th>Date de réservation</th>
+                            <th>Nombre de couverts</th>                            
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                        
+                    <tbody>
+                        {% for booking in bookings %}
+                            {% if booking.bookingOrder is null %}
+                                <tr>
+                                    <td>{{ booking.bookingAt | date('d M Y') }}</td>
+                                    <td></td>
+                                    <td>{{ booking.bookingDate | date('d M Y') }}</td>
+                                    <td>{{ booking.coversNumber }}</td>                         
+                                    <td>
+                                        <i class="fa fa-eye mr-2"></i>
+                                        <i class="fa fa-check mr-2"></i>
+                                        <i class="fa fa-trash"></i>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %} 
+
+                    </tbody>
+                </table>
+
+               
+    </section>
+    
+
+{% endblock %}
