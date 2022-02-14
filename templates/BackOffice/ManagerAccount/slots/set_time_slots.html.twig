@@ -60,11 +60,13 @@
         
         // Add collection form and row class.
         addDayTimeSlots($collectionHolder, index);
+
+        // Set day of week number to time slot.
         let dayOfWeek =$('#time_slots_timeSlots_' + index + '_dayOfWeek');
         // Set value of day(0 to 6).
         dayOfWeek.val(setDayOfWeek(index));
 
-        // Add days header to table.
+        // Add days table header.
         const theaderleft = $('th.time_slot-day');
         const theaderleftArray = Array.from(theaderleft);
         $(theaderleftArray[j]).text(days[j]);

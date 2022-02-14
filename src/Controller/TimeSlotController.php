@@ -12,10 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class TimeSlotController extends AbstractController
 {
+    public function __construct()
+    {
+        date_default_timezone_set('Europe/Paris');
+    }
+
     #[Route('/time-slots', name: 'time_slots', methods: 'POST')]
     public function retrieveTimeSlotAjax(Request $request, TimeSlotFactory $timeSlotFactory): JsonResponse
     {
         if($request->getMethod() === 'POST') {
+
             $dateTime = json_decode($request->getContent(), true);
             
 
