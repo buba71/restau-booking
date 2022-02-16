@@ -92,6 +92,7 @@
         </ul>
             
         <form name="menu" method="post" class="menu[menuItems]">
+        
             <div class="my-3">
                 <label for="menu_name" class="form-label">Nom</label>
                 <input type="text" id="menu_name" name="menu[name]" class="form-control">
@@ -102,7 +103,11 @@
             </div>
             <div>
                 <label for="menu_price" class="form-label">Prix</label>
-                <input type="text" id="menu_price" name="menu[price]" class="form-control">
+                <div class="input-group">
+                    <span class ="input-group-text">€ </span>
+                    <input type="text" id="menu_price" name="menu[price]" class="form-control">
+                </div>
+                
             </div>
             <div class="my-3">
                 <fieldset>
@@ -118,8 +123,8 @@
 
                                     {% if menuItem.category == category %}
                                     <div>
-                                        <input type="checkbox" id="menuItem_{{ menuItem.name }}" name="menu[menuItems][]" value="{{ menuItem.id }}" class="m-2">
-                                        <label for="meniItem_{{ menuItem.name }}">{{ menuItem.name }} - <span class="badge badge-secondary">{{ menuItem.price | format_currency('EUR') }}</span></label> 
+                                        <input type="checkbox" id="menuItem_{{ menuItem.name }}" name="menu[menuItems][]" value="{{ menuItem.id }}" class="m-2">  
+                                        <label for="menuItem_{{ menuItem.name }}">{{ menuItem.name }} - <span class="badge badge-secondary">{{ menuItem.price | format_currency('EUR') }}</span></label>                                                                               
                                     </div>
                                     {% endif %} 
 
