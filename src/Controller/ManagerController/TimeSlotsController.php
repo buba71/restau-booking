@@ -28,7 +28,10 @@ final class TimeSlotsController extends AbstractController
         // Static restaurant id => 1.
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
         
-        $timeSlots = $restaurant->getTimeSlots()->toArray();
+        $timeSlots = $restaurant->getTimeSlots()->filter(function($element) {
+            return !$element->isClosed();
+        })->toArray();
+        
         $datedTimeSlots = array_values(array_filter($timeSlots, function ($element) {
             return $element->hasDate();
         }));
@@ -67,8 +70,9 @@ final class TimeSlotsController extends AbstractController
     public function updateTimeSlot(Restaurant $restaurant, Request $request) 
     {   
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
-            return $element->hasDate();
+            return $element->hasDate() && !$element->isClosed();
         });
+
         $nextDatedTimeSlot = new TimeSlot();       
 
 

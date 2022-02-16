@@ -23,21 +23,25 @@ final class MenuController extends AbstractController
     public function showDishes(Request $request, MenuRepository $menuRepository, MenuItemRepository $menuItemRepository, ValidatorInterface $validator): Response
     {
         $menus = $menuRepository->findAll();
-        $menuItems = $menuItemRepository->findAll();
-        $formData = $request->request->all();
+        $menuItems = $menuItemRepository->findAll();  
+        
         $errors = [];
+        
+        $token = $request->get('_csrf_token');
+        
+        if ($request->isMethod('POST') && $this->isCsrfTokenValid('token_id', $token)) {
 
-        $menu = new Menu();
+            $formData = ($request->request->all())['menu'];            
 
-        if ($request->isMethod('POST')) {
-
-            if (isset($formData['menu']['name']) && isset($formData['menu']['description']) && isset($formData['menu']['menuItems'])) {
-                    
-                $menu->setName($formData['menu']['name']);
-                $menu->setDescription($formData['menu']['description']);
-                $menu->setPrice(floatval($formData['menu']['price']));
+            if (isset($formData['name'], $formData['description'], $formData['menuItems'], $formData['price'])) {
+                
+                $menu = new Menu();
+                
+                $menu->setName($formData['name']);
+                $menu->setDescription($formData['description']);
+                $menu->setPrice(floatval($formData['price']));
     
-                foreach ($formData['menu']['menuItems'] as $menuItem) {
+                foreach ($formData['menuItems'] as $menuItem) {
                     $menuItem = $menuItemRepository->findOneBy(['id' => $menuItem]);
                     $menu->addMenuItem($menuItem);
                 }
@@ -50,7 +54,6 @@ final class MenuController extends AbstractController
                     
                     return $this->redirectToRoute('show_menus');
                 }
-
             }
             
         }
