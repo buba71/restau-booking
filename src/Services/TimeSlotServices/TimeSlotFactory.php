@@ -9,10 +9,11 @@ use App\Entity\TimeSlot;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class TimeSlotFactory
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private RequestStack $request)
     {
         date_default_timezone_set("Europe/Paris");
     }
@@ -120,8 +121,7 @@ final class TimeSlotFactory
      */
     private function retrieveRestaurantWeeklyTimeSlots(array $currentWeeklyDays, int $restaurantId): array
     {
-        // TODO Retrieve restaurant id as function parameter.
-        $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]);
+        $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]); 
 
         $restaurantTimeSlots = ($restaurant->getTimeSlots())->toArray();
 

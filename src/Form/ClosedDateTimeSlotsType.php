@@ -8,6 +8,7 @@ use App\Entity\ClosedDate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,7 +39,9 @@ final class ClosedDateTimeSlotsType extends AbstractType
                     'placeholder' => 'Date de fin'
                 ]
             ])
-            
+            ->add('reason', TextType::class, [
+                'label' => false
+            ])            
             ->add('Valider', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-info btn-sm'
