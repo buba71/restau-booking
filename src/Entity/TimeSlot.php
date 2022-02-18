@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\Entity()
  */
-final class TimeSlot
+class TimeSlot
 {
     public const SUNDAY = 0;
     public const MONDAY = 1;

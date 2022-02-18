@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="text-center mt-5 text-muted">
   <h1>Réserver</h1>
 </div>
@@ -189,6 +190,12 @@ const nextHtml = `
 
 const startDate = new Date();
 
+// Data payload when view is loaded(calendar).
+const dataPayload = {
+  startDate: startDate,
+  restaurantId: {{ restaurant.id }}
+}
+
 // Make calendar sync with backend data.
 const calendar = () => {
   fetch('{{ path('time_slots') }}', {
@@ -197,7 +204,7 @@ const calendar = () => {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     method: 'POST',
-    body: JSON.stringify(startDate)
+    body: JSON.stringify(dataPayload)
   })
   .then((response) => response.json())
   .then((data) => {
@@ -232,11 +239,17 @@ const calendar = () => {
       const frenchMonth = (monthAndYear.trim()).match(/([a-zA-Z ])/g).join("");      
       const englishMonth = convertMonthsToEnglish(frenchMonth.trim());
 
-      const navigateStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
+      const navigationStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
       // fix temporarily the lag between frontend call date and backend date request.
-      navigateStartDate.setHours(1);
-      
-      const timeSlot = [];        
+      navigationStartDate.setHours(1);
+
+      const timeSlot = [];
+
+      // Data payload when user navigate on calendar loading.
+      const dataPayload = {
+        startDate: navigationStartDate,
+        restaurantId: {{ restaurant.id }}
+      }        
 
       setTimeSlots(instance);
 
@@ -248,7 +261,7 @@ const calendar = () => {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             method: 'POST',
-            body: JSON.stringify(navigateStartDate)
+            body: JSON.stringify(dataPayload)
           })
           .then((response) => response.json())
           .then((data) => {

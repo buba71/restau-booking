@@ -32,6 +32,7 @@
                 <tr>
                     <th>Du</th>
                     <th>Au</th>
+                    <th>Motif</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -39,9 +40,10 @@
                 {% for closedDate in closedDates %}
                     <tr>
                         <td>{{ closedDate.startDate | date('d M Y') }}</th>
-                        <td>{{ closedDate.endDate | date('d M Y')}}</th> 
+                        <td>{{ closedDate.endDate | date('d M Y')}}</th>
+                        <td>{{ closedDate.reason }}</td>
                         <td>
-                            <a href="{{ path('delete_closed_date', {'id': closedDate.id}) }}" type="button" class="btn btn-danger btn-sm">supprimer</a>
+                            <a href="{{ path('delete_closed_date', {'id': closedDate.id}) }}" type="button" class="btn btn-secondary btn-sm">Annuler</a>
                         </td>                   
                     </tr>
                 {% endfor %}
@@ -64,15 +66,16 @@
                 <tr>
                     <th>Date de début</th>
                     <th>Date de fin</th>
-                    <th></th>                    
+                    <th>Motif</th>                    
                 </tr>
             </thead>
             <tbody>
                 {{form_start(form)}}
                 <tr>
-                    <td>{{ form_row(form.startdate)}}</td>
-                    <td>{{ form_row(form.endDate)}}</td>
-                    <td>{{ form_row(form.Valider)}}</td>
+                    <td>{{ form_row(form.startdate) }}</td>
+                    <td>{{ form_row(form.endDate) }}</td>
+                    <td>{{ form_row(form.reason) }}</td>
+                    <td>{{ form_row(form.Valider) }}</td>
                 </tr>
                 {{ form_end(form) }}
             </tbody>

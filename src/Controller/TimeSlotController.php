@@ -22,13 +22,12 @@ final class TimeSlotController extends AbstractController
     {
         if($request->getMethod() === 'POST') {
 
-            $dateTime = json_decode($request->getContent(), true);
+            $ajaxData = json_decode($request->getContent(), true);       
             
-
-            // static restaurant id = 1.
-            $restaurantId = 1;
+            $startDateString = $ajaxData['startDate'];
+            $restaurantId = $ajaxData['restaurantId'];
         
-            $timeSlots = $timeSlotFactory->create($restaurantId, $dateTime);
+            $timeSlots = $timeSlotFactory->create($restaurantId, $startDateString);
 
             return new JsonResponse($timeSlots, 200);
         }        

@@ -31,6 +31,11 @@ class ClosedDate
      * @ORM\Column(type="datetime")
      */
     private DateTime $endDate;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private String $reason = 'Aucun';
     
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="closedDate", cascade={"persist", "remove"})
@@ -71,6 +76,16 @@ class ClosedDate
     public function setEndDate(DateTime $endDate): void
     {
         $this->endDate =  $endDate;
+    }
+
+    public function getReason(): string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(string $reason): void
+    {
+        $this->reason = $reason;
     }
 
     public function getTimeSlots(): Collection

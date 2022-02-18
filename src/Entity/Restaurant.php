@@ -51,9 +51,9 @@ class Restaurant
     private string $phone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable="true")
      */
-    private string $speciality;
+    private ?string $speciality;
 
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
