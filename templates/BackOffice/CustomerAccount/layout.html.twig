@@ -38,10 +38,10 @@
                         <a href="#">Mon profil</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_bookings') }}">Mes réservations</a>
+                        <a href="{{ path('show_bookings', {'id': app.user.id }) }}">Mes réservations</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_customer_orders') }}">Mes commandes</a>
+                        <a href="{{ path('show_customer_orders', {'id': app.user.id }) }}">Mes commandes</a>
                     </li>
                 </ul>
             </div>

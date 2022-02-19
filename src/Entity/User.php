@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -52,12 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $phone;
 
     /**
-     * @ORM\OneToOne(targetEntity="Restaurant", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
-     */
-    private ?Restaurant $restaurant = null;
-
-    /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -67,9 +62,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private ?string $salt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Booking", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private Collection $bookings;
+
+      /**
+     * @ORM\OneToOne(targetEntity="Restaurant", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     */
+    private ?Restaurant $restaurant = null;
+
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
     }
 
     public function getEmail(): string
@@ -161,4 +172,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         
     }
+
+    public function addBooking(Booking $booking): void
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->booking->setUser($this);
+            $this->bookings->add($booking);
+        }
+    }
+
+    public function removeBooking(Booking $booking): void
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->remove($booking);
+        }
+    }
+
 }

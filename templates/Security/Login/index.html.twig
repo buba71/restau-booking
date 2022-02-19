@@ -5,23 +5,60 @@
 
 {% block body %}
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="card login-form m-5 w-75 mx-auto">
+        <div class="card-header text-white bg-info text-center">
+            <h5>Formulaire de connexion</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6 text-center">
+                    <p>S'inscrire?</p>
+                    <div class="mt-4">
+                        <a href="{{ path('register_customer') }}" type="button" class="btn btn-info w-50 mt-3">Client</a>
+                        <a href="{{ path('register_manager') }}" type="button" class="btn btn-secondary w-50 mt-3">Professionnel</a>     
+                    </div>               
+                </div>
 
-    <form action="{{ path('login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+                <div class="col-6 border-left">
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
+                    <form action="{{ path('login') }}" method="post" class="text-center">
+                        <fieldset>
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text text-white bg-info"><i class="fa fa-user"></i></div>
+                                </div>
+                                <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" placeholder="Adresse mail"/>
+                            </div>
 
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text text-white bg-info"><i class="fa fa-lock"></i></div>
+                                </div>                    
+                                <input type="password" id="password" class="form-control" name="_password" placeholder="Mot de passe"/>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            </div>
 
-        <button type="submit">login</button>
-    </form>
+                            {# If you want to control the URL the user is redirected to on success
+                            <input type="hidden" name="_target_path" value="/account"/> #}
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                            {% if error %}
+                                <div class="form-errors">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            <div>
+                                <button type="submit" class="btn btn-info mt-3 w-100">Connexion</button>                        
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+            
+            
+
+        </div>
+    </div>
 
 {% endblock %}
