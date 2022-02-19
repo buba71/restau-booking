@@ -35,7 +35,7 @@
         
         </div>
       <div class="modal-footer">
-        <a href="{{ path('show_bookings') }}" type="button" class="btn btn-secondary">Annuler</a>
+        <a href="{{ path('show_bookings', {'id': app.user.id }) }}" type="button" class="btn btn-secondary">Annuler</a>
         <button type="submit" class="btn btn-info">Valider</button>
       </div>
 
@@ -122,6 +122,11 @@ const nextHtml = `
 
 const startDate = new Date("{{ booking.bookingDate|date('Y') }}, {{ booking.bookingDate|date('m') }}, {{ booking.bookingDate|date('d') }}");
 
+// Data payload when view is loaded(calendar).
+const dataPayload = {
+  startDate: startDate,
+  restaurantId: {{ booking.restaurant.id }}
+}
 
 // Make calendar sync with backend data.
 const calendar = () => {
@@ -131,7 +136,7 @@ const calendar = () => {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     method: 'POST',
-    body: JSON.stringify(startDate)
+    body: JSON.stringify(dataPayload)
   })
   .then((response) => response.json())
   .then((data) => {
@@ -146,7 +151,6 @@ const calendar = () => {
     prevHtml: prevHtml,
     nextHtml: nextHtml,
     weekdays: weekdays,
-    selectedDates: [],
     onClickNavigator: function(ev, instance) {
       
       const daysNumberHeader = document.querySelectorAll('.myc-date-number');
@@ -167,9 +171,17 @@ const calendar = () => {
       const frenchMonth = (monthAndYear.trim()).match(/([a-zA-Z ])/g).join("");      
       const englishMonth = convertMonthsToEnglish(frenchMonth.trim());
 
-      const navigateStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
-      
-      const timeSlot = [];        
+      const navigationStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
+      // fix temporarily the lag between frontend call date and backend date request.
+      navigationStartDate.setHours(1);
+
+      const timeSlot = [];
+
+      // Data payload when user navigate on calendar loading.
+      const dataPayload = {
+        startDate: navigationStartDate,
+        restaurantId: {{ booking.restaurant.id }}
+      }        
 
       setTimeSlots(instance);
 
@@ -181,19 +193,23 @@ const calendar = () => {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             method: 'POST',
-            body: JSON.stringify(navigateStartDate)
+            body: JSON.stringify(dataPayload)
           })
           .then((response) => response.json())
           .then((data) => {
             instance.setAvailability(data);
 
-            // Calendar is loaded => get timeSlots for applying style.
+            // Calendar is loaded => get timeSlots for applying style(Past dates and cloded dates).
             const times = document.querySelectorAll('.myc-available-time');
             const today = new Date();
             Array.from(times).forEach(element => {
               const date = element.getAttribute('data-date');
               const dateTime = element.getAttribute('data-time');
-              if (today.getTime() > new Date(date + 'T' + dateTime)) {
+
+              let isClosedDate = new Date(date + 'T' + dateTime);             
+
+              if ( (today.getTime() > new Date(date + 'T' + dateTime)) | (isClosedDate == 'Invalid Date')) {
+
                 element.classList.remove("myc-available-time");
                 element.classList.add("myc-disabled-time");
               }
@@ -205,7 +221,6 @@ const calendar = () => {
       } 
     },
     onClick: function(event, data) {
-      console.log(data)
       const bookingDateInput = document.getElementById('booking_bookingDate');
       bookingDateInput.value = data;
       console.log(bookingDateInput)
@@ -213,15 +228,17 @@ const calendar = () => {
 
     });
 
-    // Calendar is loaded => get timeSlots for applying style(paste dates and times disabled).
+    // Calendar is loaded => get timeSlots for applying style(Past Dates and closed dates).
     const times = document.querySelectorAll('.myc-available-time');
     const today = new Date();
     Array.from(times).forEach(element => {
       const date = element.getAttribute('data-date');
       const dateTime = element.getAttribute('data-time');
+
+      let isClosedDate = new Date(date + 'T' + dateTime);       
       
-      if (today.getTime() > new Date(date + 'T' + dateTime)) {
-        
+      if  ((today.getTime() > new Date(date + 'T' + dateTime)) | (isClosedDate == 'Invalid Date')) {        
+
         element.classList.remove("myc-available-time");
         element.classList.add("myc-disabled-time");
       }      

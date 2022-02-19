@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Controller\CustomerController;
 
 use App\Entity\OrderLine;
+use App\Entity\User;
 use App\Form\OrderLastStepType;
-use App\Repository\BookingOrderRepository;
+use App\Repository\BookingRepository;
 use App\Repository\MenuItemRepository;
 use App\Repository\MenuRepository;
 use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,14 +21,17 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
+#[IsGranted('ROLE_CUSTOMER')]
 final class BookingOrderController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager, private SessionInterface $session) {}
 
-    #[Route('/show_booking_orders', name: 'show_customer_orders')]
-    public function showBookingOrders(BookingOrderRepository $bookingOrderRepository): Response
+    #[Route('/show_booking_orders/{id}', name: 'show_customer_orders')]
+    public function showBookingOrders(User $user, BookingRepository $bookingRepository): Response
     {
-        $orders = $bookingOrderRepository->findAllOrderByBookingDate();
+        $bookingWithOrders = $bookingRepository->findBookingWithOrdersByUSer($user->getId());
+
+        $orders = array_map(fn($element) => $element->getBookingOrder(), $bookingWithOrders);
 
         return $this->render('BackOffice/CustomerAccount/Booking/show_booking_orders.html.twig', [
             'orders' => $orders
@@ -53,6 +58,7 @@ final class BookingOrderController extends AbstractController
             $restaurant = $restaurantRepository->findOneBy(['id' => 1]);
 
             $booking->setRestaurant($restaurant);
+            $booking->setUser($this->getUser());
 
             $order = $session->get('order');
             $cart = $session->get('cart');
@@ -113,7 +119,7 @@ final class BookingOrderController extends AbstractController
 
                 $this->addFlash('success', 'Votre commande a bien été enregistrée.');
 
-                return $this->redirectToRoute('show_customer_orders');
+                return $this->redirectToRoute('show_customer_orders', ['id' => $this->getUser()->getId()]);
             } 
             
         } else {

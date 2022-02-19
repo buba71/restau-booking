@@ -1,5 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form(form) }}
+    <div class="register-form mt-5">
+
+        <fieldset>
+            {{ form_start(form) }}
+                <div class="card">
+    
+                    <div class="card-header text-white bg-info">
+                        <h5 class="text-center">Créer un compte client </h5>
+                    </div>
+        
+                    <div class="card-body">
+                        <h5 class="card-title">Informations personnelles</h5>
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.phone) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.password) }}
+                        {{ form_row(form.submit) }}
+                    </div>        
+                </div>
+            {{ form_end(form) }}
+        </fieldset>
+        
+    </div>
 {% endblock %}

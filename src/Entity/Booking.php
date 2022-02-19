@@ -38,15 +38,22 @@ class Booking
     private  DateTime $bookingAt;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank
+     */
+    private string $coversNumber;
+
+    
+    /**
      * @ORM\OneToOne(targetEntity="BookingOrder", mappedBy="booking", cascade={"persist", "remove"})
      */
     private ?BookingOrder $bookingOrder;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="bookings")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
-    private string $coversNumber;
+    private User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="bookings")
@@ -107,5 +114,15 @@ class Booking
     public function setRestaurant(Restaurant $restaurant): void
     {
         $this->restaurant = $restaurant;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user) 
+    {
+        $this->user = $user;
     }
 }

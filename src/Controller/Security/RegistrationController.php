@@ -40,6 +40,8 @@ final class RegistrationController extends AbstractController
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('home');
         }
 
         return $this->renderForm('Security/Register/Customer/index.html.twig', [
@@ -69,6 +71,8 @@ final class RegistrationController extends AbstractController
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('home');
         }
 
         return $this->renderForm('Security/Register/Manager/index.html.twig', [

@@ -16,7 +16,6 @@
     </head>
     <body>
         <!-- header -->
-
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-info">
               <a class="navbar-brand" href="{{ path('home')}}">Brand</a>
@@ -28,11 +27,28 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="{{ path('home') }}">Accueil <span class="sr-only">(current)</span></a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ path('show_bookings') }}">Espace Client</a>
+                  <li class="nav-item">                    
+                      <a 
+                        class="nav-link"
+                        href="
+                        {% if is_granted('ROLE_CUSTOMER')%}
+                          {{ path('show_bookings', {'id': app.user.id }) }}
+                        {% else %}
+                          {{ path('login') }}
+                        {% endif %}">
+                        Espace Client
+                      </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ path('show_timeSlots') }}">Espace Professionnel</a>
+                    <a 
+                      class="nav-link"
+                      href="
+                      {% if is_granted('ROLE_MANAGER') %}
+                        {{ path('show_timeSlots') }}
+                      {% else %}
+                        {{ path('login') }}
+                      {% endif %}">
+                      Espace Professionnel</a>
                   </li>
                 </ul>
               </div>
