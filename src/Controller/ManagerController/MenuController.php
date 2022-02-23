@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\ManagerController;
 
 use App\Entity\Menu;
-use App\Entity\User;
 use App\Repository\MenuItemRepository;
-use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,11 +23,10 @@ final class MenuController extends AbstractController
     #[Route('/show_menus', name: 'show_menus')]
     public function addMenu(
         Request $request,
-        RestaurantRepository $restaurantRepository,
         MenuItemRepository $menuItemRepository,
         ValidatorInterface $validator): Response
     {
-        $restaurant = $restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
         $menus = $restaurant->getMenus();
         $menuItems = $restaurant->getMenuItems();
         

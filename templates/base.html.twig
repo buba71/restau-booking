@@ -27,29 +27,31 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="{{ path('home') }}">Accueil <span class="sr-only">(current)</span></a>
                   </li>
-                  <li class="nav-item">                    
+                  {% if app.user %}
+
+                    <li class="nav-item">
                       <a 
                         class="nav-link"
                         href="
-                        {% if is_granted('ROLE_CUSTOMER')%}
-                          {{ path('show_bookings', {'id': app.user.id }) }}
-                        {% else %}
-                          {{ path('login') }}
-                        {% endif %}">
-                        Espace Client
+                          {% if is_granted('ROLE_MANAGER')%}
+                            {{ path('manager_profile') }}
+                          {% elseif is_granted('ROLE_CUSTOMER')%}
+                            {{ path('customer_profile') }}{% endif %}"
+                        >Mon compte
                       </a>
-                  </li>
-                  <li class="nav-item">
-                    <a 
-                      class="nav-link"
-                      href="
-                      {% if is_granted('ROLE_MANAGER') %}
-                        {{ path('show_timeSlots') }}
-                      {% else %}
-                        {{ path('login') }}
-                      {% endif %}">
-                      Espace Professionnel</a>
-                  </li>
+                    </li>
+
+                  {% else %}
+
+                    <li class="nav-item">                    
+                      <a class="nav-link" href="{{ path('customer_profile') }}">Espace Client</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ path('manager_profile') }}">Espace Professionnel</a>
+                    </li>
+
+                  {% endif %}
+                  
                 </ul>
               </div>
             </nav>            

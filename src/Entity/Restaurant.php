@@ -84,8 +84,8 @@ class Restaurant
     private Collection $menus;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="restaurant")
-     * JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="User", mappedBy="restaurant")
+     * JoinColumn(name="manager_id", referencedColumnName="id")
      */
     private ?User $user;
 

@@ -32,27 +32,35 @@
 
     <section class="card mt-5 p-3" id="week-days-schedule">
         <h3 class="card-title py-5 text-muted">Modifier vos horaires d'ouverture hebdomadaires</h2>
-        {{ form_start(timeSlotcollectionForm)}}      
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th class="p-3" scope="col">Début de service</th>
-                            <th class="p-3" scope="col">Fin de service</th>
-                            <th class="p-3" scope="col">Intervalle(min)</th>
-                        </tr>
-                    </thead>
+        {% if weeklyTimeSlots | length > 0 %}
+            {{ form_start(timeSlotcollectionForm)}}      
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="p-3" scope="col">Début de service</th>
+                                <th class="p-3" scope="col">Fin de service</th>
+                                <th class="p-3" scope="col">Intervalle(min)</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {{ form_widget(timeSlotcollectionForm.timeSlots)}}
-                    </tbody>
-                </table>
+                        <tbody>
+                            {{ form_widget(timeSlotcollectionForm.timeSlots)}}
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    {{ form_widget(timeSlotcollectionForm.Valider)}}
+                </div>            
+            {{ form_end(timeSlotcollectionForm) }} 
+        {% else %}
+            <div class="alert alert-info">
+                <p>Vous n'avez pas défini vos horaires d'ouverture pour le moment.
+                <a href="{{ path('set_timeSlots') }}" type="button" class="btn btn-info btn-sm">Définir mes horaires</a>
+                </p>
             </div>
-            <div>
-                {{ form_widget(timeSlotcollectionForm.Valider)}}
-            </div>            
-        {{ form_end(timeSlotcollectionForm) }} 
+        {% endif %}
     </section>
 
     <!-- Update schedule time slots -->
