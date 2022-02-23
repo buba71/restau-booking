@@ -72,8 +72,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $bookings;
 
       /**
-     * @ORM\OneToOne(targetEntity="Restaurant", mappedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Restaurant", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id", nullable=true)
      */
     private ?Restaurant $restaurant = null;
 

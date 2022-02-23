@@ -43,13 +43,13 @@
         </table>
 
         <div class="">
-            <a href="{{ path('update_timeSlots', { id: 1 }) }}" class="btn btn-info">Modifier</a>
+            <a href="{{ path('update_timeSlots')}}" class="btn btn-info">Modifier</a>
         </div>   
 
         {% else %}   
             <div class="alert alert-info">
                 <p>Vous n'avez pas défini vos horaires d'ouverture pour le moment.
-                <a href="{{ path('set_timeSlots', {'id': app.user.id}) }}" type="button" class="btn btn-info btn-sm">Définir mes horaires</a>
+                <a href="{{ path('set_timeSlots') }}" type="button" class="btn btn-info btn-sm">Définir mes horaires</a>
                 </p>
             </div>
         {% endif %}

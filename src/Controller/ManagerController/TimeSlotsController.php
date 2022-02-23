@@ -7,7 +7,6 @@ namespace App\Controller\ManagerController;
 use App\Entity\TimeSlot;
 use App\Form\DatedTimeSlotType;
 use App\Form\TimeSlotsType;
-use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_MANAGER')]
 final class TimeSlotsController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private RestaurantRepository $restaurantRepository)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
         date_default_timezone_set('Europe/Paris');
     }
@@ -27,7 +26,7 @@ final class TimeSlotsController extends AbstractController
     #[Route('/show_time_slots', name: 'show_timeSlots')]
     public function showTimeSlots(): Response
     {
-        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
         
         $timeSlots = $restaurant->getTimeSlots()->filter(function($element) {
             return !$element->isClosed();
@@ -46,20 +45,17 @@ final class TimeSlotsController extends AbstractController
     #[Route('/set_time_slots', name: 'set_timeSlots')]
     public function setTimeSlot(Request $request): Response
     {
-        // Static restaurant id => 1.
-        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
 
         $form = $this->createForm(TimeSlotsType::class, $restaurant);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             
             $this->entityManager->persist($restaurant);
             $this->entityManager->flush();            
 
-            return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
-                'timeSlots' => $restaurant->getTimeSlots()
-            ]);
+            return $this->redirectToRoute('show_timeSlots');
         }
 
         return $this->renderForm('BackOffice/ManagerAccount/slots/set_time_slots.html.twig',  [
@@ -70,8 +66,12 @@ final class TimeSlotsController extends AbstractController
     #[Route('/update_time_slots', name: 'update_timeSlots')]
     public function updateTimeSlot(Request $request) 
     {   
-        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
         
+        $weeklyTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
+            return !$element->hasDate();
+        });
+
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
             return $element->hasDate() && !$element->isClosed();
         });
@@ -109,6 +109,7 @@ final class TimeSlotsController extends AbstractController
         return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,
             'datedTimeSlotForm' => $datedTimeSlotForm,
+            'weeklyTimeSlots' => $weeklyTimeSlots->toArray(),
             'datedTimeSlots' => $datedTimeSlots->toArray()
         ]);
     }

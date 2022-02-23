@@ -1,0 +1,54 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block body %}
+    <div class="text-muted">
+        <h1>Mon Restaurant</h1>
+    </div>
+
+
+    <section class="card user-profile mt-5 p-3" id="manager-profile">
+    
+        {% for message in app.flashes('success') %}
+         <div class="alert alert-success">
+            {{ message }}
+         </div>
+        {% endfor %}
+        
+        <h3 class="card-title py-5 text-muted">Détails du restaurant</h3>
+        <div class="car-body">
+            <table>
+                <tr>
+                    <th scope="row">Nom:</th>
+                    <td class="px-3">{{ restaurant.name }}</td>         
+                </tr>
+                <tr>
+                    <th scope="row">Adresse:</th>
+                    <td class="px-3">
+                        <address>
+                            <ul class="nav flex-column">
+                                <li class="nav-item">{{ restaurant.address }}</li>
+                                <li class="nav-item">{{ restaurant.zipcode}} {{ restaurant.city }}</li>
+                            </ul>
+                        
+                        </address>
+                        
+                    </td>         
+                </tr>
+                <tr>
+                    <th scope="row">Numéro de téléphone:</th>
+                    <td class="px-3">{{ restaurant.phone }}</td>         
+                </tr>
+                <tr>
+                    <th scope="row">Spécialité:</th>
+                    <td class="px-3">{{ restaurant.speciality }}</td>         
+                </tr>
+                
+            </table>
+        </div>
+
+        <div class="card-footer my-5">
+            <a href="{{ path ('restaurant_edit')}}" type="button" class="btn btn-secondary">Modifier</a>
+        </div>
+        
+    </section>
+{% endblock %}

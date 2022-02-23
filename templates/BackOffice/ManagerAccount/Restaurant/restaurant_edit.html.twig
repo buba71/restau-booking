@@ -1,0 +1,22 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block body %}
+
+    <div class="text-muted">
+        <h1>Modifier les informations de mon restaurant.</h1>
+    </div>
+    <section class="card user-profile mt-5 p-3" id="manager-profile-edit">
+        {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.zipcode) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.speciality) }}
+            <div class="submit-form">
+                <button type="submit" class="btn btn-info">Modifier</button>
+            </div>
+        {{ form_end(form) }}
+    </section>
+
+{% endblock %}

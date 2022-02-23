@@ -1,4 +1,4 @@
-{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
 
 {% block body %}
     <div class="text-muted">
@@ -6,7 +6,8 @@
     </div>
 
 
-    <section class="card user-profile mt-5 p-3" id="customer-profile">
+    <section class="card user-profile mt-5 p-3" id="manager-profile">
+    
         {% for message in app.flashes('success') %}
          <div class="alert alert-success">
             {{ message }}
@@ -37,8 +38,8 @@
         </div>
 
         <div class="card-footer my-5">
-            <a href="{{ path ('customer_edit', {'id': app.user.id}) }}" type="button" class="btn btn-secondary">Modifier</a>
-            <a href="{{ path ('customer_delete', {'id': app.user.id}) }}" type="button" class="btn btn-danger">Supprimer le compte</a>
+            <a href="{{ path ('manager_edit', {'id': app.user.id}) }}" type="button" class="btn btn-secondary">Modifier</a>
+            <a href="{{ path ('manager_delete', {'id': app.user.id}) }}" type="button" class="btn btn-danger">Supprimer le compte</a>
         </div>
         
     </section>

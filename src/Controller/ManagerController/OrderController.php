@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\ManagerController;
 
-use App\Repository\RestaurantRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,9 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 final class OrderController extends AbstractController
 {
     #[Route('/show_restaurant_orders', name: 'show_restaurant_orders')]
-    public function showOrders(RestaurantRepository $restaurantRepository): Response
+    public function showOrders(): Response
     {
-        $restaurant = $restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
+        
         $bookings = $restaurant->getBookings();
 
         return $this->render('BackOffice/ManagerAccount/Order/show_orders.html.twig', [

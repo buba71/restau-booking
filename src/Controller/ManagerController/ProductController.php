@@ -6,7 +6,6 @@ namespace App\Controller\ManagerController;
 
 use App\Entity\MenuItem;
 use App\Form\MenuItemType;
-use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,12 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_MANAGER')]
 final class ProductController extends AbstractController
 {    
-    public function __construct(private EntityManagerInterface $entityManager, private RestaurantRepository $restaurantRepository) {}
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_products', name: 'show_products')]
     public function showDishes(Request $request): Response
     {
-        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $restaurant = $this->getUser()->getRestaurant();
         $products = $restaurant->getMenuItems();
 
         $product = new MenuItem();
