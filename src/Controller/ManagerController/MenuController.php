@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\ManagerController;
 
 use App\Entity\Menu;
+use App\Entity\User;
 use App\Repository\MenuItemRepository;
-use App\Repository\MenuRepository;
+use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +17,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/manager')]
+#[IsGranted('ROLE_MANAGER')]
 final class MenuController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_menus', name: 'show_menus')]
-    public function showDishes(Request $request, MenuRepository $menuRepository, MenuItemRepository $menuItemRepository, ValidatorInterface $validator): Response
+    public function addMenu(
+        Request $request,
+        RestaurantRepository $restaurantRepository,
+        MenuItemRepository $menuItemRepository,
+        ValidatorInterface $validator): Response
     {
-        $menus = $menuRepository->findAll();
-        $menuItems = $menuItemRepository->findAll();  
+        $restaurant = $restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        $menus = $restaurant->getMenus();
+        $menuItems = $restaurant->getMenuItems();
         
         $errors = [];
         
@@ -49,13 +57,15 @@ final class MenuController extends AbstractController
                 $errors = $validator->validate($menu);
 
                 if (count($errors) === 0) {
+
+                    $menu->setRestaurant($restaurant);
+
                     $this->entityManager->persist($menu);
                     $this->entityManager->flush();
                     
                     return $this->redirectToRoute('show_menus');
                 }
-            }
-            
+            }            
         }
         
 

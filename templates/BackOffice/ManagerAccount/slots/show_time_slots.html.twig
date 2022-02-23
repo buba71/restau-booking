@@ -8,8 +8,12 @@
         <h1>Mes horaires</h1>
     </div>
 
-    <section class="card mt-5 p-3">  
+    <section class="card mt-5 p-3">          
+
         <h3 class="card-title text-muted py-5">Mes horaires hebdomadaires</h3>  
+
+        {% if timeSlots | length >  0 %}
+
         <table class="table">
             <thead>
                 <tr>
@@ -40,7 +44,15 @@
 
         <div class="">
             <a href="{{ path('update_timeSlots', { id: 1 }) }}" class="btn btn-info">Modifier</a>
-        </div>      
+        </div>   
+
+        {% else %}   
+            <div class="alert alert-info">
+                <p>Vous n'avez pas défini vos horaires d'ouverture pour le moment.
+                <a href="{{ path('set_timeSlots', {'id': app.user.id}) }}" type="button" class="btn btn-info btn-sm">Définir mes horaires</a>
+                </p>
+            </div>
+        {% endif %}
     </section>  
     
     <section class="card p-3 mt-2" id="dated-time-slots">

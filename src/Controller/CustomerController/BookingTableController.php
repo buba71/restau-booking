@@ -6,7 +6,6 @@ namespace App\Controller\CustomerController;
 
 use App\Entity\Booking;
 use App\Entity\Restaurant;
-use App\Entity\User;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,10 +22,10 @@ final class BookingTableController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[Route('/show_bookings/{id}', name:'show_bookings')]
-    public function showBookings(User $user, BookingRepository $bookingRepository): Response
+    #[Route('/show_bookings', name:'show_bookings')]
+    public function showBookings(BookingRepository $bookingRepository): Response
     {
-        $bookings = $bookingRepository->findBookingWithoutOrdersByUSer($user->getId());
+        $bookings = $bookingRepository->findBookingWithoutOrdersByUSer($this->getUser()->getId());
 
         return $this->render('BackOffice/CustomerAccount/Booking/show_bookings.html.twig', [
             'bookings' => $bookings
@@ -84,7 +83,7 @@ final class BookingTableController extends AbstractController
 
             $this->addFlash('success', 'Votre réservation a été modifiée');
 
-            return $this->redirectToRoute('show_bookings', ['id' => $this->getUser()->getId()]);
+            return $this->redirectToRoute('show_bookings');
         }
 
         return $this->renderForm('BackOffice/CustomerAccount/Booking/edit_booking.html.twig', [
@@ -101,6 +100,6 @@ final class BookingTableController extends AbstractController
 
         $this->addFlash('success', 'Votre réservation a été annulée');
 
-        return $this->redirectToRoute('show_bookings', ['id' => $this->getUser()->getId()]);
+        return $this->redirectToRoute('show_bookings',);
     }
 }

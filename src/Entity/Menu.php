@@ -46,6 +46,12 @@ final class Menu implements Product
     private Collection $menuItems;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="menus")
+     * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
+     */
+    private Restaurant $restaurant;
+
+    /**
      * @ORM\Column(type="float", nullable="false")
      */
     private float $price = 0;
@@ -104,6 +110,16 @@ final class Menu implements Product
     public function getMenuItems(): Collection
     {
         return $this->menuItems;
+    }
+
+    public function getRestaurant(): Restaurant
+    {
+        return $this->restaurant;
+    }
+
+    public function setRestaurant(Restaurant $restaurant): void
+    {
+        $this->restaurant = $restaurant;
     }
 
     public function addMenuItem(MenuItem $menuItem) 

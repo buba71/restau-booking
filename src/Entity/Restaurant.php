@@ -71,11 +71,31 @@ class Restaurant
      */
     private Collection $closedDates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private Collection $menuItems;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="restaurant", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private Collection $menus;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User", inversedBy="restaurant")
+     * JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private ?User $user;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->closedDates = new ArrayCollection();
+        $this->menuItems = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,5 +233,55 @@ class Restaurant
         if($this->timeSlots->contains($timeSlot)) {
             $this->timeSlots->remove($timeSlot);
         }
+    }
+
+    public function addMenu(Menu $menu): void
+    {
+        if(!$this->menus->contains($menu)) {
+            $menu->setRestaurant($this);
+            $this->menus->add($menu);
+        }
+    }
+
+    public function removeMenu(Menu $menu): void
+    {
+        if($this->menus->contains($menu)) {
+            $this->menus->remove($menu);
+        }
+    }
+
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenuItem(MenuItem $menuItem): void
+    {
+        if(!$this->menuItems->contains($menuItem)) {
+            $menuItem->setRestaurant($this);
+            $this->menuItems->add($menuItem);
+        }
+    }
+
+    public function removeMenuItem(MenuItem $menuItem): void
+    {
+        if($this->menuItems->contains($menuItem)) {
+            $this->menuItems->remove($menuItem);
+        }
+    }
+
+    public function getMenuItems(): Collection
+    {
+        return $this->menuItems;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 }

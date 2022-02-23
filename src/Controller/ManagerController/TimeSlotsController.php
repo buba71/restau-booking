@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\ManagerController;
 
-use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
 use App\Form\DatedTimeSlotType;
 use App\Form\TimeSlotsType;
+use App\Repository\RestaurantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/manager')]
+#[IsGranted('ROLE_MANAGER')]
 final class TimeSlotsController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private RestaurantRepository $restaurantRepository)
     {
         date_default_timezone_set('Europe/Paris');
     }
@@ -25,8 +27,7 @@ final class TimeSlotsController extends AbstractController
     #[Route('/show_time_slots', name: 'show_timeSlots')]
     public function showTimeSlots(): Response
     {
-        // Static restaurant id => 1.
-        $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
+        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
         
         $timeSlots = $restaurant->getTimeSlots()->filter(function($element) {
             return !$element->isClosed();
@@ -46,7 +47,7 @@ final class TimeSlotsController extends AbstractController
     public function setTimeSlot(Request $request): Response
     {
         // Static restaurant id => 1.
-        $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => 1]);
+        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
 
         $form = $this->createForm(TimeSlotsType::class, $restaurant);
 
@@ -66,9 +67,11 @@ final class TimeSlotsController extends AbstractController
         ]);
     } 
     
-    #[Route('/update_time_slots/{id}', name: 'update_timeSlots')]
-    public function updateTimeSlot(Restaurant $restaurant, Request $request) 
+    #[Route('/update_time_slots', name: 'update_timeSlots')]
+    public function updateTimeSlot(Request $request) 
     {   
+        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);
+        
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
             return $element->hasDate() && !$element->isClosed();
         });
@@ -102,7 +105,6 @@ final class TimeSlotsController extends AbstractController
             
             return $this->redirectToRoute('show_timeSlots');
         }
-
         
         return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,

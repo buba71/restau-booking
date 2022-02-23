@@ -5,35 +5,36 @@ declare(strict_types=1);
 namespace App\Controller\ManagerController;
 
 use App\Entity\ClosedDate;
-use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
 use App\Form\ClosedDateTimeSlotsType;
 use App\Repository\ClosedDateRepository;
+use App\Repository\RestaurantRepository;
 use DateInterval;
 use DatePeriod;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/manager')]
+#[IsGranted('ROLE_MANAGER')]
 final class ClosedDateController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private RestaurantRepository $restaurantRepository)
     {
         date_default_timezone_set('Europe/Paris');
     }
 
-    #[Route('/show_closed_date/{id}', name: 'show_closed_date')]
+    #[Route('/show_closed_date', name: 'show_closed_date')]
     public function show_closed_date(
         ClosedDateRepository $closedDateRepository,
-        Restaurant $restaurant,
         Request $request
         ): Response {
-            
-        $closedDates = $closedDateRepository->findBy(['restaurant' => 1]);
+
+        $restaurant = $this->restaurantRepository->findOneBy(['user' => $this->getUser()->getId()]);            
+        $closedDates = $closedDateRepository->findBy(['restaurant' => $restaurant->getId()]);
         
         $closedDate = new ClosedDate();
 

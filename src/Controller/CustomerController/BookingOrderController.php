@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\CustomerController;
 
 use App\Entity\OrderLine;
-use App\Entity\User;
 use App\Form\OrderLastStepType;
 use App\Repository\BookingRepository;
 use App\Repository\MenuItemRepository;
@@ -26,10 +25,10 @@ final class BookingOrderController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager, private SessionInterface $session) {}
 
-    #[Route('/show_booking_orders/{id}', name: 'show_customer_orders')]
-    public function showBookingOrders(User $user, BookingRepository $bookingRepository): Response
+    #[Route('/show_booking_orders', name: 'show_customer_orders')]
+    public function showBookingOrders(BookingRepository $bookingRepository): Response
     {
-        $bookingWithOrders = $bookingRepository->findBookingWithOrdersByUSer($user->getId());
+        $bookingWithOrders = $bookingRepository->findBookingWithOrdersByUSer($this->getUser()->getId());
 
         $orders = array_map(fn($element) => $element->getBookingOrder(), $bookingWithOrders);
 
@@ -119,7 +118,7 @@ final class BookingOrderController extends AbstractController
 
                 $this->addFlash('success', 'Votre commande a bien été enregistrée.');
 
-                return $this->redirectToRoute('show_customer_orders', ['id' => $this->getUser()->getId()]);
+                return $this->redirectToRoute('show_customer_orders');
             } 
             
         } else {
