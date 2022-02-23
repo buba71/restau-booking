@@ -3,6 +3,12 @@
 
 {% block body %}
 
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-3">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <!--search restaurants for -->
 
     <div class="search-form text-center">

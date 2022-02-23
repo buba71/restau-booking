@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,6 +30,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private string $email;
 
@@ -44,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private string $password;   
     
@@ -68,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $bookings;
 
       /**
-     * @ORM\OneToOne(targetEntity="Restaurant", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Restaurant", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      */
     private ?Restaurant $restaurant = null;

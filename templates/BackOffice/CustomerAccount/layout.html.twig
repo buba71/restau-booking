@@ -35,13 +35,16 @@
                 <h1 class="text-center"><a href="#" class="logo">Brand</a></h1>
                 <ul class="list-unstyled components mb-5">
                     <li class="px-3">
-                        <a href="#">Mon profil</a>
+                        <a href="{{ path('customer_profile') }}">Informations personnelles</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_bookings', {'id': app.user.id }) }}">Mes réservations</a>
+                        <a href="{{ path('show_bookings')}}">Mes réservations</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_customer_orders', {'id': app.user.id }) }}">Mes commandes</a>
+                        <a href="{{ path('show_customer_orders') }}">Mes commandes</a>
+                    </li>
+                    <li class="px-3">
+                        <a href="{{ path('app_logout') }}">Déconnexion</a>
                     </li>
                 </ul>
             </div>

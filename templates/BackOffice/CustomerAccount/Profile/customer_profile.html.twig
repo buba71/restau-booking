@@ -1,0 +1,45 @@
+{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
+
+{% block body %}
+    <div class="text-muted">
+        <h1>Mon Profil</h1>
+    </div>
+
+
+    <section class="card user-profile mt-5 p-3" id="customer-profile">
+        {% for message in app.flashes('success') %}
+         <div class="alert alert-success">
+            {{ message }}
+         </div>
+        {% endfor %}
+        
+        <h3 class="card-title py-5 text-muted">Mes Informations</h3>
+        <div class="car-body">
+            <table>
+                <tr>
+                    <th scope="row">Prénom:</th>
+                    <td class="px-3">{{ app.user.firstName }}</td>         
+                </tr>
+                <tr>
+                    <th scope="row">Nom:</th>
+                    <td class="px-3">{{ app.user.lastName }}</td>         
+                </tr>
+                <tr>
+                    <th scope="row">Numéro de téléphone:</th>
+                    <td class="px-3">{{ app.user.phone }}</td>         
+                </tr>
+                <tr>
+                    <th scope="row">Email:</th>
+                    <td class="px-3">{{ app.user.Email }}</td>         
+                </tr>
+                
+            </table>
+        </div>
+
+        <div class="card-footer my-5">
+            <a href="{{ path ('customer_edit', {'id': app.user.id}) }}" type="button" class="btn btn-secondary">Modifier</a>
+            <a href="{{ path ('customer_delete', {'id': app.user.id}) }}" type="button" class="btn btn-danger">Supprimer le compte</a>
+        </div>
+        
+    </section>
+{% endblock %}

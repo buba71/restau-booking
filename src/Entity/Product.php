@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+/**
+ * Product interface
+ */
 interface Product
 {
     public function getPrice(): float;

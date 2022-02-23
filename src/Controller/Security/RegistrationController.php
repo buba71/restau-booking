@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
+use App\Entity\TimeSlot;
 use App\Entity\User;
 use App\Form\CustomerType;
 use App\Form\ManagerType;
+use DateInterval;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +61,7 @@ final class RegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {            
+        if ($form->isSubmitted() && $form->isValid()) {   
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -68,6 +71,7 @@ final class RegistrationController extends AbstractController
                 )
             );
             $user->setRoles(['ROLE_MANAGER']);
+            $user->getRestaurant()->setUser($user);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

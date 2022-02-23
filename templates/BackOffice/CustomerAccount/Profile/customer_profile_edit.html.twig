@@ -1,0 +1,16 @@
+{% extends 'BackOffice/CustomerAccount/layout.html.twig' %}
+
+{% block body %}
+    <div class="text-muted">
+        <h1>Modifier mon profil</h1>
+    </div>
+    <section class="card user-profile mt-5 p-3" id="customer-profile-edit">
+        {{ form_start(form) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.submit, {'label': 'Modifier'}) }}
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

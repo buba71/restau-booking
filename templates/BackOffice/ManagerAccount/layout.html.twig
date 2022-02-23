@@ -38,19 +38,25 @@
                 <h1 class="text-center"><a href="#" class="logo">Brand</a></h1>
                 <ul class="list-unstyled components mb-5">
                     <li class="px-3">
-                        <a href="{{ path('show_timeSlots')}}">Mes horaires</a>
+                        <a href="{{ path('show_timeSlots') }}">Informations personnelles</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('update_timeSlots', {'id': 1}) }}">Modifier les horaires</a>
+                        <a href="{{ path('show_timeSlots') }}">Mon restaurant</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_closed_date', {'id': 1}) }}">Dates de fermeture</a>
+                        <a href="{{ path('show_timeSlots') }}">Mes horaires</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_restaurant_orders', {'id': 1}) }}">Commandes</a>
+                        <a href="{{ path('update_timeSlots') }}">Modifier les horaires</a>
                     </li>
                     <li class="px-3">
-                        <a href="{{ path('show_restaurant_bookings', {'id': 1}) }}">Réservations</a>
+                        <a href="{{ path('show_closed_date') }}">Dates de fermeture</a>
+                    </li>
+                    <li class="px-3">
+                        <a href="{{ path('show_restaurant_orders') }}">Commandes</a>
+                    </li>
+                    <li class="px-3">
+                        <a href="{{ path('show_restaurant_bookings') }}">Réservations</a>
                     </li>
                     <li class="px-3">
                         <a href="{{ path('show_categories') }}">Catégories de produits</a>
@@ -61,6 +67,10 @@
                     <li class="px-3">
                         <a href="{{ path('show_menus') }}">Menus</a>
                     </li>
+                    <li class="px-3">
+                        <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    </li>
+                </ul>
             </div>
         </nav>
 
