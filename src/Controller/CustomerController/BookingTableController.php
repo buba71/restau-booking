@@ -17,12 +17,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
-#[IsGranted('ROLE_CUSTOMER')]
 final class BookingTableController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_bookings', name:'show_bookings')]
+    #[IsGranted('ROLE_CUSTOMER')]
     public function showBookings(BookingRepository $bookingRepository): Response
     {
         $bookings = $bookingRepository->findBookingWithoutOrdersByUSer($this->getUser()->getId());
@@ -32,6 +32,9 @@ final class BookingTableController extends AbstractController
         ]);
     }
 
+    /**
+     * Excluded from authentication.
+     */
     #[Route('/booking/{id}', name: 'booking')]
     public function bookTable(Request $request, Restaurant $restaurant, SessionInterface $session): Response
     {
@@ -70,6 +73,7 @@ final class BookingTableController extends AbstractController
     }
 
     #[Route('/edit_booking/{id}', name:'edit_booking')]
+    #[IsGranted('ROLE_CUSTOMER')]
     public function editBooking(Request $request, Booking $booking): Response
     {
         $form = $this->createForm(BookingType::class, $booking);
@@ -93,6 +97,7 @@ final class BookingTableController extends AbstractController
     }
 
     #[Route('/delete_booking/{id}', name:'delete_booking')]
+    #[IsGranted('ROLE_CUSTOMER')]
     public function deleteBooking(Request $request, Booking $booking): Response
     {        
         $this->entityManager->remove($booking);

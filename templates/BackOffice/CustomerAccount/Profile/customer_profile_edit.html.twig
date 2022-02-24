@@ -6,11 +6,20 @@
     </div>
     <section class="card user-profile mt-5 p-3" id="customer-profile-edit">
         {{ form_start(form) }}
+
             {{ form_row(form.firstName) }}
             {{ form_row(form.lastName) }}
             {{ form_row(form.phone) }}
             {{ form_row(form.email) }}
-            {{ form_row(form.submit, {'label': 'Modifier'}) }}
+            <div class="form-controls">
+                <div class="d-inline-block">
+                    {{ form_row(form.submit, {'label': 'Modifier'}) }}                           
+                </div>
+                <div class="d-inline-block ml-3">
+                    <a href="{{ path('customer_profile') }}" type="button" class="btn btn-secondary">Annuler</a>
+                </div>
+            </div>
+            
         {{ form_end(form) }}
     </section>
 {% endblock %}

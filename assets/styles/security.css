@@ -1,0 +1,12 @@
+
+.login-wrapper {
+    margin-top: 200px;
+}
+.login-form {
+    width: 75%;
+    margin: auto;
+}
+
+.login-form .card-body {
+    padding: 5rem;
+}
