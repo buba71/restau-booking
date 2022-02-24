@@ -20,8 +20,8 @@ security:
             provider: app_user_provider
 
             form_login:
-                login_path: login
-                check_path: login
+                login_path: app_login
+                check_path: app_login
                 enable_csrf: true
 
             logout:
@@ -36,5 +36,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/manager, roles: ROLE_MANAGER }
-        - { path: ^/customer, roles: ROLE_CUSTOMER }
+        # - { path: ^/customer, roles: ROLE_CUSTOMER }
+        # - { path: ^/manager, roles: ROLE_MANAGER }
