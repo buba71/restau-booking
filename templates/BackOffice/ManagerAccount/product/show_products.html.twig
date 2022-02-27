@@ -6,24 +6,21 @@
 
 {% block body %}
 
-{% for message in app.flashes('success') %}
+    {% for message in app.flashes('success') %}
 
-    <div class="alert alert-success fade show" role="alert">
-        {{ message }}
-    </div>
+        <div class="alert alert-success fade show" role="alert">
+            {{ message }}
+        </div>
 
-{% endfor %}
-
-
-    <div>  
+    {% endfor %}
+     
         <div class="text-muted">
               <h1>Gérer mes produits</h1>
         </div> 
-{% if dishes | length > 0 %}
+
+    {% if products | length > 0 %}
 
         <section class="card mt-5 p-3" id="dishes-list">
-            
-            
             <table class="table">
                 <thead>
                     <tr>
@@ -34,39 +31,39 @@
                         <th class="p-3" scope="col">Actions</th>
                     </tr>
                 </thead>
-                {% for dish in dishes %}
+                {% for product in products %}
 
                 <tbody>                    
                     <tr>
-                        <td class="p-3">{{ dish.name}}</td>
-                        <td class="p-3">{{ dish.category.name }}</td>                        
-                        <td class="p-3">{{ dish.price|format_currency('EUR') }}</td>
-                        <td class="p-3">{{ dish.addedAt|date('d-M-Y') }}</td>
+                        <td class="p-3">{{ product.name}}</td>
+                        <td class="p-3">{{ product.category.name }}</td>                        
+                        <td class="p-3">{{ product.price|format_currency('EUR') }}</td>
+                        <td class="p-3">{{ product.addedAt|date('d-M-Y') }}</td>
                         <td class="p-3">
                             <a href="#" type="button" class="btn btn-danger btn-sm">Supprimer</a>
                         </td>
                     </tr>                                     
                 </tbody>
-
+                
                 {% endfor %} 
             </table>
-
-            
-
         </section>
-    </div>
+
 
     {% else %}
 
-    <div class="alert alert-info">
-        <p>Vous ne proposez aucun produit pour le moment.</p>
-    </div>
+        <div class="alert alert-info">
+            <p>Vous ne proposez aucun produit pour le moment.</p>
+        </div>
 
-{% endif %}
+    {% endif %}
 
-    <section class="card mt-5 p-3">
-        <h2>Ajouter un produit</h2>   
-        {{ form(form) }}     
-    </section>
+        <section class="card mt-5 p-3">
+
+            <h2>Ajouter un produit</h2>   
+
+            {{ form(form) }}
+
+        </section>
 
 {% endblock %}

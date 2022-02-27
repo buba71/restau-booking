@@ -6,39 +6,44 @@
         <h1>Réservations</h1>
     </div>
 
-    <section class="card mt-5 p-3" id="booking_list">        
+    <section class="card mt-5 p-3" id="booking_list">     
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Réservé par</th>
-                            <th>Date de réservation</th>
-                            <th>Nombre de couverts</th>                            
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+        {% if bookings | length > 0 %}   
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Réservé par</th>
+                        <th>Date de réservation</th>
+                        <th>Nombre de couverts</th>                            
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    {% for booking in bookings %}
                         
-                    <tbody>
-                        {% for booking in bookings %}
-                            {% if booking.bookingOrder is null %}
-                                <tr>
-                                    <td>{{ booking.bookingAt | date('d M Y') }}</td>
-                                    <td></td>
-                                    <td>{{ booking.bookingDate | date('d M Y') }}</td>
-                                    <td>{{ booking.coversNumber }}</td>                         
-                                    <td>
-                                        <i class="fa fa-eye mr-2"></i>
-                                        <i class="fa fa-check mr-2"></i>
-                                        <i class="fa fa-trash"></i>
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %} 
-
-                    </tbody>
-                </table>
-
+                        <tr>
+                            <td>{{ booking.bookingAt | date('d M Y') }}</td>
+                            <td></td>
+                            <td>{{ booking.bookingDate | date('d M Y') }}</td>
+                            <td>{{ booking.coversNumber }}</td>                         
+                            <td>
+                                <i class="fa fa-eye mr-2"></i>
+                                <i class="fa fa-check mr-2"></i>
+                                <i class="fa fa-trash"></i>
+                            </td>
+                        </tr>
+                        
+                    {% endfor %} 
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info mb-0">
+                <p>Aucune réservation en cours.</p>
+            </div>
+        {% endif %}
                
     </section>
     
