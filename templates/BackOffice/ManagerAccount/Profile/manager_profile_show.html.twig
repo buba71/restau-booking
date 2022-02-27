@@ -14,7 +14,7 @@
          </div>
         {% endfor %}
         
-        <h3 class="card-title py-5 text-muted">Mes Informations</h3>
+        <h3 class="card-title py-3 text-muted">Mes Informations</h3>
         <div class="car-body">
             <table>
                 <tr>
@@ -37,9 +37,9 @@
             </table>
         </div>
 
-        <div class="card-footer my-5">
+        <div class="mt-5">
             <a href="{{ path ('manager_edit', {'id': app.user.id}) }}" type="button" class="btn btn-secondary">Modifier</a>
-            <a href="{{ path ('manager_delete', {'id': app.user.id}) }}" type="button" class="btn btn-danger">Supprimer le compte</a>
+            <a href="{{ path ('manager_delete', {'id': app.user.id}) }}" type="button" class="btn btn-danger ml-3">Supprimer le compte</a>
         </div>
         
     </section>

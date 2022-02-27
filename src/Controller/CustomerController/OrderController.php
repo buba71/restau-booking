@@ -21,9 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
 #[IsGranted('ROLE_CUSTOMER')]
-final class BookingOrderController extends AbstractController
+final class OrderController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager, private SessionInterface $session) {}
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_booking_orders', name: 'show_customer_orders')]
     public function showBookingOrders(BookingRepository $bookingRepository): Response
@@ -38,7 +38,7 @@ final class BookingOrderController extends AbstractController
     }
 
     #[Route('/order_summary', name: 'order_summary' )]
-    public function recapOrder(
+    public function summarizeOrder(
         Request $request,
         RestaurantRepository $restaurantRepository,
         MenuItemRepository $menuItemRepository,
@@ -51,19 +51,12 @@ final class BookingOrderController extends AbstractController
         if ($session->has('booking') && $session->has('order') && $session->has('cart')) {
             
             $booking = $session->get('booking');
-
-            // TODO This would be dynamique on the next version.
-
-            $restaurant = $restaurantRepository->findOneBy(['id' => 1]);
-
-            $booking->setRestaurant($restaurant);
-            $booking->setUser($this->getUser());
-
-            $order = $session->get('order');
             $cart = $session->get('cart');
+            $order = $session->get('order');     
+            $order->setBooking($booking);              
+            
             $amount = 0;
-
-            $order->setBooking($session->get('booking'));
+            
 
             // If have previous session cart, clear previous order lines.
             if ($session->get('isNewCartSession')) {
@@ -107,13 +100,19 @@ final class BookingOrderController extends AbstractController
             
             $order->setAmount($amount);            
 
+            // User can add comments for current order.
             $form = $this->createForm(OrderLastStepType::class, $order);
 
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                
+                $restaurant = $restaurantRepository->findOneBy(['id' => $booking->getRestaurant()->getId()]);
 
-                $this->entityManager->persist($order);
+                $booking->setUser($this->getUser());
+                $booking->setBookingOrder($order);
+                $restaurant->addBooking($booking);       
+                
                 $this->entityManager->flush();
 
                 $this->addFlash('success', 'Votre commande a bien été enregistrée.');

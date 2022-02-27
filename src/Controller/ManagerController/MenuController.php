@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * class MenuController
+ * 
+ * Manage Menus(CRUD menus)
+ */
 #[Route('/manager')]
 #[IsGranted('ROLE_MANAGER')]
 final class MenuController extends AbstractController
@@ -55,7 +60,7 @@ final class MenuController extends AbstractController
 
                 if (count($errors) === 0) {
 
-                    $menu->setRestaurant($restaurant);
+                    $restaurant->addMenu($menu);
 
                     $this->entityManager->persist($menu);
                     $this->entityManager->flush();

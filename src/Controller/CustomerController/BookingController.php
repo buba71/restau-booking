@@ -17,20 +17,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
-final class BookingTableController extends AbstractController
+final class BookingController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
-
-    #[Route('/show_bookings', name:'show_bookings')]
-    #[IsGranted('ROLE_CUSTOMER')]
-    public function showBookings(BookingRepository $bookingRepository): Response
-    {
-        $bookings = $bookingRepository->findBookingWithoutOrdersByUSer($this->getUser()->getId());
-
-        return $this->render('BackOffice/CustomerAccount/Booking/show_bookings.html.twig', [
-            'bookings' => $bookings
-        ]);
-    }
 
     /**
      * Excluded from authentication.
@@ -46,13 +35,16 @@ final class BookingTableController extends AbstractController
         
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if('booking' === $form->getClickedButton()->getName()) {
 
-                $this->denyAccessUnlessGranted('ROLE_CUSTOMER');
-                $booking->setUser($this->getUser());            
-                $restaurant->addBooking($booking);
+            // Client must be authenticated at this point.
+            $this->denyAccessUnlessGranted('ROLE_CUSTOMER'); 
 
-                $this->entityManager->persist($restaurant);
+            $booking->setUser($this->getUser());            
+            $restaurant->addBooking($booking);
+
+            if('booking' === $form->getClickedButton()->getName()) {                               
+
+                $this->entityManager->persist($booking);
                 $this->entityManager->flush();
 
                 $this->addFlash('success', 'Votre réservation a bien été prise en compte');
@@ -62,15 +54,26 @@ final class BookingTableController extends AbstractController
 
             $session->set('booking', $booking);
 
-            return $this->redirectToRoute('order');
+            return $this->redirectToRoute('order', ['id' => $restaurant->getId()]);
             
         }
         
-        return $this->renderForm('FrontOffice/booking_restaurant.html.twig', [ 
+        return $this->renderForm('FrontOffice/Restaurant/restaurant_booking_index.html.twig', [ 
             'restaurant' => $restaurant,
             'form' => $form
         ]);
     }
+
+    #[Route('/show_bookings', name:'show_bookings')]
+    #[IsGranted('ROLE_CUSTOMER')]
+    public function showBookings(BookingRepository $bookingRepository): Response
+    {
+        $bookings = $bookingRepository->findBookingWithoutOrdersByUSer($this->getUser()->getId());
+
+        return $this->render('BackOffice/CustomerAccount/Booking/show_bookings.html.twig', [
+            'bookings' => $bookings
+        ]);
+    }    
 
     #[Route('/edit_booking/{id}', name:'edit_booking')]
     #[IsGranted('ROLE_CUSTOMER')]

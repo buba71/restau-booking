@@ -7,45 +7,51 @@
     </div>
 
     <section class="card mt-5 p-3" id="order_list">
+
     {% set status = ['En attente']%}
         
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Commandé par</th>
-                            <th>Type</th>
-                            <th>Total</th>                            
-                            <th>Statut</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+        {% if bookings | length > 0 %}
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Commandé par</th>
+                        <th>Type</th>
+                        <th>Total</th>                            
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    {% for booking in bookings %}                            
                         
-                    <tbody>
-                        {% for booking in bookings %}
-                            {% if booking.bookingOrder is not null %}
-                            
-                                <tr>
-                                    <td>{{ booking.bookingOrder.registeredAt | date('d M Y') }}</td>
-                                    <td></td>
-                                    <td>{% if booking.bookingOrder.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</td>
-                                    <td>{{ booking.bookingOrder.amount | format_currency('EUR') }}</td>
-                                    <td>{{ status[booking.bookingOrder.status] }}</td>                            
-                                    <td>
-                                        <i class="fa fa-eye mr-2"></i>
-                                        <i class="fa fa-check mr-2"></i>
-                                        <i class="fa fa-trash"></i>
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td>{{ booking.bookingOrder.registeredAt | date('d M Y') }}</td>
+                            <td></td>
+                            <td>{% if booking.bookingOrder.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</td>
+                            <td>{{ booking.bookingOrder.amount | format_currency('EUR') }}</td>
+                            <td>{{ status[booking.bookingOrder.status] }}</td>                            
+                            <td>
+                                <i class="fa fa-eye mr-2"></i>
+                                <i class="fa fa-check mr-2"></i>
+                                <i class="fa fa-trash"></i>
+                            </td>
+                        </tr>
+                        
+                    {% endfor %}
+                </tbody>
+            </table>
 
-                            {% endif %}
-                        {% endfor %}
+        {% else %}
 
+            <div class="alert alert-info mb-0">
+                <p>Aucune commande en cours.</p>
+            </div>
 
-                    </tbody>
-                </table>
-
+        {% endif %}
                 
     </section>
     

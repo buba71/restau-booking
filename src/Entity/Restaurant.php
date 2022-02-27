@@ -84,7 +84,7 @@ class Restaurant
     private Collection $menus;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", mappedBy="restaurant")
+     * @ORM\OneToOne(targetEntity="User", mappedBy="restaurant", cascade={"persist"})
      * JoinColumn(name="manager_id", referencedColumnName="id")
      */
     private ?User $user;

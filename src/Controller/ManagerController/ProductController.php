@@ -33,7 +33,7 @@ final class ProductController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            $product->setRestaurant($restaurant);
+            $restaurant->addMenuItem($product);
 
             $this->entityManager->persist($product);
             $this->entityManager->flush();
@@ -45,7 +45,7 @@ final class ProductController extends AbstractController
 
 
         return $this->renderForm('BackOffice/ManagerAccount/product/show_products.html.twig', [
-            'dishes' => $products,
+            'products' => $products,
             'form' => $form
         ]);
     }

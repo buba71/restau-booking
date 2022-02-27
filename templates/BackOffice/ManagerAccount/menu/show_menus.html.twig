@@ -6,25 +6,25 @@
 
 {% block body %}
 
-{% for message in app.flashes('success') %}
+    {% for message in app.flashes('success') %}
 
-    <div class="alert alert-success fade show" role="alert">
-        {{ message }}
-    </div>
+        <div class="alert alert-success fade show" role="alert">
+            {{ message }}
+        </div>
 
-{% endfor %}
+    {% endfor %}
 
 
 
-    <div>  
-        <div class="text-muted">
-              <h1>Gérer mes menus</h1>
-        </div> 
 
-{% if menus | length > 0 %}
+    <div class="text-muted">
+          <h1>Gérer mes menus</h1>
+    </div> 
 
-        <section class="card mt-5 p-3" id="categories-list">            
-            
+    {% if menus | length > 0 %}
+
+        <section class="card mt-5 p-3" id="categories-list">  
+            <h2>Mes menus</h2>          
             <table class="table">
                 <thead>
                     <tr>
@@ -36,9 +36,7 @@
                         <th class="p-3" scope="col">Actions</th>                        
                     </tr>
                 </thead>
-
                 {% for menu in menus %}
-
                 <tbody>                    
                     <tr>
                         <td class="p-3">{{ menu.name }}</td>
@@ -58,22 +56,21 @@
                         </td>
                     </tr>                                     
                 </tbody>
-
                 {% endfor %} 
             </table>            
-
         </section>
-    </div>
+    
 
     {% else %}
 
-    <div class="alert alert-info">
-        <p>Vous ne proposez pas de menu pour le moment.</p>
-    </div>
-    
+        <div class="alert alert-info">
+            <p>Vous ne proposez pas de menu pour le moment.</p>
+        </div>
 
-{% endif %}
+    {% endif %}
+
     {# set an array of item categories included on each category #}
+
     {% set categories = [] %}
     
     {% for menuItem in menuItems %}
@@ -81,6 +78,7 @@
             {% set categories = categories | merge([menuItem.category]) %}
         {% endif %}
     {% endfor %}
+    
     {# set an array of item categories included on each category #}
 
     <section class="card mt-5 p-3">

@@ -62,7 +62,7 @@ final class CartController extends AbstractController
         }
             
 
-        return $this->render('FrontOffice/cart.html.twig', [
+        return $this->render('FrontOffice/Restaurant/Cart/cart.html.twig', [
             'cart' => $cartData,
             'total' => $total
         ]);    
@@ -94,7 +94,7 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/remove-menu/{id}', name: 'remove_menu_from_cart')]
+    #[Route('/menu/remove/{id}', name: 'remove_menu_from_cart')]
     public function removeMenu(int $id, SessionInterface $session): Response
     {
         if ($this->request->getCurrentRequest()->isMethod('POST')) {
@@ -143,7 +143,7 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/remove-menuItem/{id}', name: 'remove_menu_item_from_cart')]
+    #[Route('/menu-item/remove/{id}', name: 'remove_menu_item_from_cart')]
     public function removeMenuItem(int $id, SessionInterface $session): Response
     {
         if ($this->request->getCurrentRequest()->isMethod('POST')) {
@@ -188,7 +188,7 @@ final class CartController extends AbstractController
     /**
      * Delete all MenuItem cart line where menuItem id = $id.
      */
-    #[Route('/menuItem/remove_cartLine/{id}', name: 'remove_menuItem_cart_line')]
+    #[Route('/menu-item/remove_cartLine/{id}', name: 'remove_menuItem_cart_line')]
     public function deleteMenuItem(int $id, SessionInterface $session): Response
     {
         if ($this->request->getCurrentRequest()->isMethod('POST')) {

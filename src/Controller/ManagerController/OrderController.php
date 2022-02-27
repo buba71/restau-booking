@@ -19,6 +19,9 @@ final class OrderController extends AbstractController
         $restaurant = $this->getUser()->getRestaurant();
         
         $bookings = $restaurant->getBookings();
+        $bookings = $bookings->filter(function($booking) {
+            return $booking->getBookingOrder() !== null;
+        });
 
         return $this->render('BackOffice/ManagerAccount/Order/show_orders.html.twig', [
             'bookings' => $bookings

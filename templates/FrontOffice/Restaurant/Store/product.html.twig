@@ -6,7 +6,7 @@
         <section class="mt-5" id="menu-list">
             <div>
                 <div class="mb-5">
-                    <h1 class="d-inline">Notre carte</h1><a href="{{ path('order_menu') }}" class="btn btn-outline-dark btn-sm mb-3 ml-5">Voir nos menus</a>
+                    <h1 class="d-inline">Notre carte</h1><a href="{{ path('menu_store', {'id': restaurant.id}) }}" class="btn btn-outline-dark btn-sm mb-3 ml-5">Voir nos menus</a>
                 </div>
 
                 {# set an array of item categories included on each category #}
@@ -59,9 +59,11 @@
         </section>
     </div>
     <div class="col-4">
+
         <section class="card" id="restaurant-cart">
             {{ render(path('cart_index')) }}
         </section>
+
     </div>
 </div>
 {% endblock %}

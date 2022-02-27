@@ -1,10 +1,12 @@
-
-.login-wrapper {
-    margin-top: 200px;
-}
-.login-form {
-    width: 75%;
-    margin: auto;
+.login-form {    
+    margin: 0 auto;
+    position:absolute;
+    top: 50%;  
+    left: 50%;  
+    width: 800px;
+    height: 400px;
+    margin-top: -200px;
+    margin-left: -400px;
 }
 
 .login-form .card-body {

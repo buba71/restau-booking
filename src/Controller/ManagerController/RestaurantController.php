@@ -39,7 +39,6 @@ final class RestaurantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Les informations du restaurant ont été modifiées.');

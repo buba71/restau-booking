@@ -86,9 +86,8 @@ final class TimeSlotsController extends AbstractController
         $timeSlotcollectionForm->handleRequest($request);
         $datedTimeSlotForm->handleRequest($request);
 
-        if ($timeSlotcollectionForm->isSubmitted()) {
+        if ($timeSlotcollectionForm->isSubmitted()) {            
             
-            $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('show_timeSlots');
@@ -100,7 +99,6 @@ final class TimeSlotsController extends AbstractController
             $nextDatedTimeSlot->setDayOfWeek($dayOfWeek);
 
             $restaurant->addTimeSlot($nextDatedTimeSlot);
-            $this->entityManager->persist($restaurant);
             $this->entityManager->flush();
             
             return $this->redirectToRoute('show_timeSlots');

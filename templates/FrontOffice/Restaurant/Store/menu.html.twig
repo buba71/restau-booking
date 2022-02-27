@@ -6,7 +6,7 @@
         <section class="mt-5" id="menu-list">
             <div>
                 <div class="mb-5">
-                    <h1 class="d-inline">Nos menus</h1><a href="{{ path('order_card') }}" class="btn btn-outline-dark btn-sm mb-3 ml-5">Voir la carte</a>
+                    <h1 class="d-inline">Nos menus</h1><a href="{{ path('card_store', {'id': restaurant.id}) }}" class="btn btn-outline-dark btn-sm mb-3 ml-5">Voir la carte</a>
                 </div>
 
                 {% if menus | length > 0 %}
