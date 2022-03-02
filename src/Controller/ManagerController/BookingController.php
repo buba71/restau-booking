@@ -22,7 +22,7 @@ final class BookingController extends AbstractController
         
         // Get only bookings without order.
         $bookings = $bookings->filter(function($element) {
-            return null === $element->getBookingOrder();
+            return $element->getBookingOrder() === null;
         });
         
         return $this->render('BackOffice/ManagerAccount/Booking/show_bookings.html.twig', [

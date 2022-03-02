@@ -6,6 +6,7 @@ namespace App\Entity;
 
 /**
  * Product interface
+ * Allow to manage cart items.
  */
 interface Product
 {

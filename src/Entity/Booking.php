@@ -35,7 +35,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private  DateTime $bookingAt;
+    private DateTime $bookingAt;
 
     /**
      * @ORM\Column(type="string", nullable=false)

@@ -39,14 +39,14 @@ final class TimeSlotFactory
         $array_back = [];
 
         for($index = 0; $index < count($timeSlots); $index++) {
-            if (($timeSlots[$index])->getDayOfWeek() === $todayNumber) {
+            if ($timeSlots[$index]->getDayOfWeek() === $todayNumber) {
                 // Get the start day of calendar.
                 $array_front = array_slice($timeSlots, $index, 1);
             }
-            if (($timeSlots[$index])->getDayOfWeek() > $todayNumber) {
+            if ($timeSlots[$index]->getDayOfWeek() > $todayNumber) {
                 // Get the remaining days.
                 array_push($array_front, $timeSlots[$index]);
-            } else if (($timeSlots[$index])->getDayOfWeek() < $todayNumber){
+            } else if ($timeSlots[$index]->getDayOfWeek() < $todayNumber){
                 // Get the days before the start day of calendar.
                 $array_back[] = $timeSlots[$index];
             }            
@@ -123,7 +123,7 @@ final class TimeSlotFactory
     {
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]); 
 
-        $restaurantTimeSlots = ($restaurant->getTimeSlots())->toArray();
+        $restaurantTimeSlots = $restaurant->getTimeSlots()->toArray();
 
         $timeSlotsWithDate = [];
         foreach($currentWeeklyDays as $day) {
@@ -137,12 +137,12 @@ final class TimeSlotFactory
             }            
         }
 
-        $timeSlotsWithoutDate = array_filter($restaurantTimeSlots, fn ($item) => !$item->hasDate());        
+        $timeSlotsWithoutDate = array_filter($restaurantTimeSlots, fn($item) => !$item->hasDate());        
         $timeSlots = [...$timeSlotsWithoutDate, ...$timeSlotsWithDate];
 
         // Sort weekly days by day number (0 => Sunday, 1 => Monday, 2 => tuesday, 3 => Wednesday, 4 => Thursday, 5 => Friday, 6 => Saturday).        
         usort($timeSlots, function ($a, $b) {            
-            return ($a->getDayOfWeek() <=> $b->getDayOfWeek());
+            return $a->getDayOfWeek() <=> $b->getDayOfWeek();
         });
 
         return $timeSlots;

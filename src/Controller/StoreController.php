@@ -29,7 +29,7 @@ final class StoreController extends AbstractController
 
             $session->set('order', $order);
 
-            if ('card' === $form->getClickedButton()->getName()) {
+            if ($form->getClickedButton()->getName() === 'card') {
                 
                 return $this->redirectToRoute('card_store', ['id' => $restaurant->getId()]);
             }

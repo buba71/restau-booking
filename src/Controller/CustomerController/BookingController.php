@@ -42,7 +42,7 @@ final class BookingController extends AbstractController
             $booking->setUser($this->getUser());            
             $restaurant->addBooking($booking);
 
-            if('booking' === $form->getClickedButton()->getName()) {                               
+            if($form->getClickedButton()->getName() === 'booking') {                               
 
                 $this->entityManager->persist($booking);
                 $this->entityManager->flush();

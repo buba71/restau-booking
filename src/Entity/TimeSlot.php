@@ -106,7 +106,7 @@ class TimeSlot
         return $this->dayOfWeek;
     }
 
-    public function setDayOfWeek(int $dayOfWeek)
+    public function setDayOfWeek(int $dayOfWeek): void
     {
         $this->dayOfWeek = $dayOfWeek;
     }
@@ -121,7 +121,7 @@ class TimeSlot
         return $this->serviceStartAt;
     }
 
-    public function setServiceStartAt(?DateTime $serviceStartAt)
+    public function setServiceStartAt(?DateTime $serviceStartAt): void
     {
         $this->serviceStartAt = $serviceStartAt;
     }
@@ -131,7 +131,7 @@ class TimeSlot
         return $this->serviceCloseAt;
     }
 
-    public function setServiceCloseAt(?DateTime $serviceCloseAt)
+    public function setServiceCloseAt(?DateTime $serviceCloseAt): void
     {
         $this->serviceCloseAt = $serviceCloseAt;
     }
@@ -141,7 +141,7 @@ class TimeSlot
         return $this->intervalTime;
     }
 
-    public function setIntervalTime(?int $intervalTime)
+    public function setIntervalTime(?int $intervalTime): void
     {
         $this->intervalTime = $intervalTime;
     }
@@ -151,7 +151,7 @@ class TimeSlot
         return $this->dateOfDay;
     }
 
-    public function setDateOfDay(DateTime $dateOfDay)
+    public function setDateOfDay(DateTime $dateOfDay): void
     {
         $this->hasDate = !$this->hasDate;
         $this->dateOfDay = $dateOfDay;

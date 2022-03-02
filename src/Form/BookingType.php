@@ -64,9 +64,8 @@ final class BookingType extends AbstractType
                             return null;
                         }
                         $timeStamp = strtotime($stringToDateTime);
-                        $date_time = date_create_from_format('Y m d:H:i', date('Y m d:H:i', $timeStamp));
                     
-                        return $date_time;
+                        return date_create_from_format('Y m d:H:i', date('Y m d:H:i', $timeStamp));
                     }
                  ))
         ;

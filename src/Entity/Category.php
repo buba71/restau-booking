@@ -30,7 +30,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="category", orphanRemoval=true)
      */
     private Collection $menuItems;
 

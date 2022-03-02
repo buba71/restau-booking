@@ -30,6 +30,8 @@ final class TimeSlotController extends AbstractController
             $timeSlots = $timeSlotFactory->create($restaurantId, $startDateString);
 
             return new JsonResponse($timeSlots, 200);
-        }        
+        }
+        
+        return new JsonResponse();
     }
 }

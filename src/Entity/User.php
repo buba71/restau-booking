@@ -92,7 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email) 
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
@@ -132,7 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->phone;
     }
 
-    public function setPhone(string $phone)
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
@@ -142,7 +142,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->roles;
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
@@ -152,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->restaurant;
     }
 
-    public function setRestaurant(Restaurant $restaurant)
+    public function setRestaurant(Restaurant $restaurant): void
     {
         $this->restaurant = $restaurant;
     }
@@ -162,17 +162,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return null;
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->email;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         
     }

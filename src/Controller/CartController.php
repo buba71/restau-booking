@@ -37,7 +37,7 @@ final class CartController extends AbstractController
             }
 
             // Sort Menus by name asc.
-            uasort($menuData, fn ($a, $b) => $a['product']->getName() > $b['product']->getName());
+            uasort($menuData, fn (array $a, array $b) => $a['product']->getName() > $b['product']->getName());
         }
 
         if (isset($cart['menuItem'])) {
@@ -49,7 +49,7 @@ final class CartController extends AbstractController
             }
 
             // Sort menuItem by name asc.
-            uasort($menuItemData, fn ($a, $b) => $a['product']->getName() > $b['product']->getName());
+            uasort($menuItemData, fn (array $a, array $b) => $a['product']->getName() > $b['product']->getName());
         }  
         
         $cartData = [...$menuItemData, ...$menuData];
