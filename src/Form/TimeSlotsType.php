@@ -25,8 +25,7 @@ final class TimeSlotsType extends AbstractType
             ])
             ->add('Valider', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-info mt-5']
-                ]
-            )
+            ])
         ;
     }
 

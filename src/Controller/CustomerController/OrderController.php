@@ -63,8 +63,7 @@ final class OrderController extends AbstractController
                 foreach ($order->getOrderLines() as $orderLine) {
                     $order->removeOrderLine($orderLine);
                 }
-            };            
-        
+            }
 
             if (isset($cart['menu'])) {
 
