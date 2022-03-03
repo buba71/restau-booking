@@ -57,22 +57,22 @@ class TimeSlot
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTime $serviceStartAt_am;
+    private ?DateTime $serviceStartAtAm;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTime $serviceCloseAt_am;
+    private ?DateTime $serviceCloseAtAm;
 
      /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTime $serviceStartAt_pm;
+    private ?DateTime $serviceStartAtPm;
 
      /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?DateTime $serviceCloseAt_pm;
+    private ?DateTime $serviceCloseAtPm;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -128,42 +128,42 @@ class TimeSlot
 
     public function getServiceStartAtAm(): ?DateTime
     {
-        return $this->serviceStartAt_am;
+        return $this->serviceStartAtAm;
     }
 
-    public function setServiceStartAtAm(?DateTime $serviceStartAt_am): void
+    public function setServiceStartAtAm(?DateTime $serviceStartAtAm): void
     {
-        $this->serviceStartAt_am = $serviceStartAt_am;
+        $this->serviceStartAtAm = $serviceStartAtAm;
     }
 
     public function getServiceCloseAtAm(): ?DateTime
     {
-        return $this->serviceCloseAt_am;
+        return $this->serviceCloseAtAm;
     }
 
-    public function setServiceCloseAtAm(?DateTime $serviceCloseAt_am): void
+    public function setServiceCloseAtAm(?DateTime $serviceCloseAtAm): void
     {
-        $this->serviceCloseAt_am = $serviceCloseAt_am;
+        $this->serviceCloseAtAm = $serviceCloseAtAm;
     }
 
     public function getServiceStartAtPm(): ?DateTime
     {
-        return $this->serviceStartAt_pm;
+        return $this->serviceStartAtPm;
     }
 
-    public function setServiceStartAtPm(?DateTime $serviceStartAt_pm): void
+    public function setServiceStartAtPm(?DateTime $serviceStartAtPm): void
     {
-        $this->serviceStartAt_pm = $serviceStartAt_pm;
+        $this->serviceStartAtPm = $serviceStartAtPm;
     }
 
     public function getServiceCloseAtPm(): ?DateTime
     {
-        return $this->serviceCloseAt_pm;
+        return $this->serviceCloseAtPm;
     }
 
-    public function setServiceCloseAtPm(?DateTime $serviceCloseAt_pm): void
+    public function setServiceCloseAtPm(?DateTime $serviceCloseAtPm): void
     {
-        $this->serviceCloseAt_pm = $serviceCloseAt_pm;
+        $this->serviceCloseAtPm = $serviceCloseAtPm;
     }
 
     public function getIntervalTime(): ?int

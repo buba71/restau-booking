@@ -48,14 +48,22 @@
           <div class="d-flex justify-content-center">
 
             <table cellpadding=0>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Service midi</th>
+                  <th>Service Soir</th>
+                </tr>
+              </thead>
               <tbody>
                 {% set i = 1 %}
                 {% for timeSlot in restaurant.timeSlots %}
                   {% if timeSlot.hasDate == false %}
-                  <tr>
-                    <th class="text-muted" scope="row">{{ days[index] }}</th>
-                    <td class="px-2"><em>{{ timeSlot.serviceStartAt|date('H:i') }}-{{ timeSlot.serviceCloseAt|date('H:i') }}</em></td>
-                  </tr>
+                    <tr>
+                      <th class="text-muted" scope="row">{{ days[index] }}</th>
+                      <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
+                      <td class="px-2"><em>{{ timeSlot.serviceStartAtPm|date('H:i') }}-{{ timeSlot.serviceCloseAtPm|date('H:i') }}</em></td>
+                    </tr>
                   {% endif %}
                   {% set index = index + 1 %}
                 {% endfor %}            

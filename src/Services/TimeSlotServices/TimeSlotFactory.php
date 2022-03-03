@@ -55,9 +55,22 @@ final class TimeSlotFactory
         $formattedTimeSlots = [...$array_front, ...$array_back];
 
         $timeSlotsViewModel = [];
+        $dayTimeSlot = [];
 
         foreach($formattedTimeSlots as $timeSlot) {
-            $timeSlotsViewModel[] = $this->buildTimeSlot($timeSlot);
+
+            // Restaurant is closed return empty array.
+            if ($timeSlot->isClosed()) {
+
+                $timeSlotsViewModel[] = ['Fermé'];
+
+            } else {
+                $amTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
+                $pmTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtPm(), $timeSlot->getServiceCloseAtPm(), $timeSlot->getIntervalTime() );
+
+                $dayTimeSlot = array_merge($amTimeSlot, [' '], $pmTimeSlot);
+                $timeSlotsViewModel[] = $dayTimeSlot;
+            }    
         }
 
         return $timeSlotsViewModel;
@@ -68,17 +81,17 @@ final class TimeSlotFactory
      * 
      * @return array<string>
      */
-    private function buildTimeSlot(TimeSlot $timeSlot): array
+    private function buildTimeSlot($startTime, $endTime, $intervalTime): array
     {
-        // Restaurant is closed return empty array.
-        if ($timeSlot->isClosed()) {
-            return ['Fermé'];
+        // if pm service close > 00:00 (ex:18H00 - 02H00), set service close at 23H59.
+        if ($startTime > $endTime) {
+            $endTime->setTime(23, 59);
         }
 
-        $start = $timeSlot->getServiceStartAt();
+        $start = $startTime;
         $startTime = $start->format('H:i');
-        $end = $timeSlot->getServiceCloseAt();
-        $interval =  new DateInterval('PT'.$timeSlot->getIntervalTime().'M');
+        $end = $endTime;
+        $interval =  new DateInterval('PT'.$intervalTime.'M');
 
         $timeSlot = [];
         $timeSlot[] = $startTime;
