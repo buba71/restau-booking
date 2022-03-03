@@ -29,13 +29,25 @@ final class DatedTimeSlotType extends AbstractType
                     'placeholder' => 'Date',
                 ],
             ])
-            ->add('serviceStartAt', TimeType::class, [
+            ->add('serviceStartAtAm', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
                 'required' => true,
                 'label' => false
             ])
-            ->add('serviceCloseAt', TimeType::class, [
+            ->add('serviceCloseAtAm', TimeType::class, [
+                'input'  => 'datetime',
+                'widget' => 'choice',
+                'required' => true,
+                'label' => false
+            ])
+            ->add('serviceStartAtPm', TimeType::class, [
+                'input'  => 'datetime',
+                'widget' => 'choice',
+                'required' => true,
+                'label' => false
+            ])
+            ->add('serviceCloseAtPm', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
                 'required' => true,

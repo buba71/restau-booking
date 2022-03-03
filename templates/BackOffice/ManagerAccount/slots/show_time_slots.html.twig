@@ -18,8 +18,17 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th class="p-3 text-center" scope="col">Début du service</th>
-                    <th class="p-3 text-center" scope="col">Fin du service</th>
+                    <th colspan="2" class="text-center">Service midi</th>
+                    <th colspan="2" class="text-center">Service Soir</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th class="p-3 text-center" scope="col">Début</th>
+                    <th class="p-3 text-center" scope="col">Fin</th>
+                    <th class="p-3 text-center" scope="col">Début</th>
+                    <th class="p-3 text-center" scope="col">Fin</th>
                     <th class="p-3 text-center" scope="col">Intervalle(minutes)</th>
                 </tr>
             </thead>
@@ -30,8 +39,10 @@
                     {% if timeSlot.hasDate == false %}
                         <tr>
                             <th class="time_slot_day pr-5" scope"row">{{ days[index] }}</th>
-                            <td class="p-3 text-center">{{ timeSlot.serviceStartAt|date('H:i') }}</td>
-                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAt|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.serviceStartAtAm|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAtAm|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td>
+                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
                             <td class="p-3 text-center">{{ timeSlot.intervalTime }}</td>
                         </tr>
                     {% endif %}
@@ -59,21 +70,34 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th></th>
+                        <th colspan="2" class="text-center">Service Midi</th>
+                        <th colspan="2" class="text-center">Service soir</th>
+                        <th></th>
+                    </tr>
+                    <tr>
                         <th>Date</th>
-                        <th>Début de service</th>
-                        <th>Fin de service</th>
-                        <th>Intervalle(minutes)</th>
+                        <th class="text-center">Début</th>
+                        <th class="text-center">Fin</th>
+                        <th class="text-center">Début</th>
+                        <th class="text-center">Fin</th>
+                        <th class="text-center">Intervalle(minutes)</th>
                     </tr>
                 </thead>
             {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
+
+
+            <!-- TODO delete condition : ne pas afficher les dates de fermeture dans cette vue -->
                 {% if timeSlot.isClosed == false %}
 
                     <tbody>
                         <tr>
                             <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
-                            <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceStartAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
-                            <td>{% if timeSlot.serviceStartAt is not null %} {{ timeSlot.serviceCloseAt|date('H:i') }} {% else %} Fermeture {% endif %}</td>
-                            <td>{{ timeSlot.intervalTime }}</td>
+                            <td class="text-center">{{ timeSlot.serviceStartAtAm|date('H:i') }}</td> 
+                            <td class="text-center">{{ timeSlot.serviceCloseAtAm|date('H:i') }}</td>
+                            <td class="text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td> 
+                            <td class="text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
+                            <td class="text-center">{{ timeSlot.intervalTime }}</td>
                         </tr>
                     </tbody>
 

@@ -5,9 +5,11 @@
 {% block _time_slots_timeSlots_entry_row %}
     <tr>
         <th class="time_slot-day pr-5" scope="row" ></th>
-        <td class="p-3">{{ form_row(form.serviceStartAt)}}</td>
-        <td class="p-3">{{ form_row(form.serviceCloseAt)}}</td>
-        <td class="p-3">{{ form_row(form.intervalTime)}}</td>
+        <td class="p-2">{{ form_row(form.serviceStartAtAm)}}</td>
+        <td class="p-2">{{ form_row(form.serviceCloseAtAm)}}</td>
+        <td class="p-2">{{ form_row(form.serviceStartAtPm)}}</td>
+        <td class="p-2">{{ form_row(form.serviceCloseAtPm)}}</td>
+        <td class="p-2 d-flex justify-content-center">{{ form_row(form.intervalTime)}}</td>
         <td>{{ form_row(form.dayOfWeek) }}</td>
     </tr>
 {% endblock %}
@@ -39,9 +41,17 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th class="p-3" scope="col">Début de service</th>
-                                <th class="p-3" scope="col">Fin de service</th>
-                                <th class="p-3" scope="col">Intervalle(minutes)</th>
+                                <th colspan="2" class="text-center">Service midi</th>
+                                <th colspan="2" class="text-center">Service soir</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th scope="col" class="p-2 text-center">Début</th>
+                                <th scope="col" class="p-2 text-center">Fin</th>
+                                <th scope="col" class="p-2 text-center">Début</th>
+                                <th scope="col" class="p-2 text-center">Fin</th>                                
+                                <th scope="col" class="p-2 text-center">Intervalle(minutes)</th>
                             </tr>
                         </thead>
 
@@ -73,9 +83,17 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Début de service</th>
-                    <th>Fin de service</th>
+                    <th></th>
+                    <th colspan="2" class="text-center">Service midi</th>
+                    <th colspan="2" class="text-center">Service soir</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Début</th>
+                    <th class="text-center">Fin</th>
+                    <th class="text-center">Début</th>
+                    <th class="text-center">Fin</th>
                     <th>Intervalle(minutes)</th>
                     <th></th>
                 </tr>
@@ -85,8 +103,10 @@
                 {{form_start(datedTimeSlotForm)}}
                 <tr>
                     <td>{{ form_row(datedTimeSlotForm.dateOfDay)}}</td>
-                    <td>{{ form_row(datedTimeSlotForm.serviceStartAt)}}</td>
-                    <td>{{ form_row(datedTimeSlotForm.serviceCloseAt)}}</td>
+                    <td>{{ form_row(datedTimeSlotForm.serviceStartAtAm)}}</td>
+                    <td>{{ form_row(datedTimeSlotForm.serviceCloseAtAm)}}</td>
+                    <td>{{ form_row(datedTimeSlotForm.serviceStartAtPm)}}</td>
+                    <td>{{ form_row(datedTimeSlotForm.serviceCloseAtPm)}}</td>
                     <td>{{ form_row(datedTimeSlotForm.intervalTime)}}</td>
                     <td><button type="submit" class="btn btn-info btn-sm">ajouter</button></td>
                     <td>{{ form_row(datedTimeSlotForm.dayOfWeek)}}</td>
@@ -109,11 +129,19 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th></th>
+                            <th colspan="2" class="text-center">Service midi</th>
+                            <th colspan="2" class="text-center">Service Soir</th>
+                            <th></th>
+                        </tr>
+                        <tr>
                             <th>date</th>
-                            <th>Début de service</th>
-                            <th>Fin de service</th>
-                            <th>Intervalle</th>
-                            <th>Actions</th>
+                            <th class="text-center">Début</th>
+                            <th class="text-center">Fin</th>
+                            <th class="text-center">Début</th>
+                            <th class="text-center">Fin</th>
+                            <th class="text-center">Intervalle</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                 {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
@@ -122,10 +150,12 @@
                         <tbody>
                             <tr>
                                 <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
-                                <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
-                                <td>{{ timeSlot.serviceStartAt|date('H:i') }}</td>
-                                <td>{{ timeSlot.intervalTime }}</td>
-                                <td><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
+                                <td class="text-center">{{ timeSlot.serviceStartAtAm|date('H:i') }}</td>
+                                <td class="text-center">{{ timeSlot.serviceCloseAtAm|date('H:i') }}</td>
+                                <td class="text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td>
+                                <td class="text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
+                                <td class="text-center">{{ timeSlot.intervalTime }}</td>
+                                <td class="text-center"><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
                             </tr>
                         </tbody>
                     {% endif %}

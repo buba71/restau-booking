@@ -17,13 +17,25 @@ final class TimeSlotType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('serviceStartAt', TimeType::class, [
+            ->add('serviceStartAtAm', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
                 'required' => false,
                 'label' => false
             ])
-            ->add('serviceCloseAt', TimeType::class, [
+            ->add('serviceCloseAtAm', TimeType::class, [
+                'input'  => 'datetime',
+                'widget' => 'choice',
+                'required' => false,
+                'label' => false
+            ])
+            ->add('serviceStartAtPm', TimeType::class, [
+                'input'  => 'datetime',
+                'widget' => 'choice',
+                'required' => false,
+                'label' => false
+            ])
+            ->add('serviceCloseAtPm', TimeType::class, [
                 'input'  => 'datetime',
                 'widget' => 'choice',
                 'required' => false,

@@ -4,9 +4,11 @@
 {% block _time_slots_timeSlots_entry_row %}
     <tr>
         <th class="time_slot-day pr-5 align-middle" scope="row" ></th>
-        <td class="p-3">{{ form_row(form.serviceStartAt)}}</td>
-        <td class="p-3">{{ form_row(form.serviceCloseAt)}}</td>
-        <td class="p-3">{{ form_row(form.intervalTime)}}</td>
+        <td class="p-2">{{ form_row(form.serviceStartAt_am)}}</td>
+        <td class="p-2">{{ form_row(form.serviceCloseAt_am)}}</td>
+        <td class="p-2">{{ form_row(form.serviceStartAt_pm)}}</td>
+        <td class="p-2">{{ form_row(form.serviceCloseAt_pm)}}</td>
+        <td class="p-2">{{ form_row(form.intervalTime)}}</td>
         <td>{{ form_row(form.dayOfWeek) }}</td>
     </tr>
 {% endblock %}
@@ -21,13 +23,21 @@
 
     <div class="mt-5 table-responsive">
         {{ form_start(form)}}      
-            <table class="table">
+            <table class="table table-bordered">
                 <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="2" class="text-center">Service midi</th>
+                    <th colspan="2" class="text-center">Service soir</th>
+                    <th></th>
+                </tr>
                     <tr>
                         <th></th>
-                        <th class="p-3" scope="col">Début de service</th>
-                        <th class="p-3" scope="col">Fin de service</th>
-                        <th class="p-3" scope="col">Interval</th>
+                        <th class="p-2 text-center" scope="col">Début</th>
+                        <th class="p-2 text-center" scope="col">Fin</th>
+                        <th class="p-2 text-center" scope="col">Début</th>
+                        <th class="p-2 text-center" scope="col">Fin</th>
+                        <th class="p-2 text-center" scope="col">Interval</th>
                     </tr>
                 </thead>
 
