@@ -46,7 +46,6 @@ final class ClosedDateController extends AbstractController
 
             $start = $closedDate->getStartDate();
             $end = $closedDate->getEndDate()->format('Y-m-d');
-
             
             // control the end date in closedDate entity.
             $end = new DateTime($end); // this !!!

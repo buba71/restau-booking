@@ -29,7 +29,7 @@ final class TimeSlotsController extends AbstractController
         $restaurant = $this->getUser()->getRestaurant();
         
         $timeSlots = $restaurant->getTimeSlots()->filter(function($element) {
-            return !$element->isClosed();
+            return $element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS;
         })->toArray();
         
         $datedTimeSlots = array_values(array_filter($timeSlots, function ($element) {
@@ -73,7 +73,7 @@ final class TimeSlotsController extends AbstractController
         });
 
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
-            return $element->hasDate() && !$element->isClosed();
+            return $element->hasDate() && ($element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
         });
 
         $nextDatedTimeSlot = new TimeSlot();       

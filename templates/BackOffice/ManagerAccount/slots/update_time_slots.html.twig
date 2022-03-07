@@ -5,11 +5,12 @@
 {% block _time_slots_timeSlots_entry_row %}
     <tr>
         <th class="time_slot-day pr-5" scope="row" ></th>
-        <td class="p-2">{{ form_row(form.serviceStartAtAm)}}</td>
-        <td class="p-2">{{ form_row(form.serviceCloseAtAm)}}</td>
-        <td class="p-2">{{ form_row(form.serviceStartAtPm)}}</td>
-        <td class="p-2">{{ form_row(form.serviceCloseAtPm)}}</td>
-        <td class="p-2 d-flex justify-content-center">{{ form_row(form.intervalTime)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.serviceStartAtAm)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.serviceCloseAtAm)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.serviceStartAtPm)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.serviceCloseAtPm)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.intervalTime)}}</td>
+        <td class="p-2 slot-item">{{ form_row(form.status) }}</td>
         <td>{{ form_row(form.dayOfWeek) }}</td>
     </tr>
 {% endblock %}
@@ -52,6 +53,7 @@
                                 <th scope="col" class="p-2 text-center">Début</th>
                                 <th scope="col" class="p-2 text-center">Fin</th>                                
                                 <th scope="col" class="p-2 text-center">Intervalle(minutes)</th>
+                                <th scope="col" class="p-2 text-center">Options</th>
                             </tr>
                         </thead>
 
@@ -146,7 +148,7 @@
                     </thead>
                 {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
 
-                    {% if timeSlot.isClosed == false %}
+                    {% if timeSlot.status != 7 %}
                         <tbody>
                             <tr>
                                 <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
@@ -215,12 +217,13 @@
         }
 
         // Styling table cells.
-        $('select').addClass('form-control').css('width', '65px');
+        $('select').addClass('form-control').css('width', '50px');
+        $('.input-group-text').css('font-size', 'inherit');
         $('select').parent().addClass('d-flex');
-        $('input').addClass('form-control').css('width', '45px');
         $('#dated_time_slot_dateOfDay').css('width', '130px');
         $('#closed_date_time_slots_startdate').css('width', '130px');
         $('#closed_date_time_slots_endDate').css('width', '130px');
+        $('select').css('font-size', 'small');
 
         /**
         * Functions
