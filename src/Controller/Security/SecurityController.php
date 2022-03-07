@@ -19,7 +19,7 @@ final class SecurityController extends AbstractController
     {
         // Set url to redirect after login in.
         $previousUrl = $request->headers->get('referer');
-        //$session->set('_security_referer_url', $previousUrl);
+        $session->set('_security_referer_url', $previousUrl);
 
         $error = $authenticationUtils->getLastAuthenticationError();
 

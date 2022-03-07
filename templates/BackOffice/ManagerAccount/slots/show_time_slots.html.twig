@@ -88,7 +88,7 @@
 
 
             <!-- TODO delete condition : ne pas afficher les dates de fermeture dans cette vue -->
-                {% if timeSlot.isClosed == false %}
+                {% if timeSlot.status != 7 %}
 
                     <tbody>
                         <tr>

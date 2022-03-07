@@ -51,6 +51,13 @@ final class TimeSlotType extends AbstractType
                 'required' => false,
                 'label' => false
             ])
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    "Fermé" => 7,
+                    "Continue" => 8
+                ],
+                'label' => false
+            ])
             ->add('dayOfWeek', HiddenType::class)
         ;
     }

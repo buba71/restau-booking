@@ -24,6 +24,9 @@ class TimeSlot
     public const FRIDAY = 5;
     public const SATURDAY = 6;
 
+    public const CLOSED_DAY_TIMESLOT_STATUS = 7;
+    public const CONTINOUS_DAY_TIMESLOT_STATUS = 8;
+    public const NORMAL_DAY_TIMESLOT_STATUS = 9;
 
     /**
      * @ORM\Id 
@@ -44,9 +47,9 @@ class TimeSlot
     private int $dayOfWeek;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
-    private bool $isClosed = false;
+    private int $status = 9;
 
     /**
      * @ORM\ManyToOne(targetEntity="ClosedDate", inversedBy="timeSlots")
@@ -107,7 +110,7 @@ class TimeSlot
 
     public function setClosedDate(ClosedDate $closedDate): void
     {
-        $this->isClosed = !$this->isClosed;
+        $this->status = self::CLOSED_DAY_TIMESLOT_STATUS;
         $this->closedDate = $closedDate;
     }
 
@@ -121,9 +124,14 @@ class TimeSlot
         $this->dayOfWeek = $dayOfWeek;
     }
 
-    public function isClosed(): bool
+    public function getStatus(): int
     {
-        return $this->isClosed;
+        return $this->status;
+    }
+
+    public function setStatus(int $status)
+    {
+        $this->status = $status;
     }
 
     public function getServiceStartAtAm(): ?DateTime

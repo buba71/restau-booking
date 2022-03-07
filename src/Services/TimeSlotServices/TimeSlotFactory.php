@@ -57,14 +57,17 @@ final class TimeSlotFactory
         $timeSlotsViewModel = [];
         $dayTimeSlot = [];
 
+        //
+
         foreach($formattedTimeSlots as $timeSlot) {
 
             // Restaurant is closed return empty array.
-            if ($timeSlot->isClosed()) {
+            if ($timeSlot->getStatus() == 7) {
 
                 $timeSlotsViewModel[] = ['Fermé'];
 
             } else {
+                
                 $amTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
                 $pmTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtPm(), $timeSlot->getServiceCloseAtPm(), $timeSlot->getIntervalTime() );
 
