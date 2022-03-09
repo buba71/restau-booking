@@ -20,12 +20,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/customer')]
-#[IsGranted('ROLE_CUSTOMER')]
 final class OrderController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     #[Route('/show_booking_orders', name: 'show_customer_orders')]
+    #[IsGranted('ROLE_CUSTOMER')]
     public function showBookingOrders(BookingRepository $bookingRepository): Response
     {
         $bookingWithOrders = $bookingRepository->findBookingWithOrdersByUSer($this->getUser()->getId());
@@ -105,6 +105,9 @@ final class OrderController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                
+                // Client must be authenticated at this point.
+                $this->denyAccessUnlessGranted('ROLE_CUSTOMER'); 
                 
                 $restaurant = $restaurantRepository->findOneBy(['id' => $booking->getRestaurant()->getId()]);
 
