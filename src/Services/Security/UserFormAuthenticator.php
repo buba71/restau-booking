@@ -43,7 +43,7 @@ final class UserFormAuthenticator extends AbstractAuthenticator
     
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // Set target Url where redirect user.
+        // Set target Url from session(SecurityController) where redirect user.
         $targetUrl = $this->session->get('_security_referer_url');
 
         if ($targetUrl) {
@@ -53,6 +53,7 @@ final class UserFormAuthenticator extends AbstractAuthenticator
         return new RedirectResponse(
             $this->router->generate('home')
         );
+
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response

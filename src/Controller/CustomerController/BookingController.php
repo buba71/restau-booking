@@ -36,13 +36,14 @@ final class BookingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Client must be authenticated at this point.
-            $this->denyAccessUnlessGranted('ROLE_CUSTOMER'); 
+            $restaurant->addBooking($booking);   
 
-            $booking->setUser($this->getUser());            
-            $restaurant->addBooking($booking);
+            if($form->getClickedButton()->getName() === 'booking') {   
 
-            if($form->getClickedButton()->getName() === 'booking') {                               
+                // Client must be authenticated at this point.
+                $this->denyAccessUnlessGranted('ROLE_CUSTOMER'); 
+
+                $booking->setUser($this->getUser());    
 
                 $this->entityManager->persist($booking);
                 $this->entityManager->flush();
