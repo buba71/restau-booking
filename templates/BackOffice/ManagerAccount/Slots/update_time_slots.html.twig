@@ -4,14 +4,18 @@
 {% form_theme timeSlotcollectionForm _self %}
 {% block _time_slots_timeSlots_entry_row %}
     <tr>
-        <th class="time_slot-day pr-5" scope="row" ></th>
-        <td class="p-2 slot-item">{{ form_row(form.serviceStartAtAm)}}</td>
-        <td class="p-2 slot-item">{{ form_row(form.serviceCloseAtAm)}}</td>
-        <td class="p-2 slot-item">{{ form_row(form.serviceStartAtPm)}}</td>
-        <td class="p-2 slot-item">{{ form_row(form.serviceCloseAtPm)}}</td>
-        <td class="p-2 slot-item">{{ form_row(form.intervalTime)}}</td>
-        <td class="p-2 slot-item">{{ form_row(form.status) }}</td>
+        <th class="time_slot-day pr-5 align-middle" scope="row" rowspan="2"></th>
+        <td class="p-4">Ouverture</td>
+        <td class="p-4 slot-item start-am">{{ form_row(form.serviceStartAtAm)}}</td>
+        <td class="p-4 slot-item start-pm">{{ form_row(form.serviceStartAtPm)}}</td>
+        <td class="p-4 slot-item d-flex justify-content-center">{{ form_row(form.intervalTime)}}</td>
+        <td class="p-4 slot-item timeslot-status">{{ form_row(form.status) }}</td>
         <td>{{ form_row(form.dayOfWeek) }}</td>
+    </tr>
+    <tr style="border-bottom: 1px solid #dee2e6;">
+        <td class="p-4">Fermeture</td>
+        <td class="p-4 slot-item close-am">{{ form_row(form.serviceCloseAtAm)}}</td>
+        <td class="p-4 slot-item close-pm">{{ form_row(form.serviceCloseAtPm)}}</td>          
     </tr>
 {% endblock %}
 
@@ -39,21 +43,14 @@
             {{ form_start(timeSlotcollectionForm)}}      
                 <div class="table-responsive">
                     <table class="table">
-                        <thead>
+                        <thead>                            
                             <tr>
                                 <th></th>
-                                <th colspan="2" class="text-center">Service midi</th>
-                                <th colspan="2" class="text-center">Service soir</th>
                                 <th></th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th scope="col" class="p-2 text-center">Début</th>
-                                <th scope="col" class="p-2 text-center">Fin</th>
-                                <th scope="col" class="p-2 text-center">Début</th>
-                                <th scope="col" class="p-2 text-center">Fin</th>                                
-                                <th scope="col" class="p-2 text-center">Intervalle(minutes)</th>
-                                <th scope="col" class="p-2 text-center">Options</th>
+                                <th scope="col" class="text-center">Premier Service</th>
+                                <th scope="col" class="text-center">Deuxième service</th>
+                                <th scope="col" class="text-center">Intervalle(minutes)</th>
+                                <th scope="col" class="text-center">Type</th>                                
                             </tr>
                         </thead>
 
@@ -86,16 +83,16 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th colspan="2" class="text-center">Service midi</th>
-                    <th colspan="2" class="text-center">Service soir</th>
+                    <th colspan="2" class="text-center">Premier service</th>
+                    <th colspan="2" class="text-center">Deuxième service</th>
                     <th></th>
                 </tr>
                 <tr>
                     <th class="text-center">Date</th>
-                    <th class="text-center">Début</th>
-                    <th class="text-center">Fin</th>
-                    <th class="text-center">Début</th>
-                    <th class="text-center">Fin</th>
+                    <th class="text-center">Ouverture</th>
+                    <th class="text-center">Fermeture</th>
+                    <th class="text-center">Ouverture</th>
+                    <th class="text-center">Fermeture</th>
                     <th>Intervalle(minutes)</th>
                     <th></th>
                 </tr>
@@ -110,13 +107,17 @@
                     <td>{{ form_row(datedTimeSlotForm.serviceStartAtPm)}}</td>
                     <td>{{ form_row(datedTimeSlotForm.serviceCloseAtPm)}}</td>
                     <td>{{ form_row(datedTimeSlotForm.intervalTime)}}</td>
-                    <td><button type="submit" class="btn btn-info btn-sm">ajouter</button></td>
+                    
                     <td>{{ form_row(datedTimeSlotForm.dayOfWeek)}}</td>
                 </tr>
-                {{ form_end(datedTimeSlotForm) }}
+                
 
             </tbody>
-        </table>            
+        </table> 
+        <div class="form-controls text-center">
+            <button type="submit" class="btn btn-info w-25">ajouter</button>
+        </div>
+        {{ form_end(datedTimeSlotForm) }}           
         
     </section>   
 
@@ -137,7 +138,7 @@
                             <th></th>
                         </tr>
                         <tr>
-                            <th>date</th>
+                            <th>ate</th>
                             <th class="text-center">Début</th>
                             <th class="text-center">Fin</th>
                             <th class="text-center">Début</th>
@@ -217,13 +218,40 @@
         }
 
         // Styling table cells.
-        $('select').addClass('form-control').css('width', '50px');
-        $('.input-group-text').css('font-size', 'inherit');
-        $('select').parent().addClass('d-flex');
+        $('select').addClass('form-control');
         $('#dated_time_slot_dateOfDay').css('width', '130px');
-        $('#closed_date_time_slots_startdate').css('width', '130px');
-        $('#closed_date_time_slots_endDate').css('width', '130px');
-        $('select').css('font-size', 'small');
+
+        //Change form render regardling the timeSlot status.
+
+        const status = $('.timeslot-status select');
+        status.on('change', function (event) {
+            console.log(event.target.value)
+            const id = $(this).attr('id');
+            const numberId = id.replace(/\D/g,'');
+
+            if(event.target.value == 8) {
+                
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', 'disabled')
+               
+            } else if (event.target.value == 7) {
+
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', 'disabled')
+
+            } else if (event.target.value == 9){
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', false)
+            }            
+        })
+
+        
 
         /**
         * Functions

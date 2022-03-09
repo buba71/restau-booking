@@ -15,37 +15,34 @@
         {% if timeSlots | length >  0 %}
 
         <table class="table">
-            <thead>
+            <thead>                
                 <tr>
                     <th></th>
-                    <th colspan="2" class="text-center">Service midi</th>
-                    <th colspan="2" class="text-center">Service Soir</th>
                     <th></th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th class="p-3 text-center" scope="col">Début</th>
-                    <th class="p-3 text-center" scope="col">Fin</th>
-                    <th class="p-3 text-center" scope="col">Début</th>
-                    <th class="p-3 text-center" scope="col">Fin</th>
-                    <th class="p-3 text-center" scope="col">Intervalle(minutes)</th>
+                    <th class="p-3 text-center" scope="col">Premier Service</th>
+                    <th class="p-3 text-center" scope="col">Deuxième service</th>
+                    <th class="p-3 text-center" scope="col">Intervalle(minutes)</th>                    
                 </tr>
             </thead>
         
             <tbody>
+            
+                {% for timeSlot in timeSlots %}
+                        
+                            {% if timeSlot.status == 9 %}
 
-                {% for timeSlot in timeSlots %}  
-                    {% if timeSlot.hasDate == false %}
-                        <tr>
-                            <th class="time_slot_day pr-5" scope"row">{{ days[index] }}</th>
-                            <td class="p-3 text-center">{{ timeSlot.serviceStartAtAm|date('H:i') }}</td>
-                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAtAm|date('H:i') }}</td>
-                            <td class="p-3 text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td>
-                            <td class="p-3 text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
-                            <td class="p-3 text-center">{{ timeSlot.intervalTime }}</td>
-                        </tr>
-                    {% endif %}
+                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/normal_day.html.twig' %}
+
+                            {% elseif timeSlot.status == 8 %}
+
+                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/continous_day.html.twig' %}
+
+                            {% elseif timeSlot.status == 7 %}
+                            
+                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/closed_day.html.twig' %}
+
+                            {% endif %}                            
+                    
                 {% set index = index + 1 %}
                 {% endfor %}
 
@@ -88,7 +85,7 @@
 
 
             <!-- TODO delete condition : ne pas afficher les dates de fermeture dans cette vue -->
-                {% if timeSlot.status != 7 %}
+                {% if timeSlot.status == 9 %}
 
                     <tbody>
                         <tr>

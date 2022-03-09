@@ -29,14 +29,14 @@ final class TimeSlotsController extends AbstractController
         $restaurant = $this->getUser()->getRestaurant();
         
         $timeSlots = $restaurant->getTimeSlots()->filter(function($element) {
-            return $element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS;
-        })->toArray();
+            return !$element->hasDate();
+        })->toArray();        
         
-        $datedTimeSlots = array_values(array_filter($timeSlots, function ($element) {
+        $datedTimeSlots = $restaurant->getTimeSlots()->filter(function($element) {
             return $element->hasDate();
-        }));
+        })->toArray();
 
-        return $this->render('BackOffice/ManagerAccount/slots/show_time_slots.html.twig', [
+        return $this->render('BackOffice/ManagerAccount/Slots/show_time_slots.html.twig', [
             'timeSlots' => $timeSlots,
             'datedTimeSlots' => $datedTimeSlots,
         ]);
@@ -58,7 +58,7 @@ final class TimeSlotsController extends AbstractController
             return $this->redirectToRoute('show_timeSlots');
         }
 
-        return $this->renderForm('BackOffice/ManagerAccount/slots/set_time_slots.html.twig',  [
+        return $this->renderForm('BackOffice/ManagerAccount/Slots/set_time_slots.html.twig',  [
             'form' => $form,
         ]);
     } 
@@ -104,7 +104,7 @@ final class TimeSlotsController extends AbstractController
             return $this->redirectToRoute('show_timeSlots');
         }
         
-        return $this->renderForm('BackOffice/ManagerAccount/slots/update_time_slots.html.twig',  [
+        return $this->renderForm('BackOffice/ManagerAccount/Slots/update_time_slots.html.twig',  [
             'timeSlotcollectionForm' => $timeSlotcollectionForm,
             'datedTimeSlotForm' => $datedTimeSlotForm,
             'weeklyTimeSlots' => $weeklyTimeSlots->toArray(),

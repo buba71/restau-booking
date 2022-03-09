@@ -66,7 +66,12 @@ final class TimeSlotFactory
 
                 $timeSlotsViewModel[] = ['Fermé'];
 
-            } else {
+            } else if ($timeSlot->getStatus() == 8) {
+
+                $timeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
+                $timeSlotsViewModel[] = $timeSlot;
+
+            } else if ($timeSlot->getStatus() == 9){
                 
                 $amTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
                 $pmTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtPm(), $timeSlot->getServiceCloseAtPm(), $timeSlot->getIntervalTime() );
