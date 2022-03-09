@@ -1,0 +1,17 @@
+<tr>
+    <th class="time_slot_day pr-5 align-middle" scope"row" rowspan="2">{{ days[index] }}</th>
+    <td>
+        <em>Ouverture</em>
+    </td>
+    <td class="slot-item p-3 text-center">{{ timeSlot.serviceStartAtAm|date('H:i') }}</td>                            
+    <td class="slot-item p-3 text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td>                            
+    <td class="slot-item p-3 text-center">{{ timeSlot.intervalTime }}</td>
+</tr>
+
+<tr style ="border-bottom: 1px solid #dee2e6">
+    <td>
+        <em>Fermeture</em>
+    </td>
+    <td class="slot-item p-3 text-center">{{ timeSlot.serviceCloseAtAm|date('H:i') }}</td>
+    <td class="slot-item p-3 text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
+</tr>

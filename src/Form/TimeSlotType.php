@@ -53,8 +53,10 @@ final class TimeSlotType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
+                    "Normale" => 9,
+                    "Continue" => 8,
                     "Fermé" => 7,
-                    "Continue" => 8
+                    
                 ],
                 'label' => false
             ])
