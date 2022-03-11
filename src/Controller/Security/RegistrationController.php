@@ -75,7 +75,7 @@ final class RegistrationController extends AbstractController
                 )
             );
             
-            // make class
+            // TODO refacto
             
             $startAtAm = new DateTime('@-0');
             $startAtAm->setTime(10, 00);

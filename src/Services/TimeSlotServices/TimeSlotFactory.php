@@ -9,18 +9,17 @@ use App\Entity\TimeSlot;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 final class TimeSlotFactory
 {
-    public function __construct(private EntityManagerInterface $entityManager, private RequestStack $request)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
         date_default_timezone_set("Europe/Paris");
     }
 
     /**
      * @param int $restaurantId
-     * @param string $startDay
+     * @param string $today
      * 
      * @return array<string[]>
      */
@@ -57,24 +56,36 @@ final class TimeSlotFactory
         $timeSlotsViewModel = [];
         $dayTimeSlot = [];
 
-        //
+        // TODO refacto
 
         foreach($formattedTimeSlots as $timeSlot) {
 
             // Restaurant is closed return empty array.
-            if ($timeSlot->getStatus() == 7) {
+            if ($timeSlot->getStatus() == TimeSlot::CLOSED_DAY_TIMESLOT_STATUS) {
 
                 $timeSlotsViewModel[] = ['Fermé'];
 
-            } else if ($timeSlot->getStatus() == 8) {
+            } else if ($timeSlot->getStatus() == TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS) {
 
-                $timeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
+                $timeSlot = $this->buildTimeSlot(
+                    $timeSlot->getServiceStartAtAm(),
+                    $timeSlot->getServiceCloseAtAm(),
+                    $timeSlot->getIntervalTime()
+                );
                 $timeSlotsViewModel[] = $timeSlot;
 
-            } else if ($timeSlot->getStatus() == 9){
+            } else if ($timeSlot->getStatus() == TimeSlot::NORMAL_DAY_TIMESLOT_STATUS){
                 
-                $amTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtAm(), $timeSlot->getServiceCloseAtAm(), $timeSlot->getIntervalTime());
-                $pmTimeSlot = $this->buildTimeSlot($timeSlot->getServiceStartAtPm(), $timeSlot->getServiceCloseAtPm(), $timeSlot->getIntervalTime() );
+                $amTimeSlot = $this->buildTimeSlot(
+                    $timeSlot->getServiceStartAtAm(),
+                    $timeSlot->getServiceCloseAtAm(),
+                    $timeSlot->getIntervalTime()
+                );
+                $pmTimeSlot = $this->buildTimeSlot(
+                    $timeSlot->getServiceStartAtPm(),
+                    $timeSlot->getServiceCloseAtPm(),
+                    $timeSlot->getIntervalTime()
+                );
 
                 $dayTimeSlot = array_merge($amTimeSlot, [' '], $pmTimeSlot);
                 $timeSlotsViewModel[] = $dayTimeSlot;
@@ -84,12 +95,15 @@ final class TimeSlotFactory
         return $timeSlotsViewModel;
     }
  
+    
     /**
-     * @param TimeSlot $timeSlot
+     * @param DateTime|null $startTime
+     * @param DateTime|null $endTime
+     * @param int|null $intervalTime
      * 
      * @return array<string>
      */
-    private function buildTimeSlot($startTime, $endTime, $intervalTime): array
+    private function buildTimeSlot(?DateTime $startTime, ?DateTime $endTime, ?int $intervalTime): array
     {
         // if pm service close > 00:00 (ex:18H00 - 02H00), set service close at 23H59.
         if ($startTime > $endTime) {
@@ -116,7 +130,7 @@ final class TimeSlotFactory
     }
 
     /**
-     * @param mixed $startDay
+     * @param mixed $today
      * 
      * @return array<DateTime>
      */
@@ -147,12 +161,17 @@ final class TimeSlotFactory
         $restaurantTimeSlots = $restaurant->getTimeSlots()->toArray();
 
         $timeSlotsWithDate = [];
+
         foreach($currentWeeklyDays as $day) {
 
             foreach($restaurantTimeSlots as $timeSlot) {
 
-                if($timeSlot->hasDate() && ($timeSlot->getDateOfDay())->format('Y-m-d') === $day) {   
-                    $restaurantTimeSlots = array_filter($restaurantTimeSlots, fn($item) => $item->getDayOfWeek() !== $timeSlot->getDayOfWeek());    
+                if($timeSlot->hasDate() && ($timeSlot->getDateOfDay())->format('Y-m-d') === $day) {
+
+                    $restaurantTimeSlots = array_filter(
+                        $restaurantTimeSlots,
+                        fn($item) => $item->getDayOfWeek() !== $timeSlot->getDayOfWeek()
+                    );    
                     $timeSlotsWithDate[] = $timeSlot;
                 } 
             }            

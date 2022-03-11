@@ -83,7 +83,7 @@ final class ClosedDateController extends AbstractController
     }
 
     #[Route('/delete_closed_date/{id}', name: 'delete_closed_date')]
-    public function deleteClosedDate(ClosedDate $closedDate)
+    public function deleteClosedDate(ClosedDate $closedDate): Response
     {
         $this->entityManager->remove($closedDate);
         $this->entityManager->flush();

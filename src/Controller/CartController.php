@@ -28,7 +28,8 @@ final class CartController extends AbstractController
         $menuItemData = [];
         $total = 0;
         
-        if (isset($cart['menu'])) {
+        if (isset($cart['menu']) && is_array($cart['menu'])) {
+
             foreach ($cart['menu'] as $id => $quantity) {
                 $menuData[] = [
                     'product' => $menuRepository->findOneBy(['id' => $id]),
@@ -40,7 +41,8 @@ final class CartController extends AbstractController
             uasort($menuData, fn (array $a, array $b) => $a['product']->getName() > $b['product']->getName());
         }
 
-        if (isset($cart['menuItem'])) {
+        if (isset($cart['menuItem']) && is_array($cart['menuItem'])) {
+            
             foreach ($cart['menuItem'] as $id => $quantity) {
                 $menuItemData[] = [
                     'product' => $menuItemRepository->findOneBy(['id' => $id]),

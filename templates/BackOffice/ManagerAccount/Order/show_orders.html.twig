@@ -29,7 +29,7 @@
                     {% for booking in bookings %}                            
                         
                         <tr>
-                            <td>{{ booking.bookingOrder.registeredAt | date('d M Y') }}</td>
+                            <td>{{ booking.bookingDate | date('d M Y') }}</td>
                             <td></td>
                             <td>{% if booking.bookingOrder.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</td>
                             <td>{{ booking.bookingOrder.amount | format_currency('EUR') }}</td>
