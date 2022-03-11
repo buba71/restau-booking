@@ -46,6 +46,7 @@ final class OrderController extends AbstractController
         SessionInterface $session
         ): Response {
 
+        // First cart has been validated.
         $session->set('isNewCartSession', true);
 
         if ($session->has('booking') && $session->has('order') && $session->has('cart')) {
@@ -65,7 +66,7 @@ final class OrderController extends AbstractController
                 }
             }
 
-            if (isset($cart['menu'])) {
+            if (isset($cart['menu']) && is_array($cart['menu'])) {
 
                 foreach ($cart['menu'] as $id => $quantity) {
                     
@@ -81,7 +82,7 @@ final class OrderController extends AbstractController
                 }
             }
 
-            if (isset($cart['menuItem'])) {
+            if (isset($cart['menuItem']) && is_array($cart['menuItem'])) {
 
                 foreach ($cart['menuItem'] as $id => $quantity) {
 
@@ -116,6 +117,10 @@ final class OrderController extends AbstractController
                 $restaurant->addBooking($booking);       
                 
                 $this->entityManager->flush();
+                
+                $session->remove('booking');
+                $session->remove('cart');
+                $session->remove('order');
 
                 $this->addFlash('success', 'Votre commande a bien été enregistrée.');
 

@@ -15,7 +15,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            custom_authenticator: App\Services\Security\UserFormAuthenticator            
+            custom_authenticator: App\Security\UserFormAuthenticator            
 
             provider: app_user_provider
 

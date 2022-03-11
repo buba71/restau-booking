@@ -6,6 +6,7 @@ namespace App\Controller\CustomerController;
 
 use App\Entity\Booking;
 use App\Entity\Restaurant;
+use App\Entity\User;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,24 +37,27 @@ final class BookingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $restaurant->addBooking($booking);   
+            $restaurant->addBooking($booking);  
+            $session->set('booking', $booking); 
 
-            if($form->getClickedButton()->getName() === 'booking') {   
+            if($form->getClickedButton()->getName() === 'booking') {                
 
                 // Client must be authenticated at this point.
                 $this->denyAccessUnlessGranted('ROLE_CUSTOMER'); 
 
-                $booking->setUser($this->getUser());    
+                if (($this->getUser() instanceOf User) && $this->getUser() !== null) {
+                    $booking->setUser($this->getUser()); 
+                }                   
 
                 $this->entityManager->persist($booking);
                 $this->entityManager->flush();
+                
+                $session->remove('booking');
 
                 $this->addFlash('success', 'Votre réservation a bien été prise en compte');
                 
-                return $this->redirectToRoute('show_bookings', ['id' => $this->getUser()->getId()]);
+                return $this->redirectToRoute('show_customer_bookings');
             } 
-
-            $session->set('booking', $booking);
 
             return $this->redirectToRoute('order', ['id' => $restaurant->getId()]);
             
@@ -65,7 +69,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/show_bookings', name:'show_bookings')]
+    #[Route('/show_bookings', name:'show_customer_bookings')]
     #[IsGranted('ROLE_CUSTOMER')]
     public function showBookings(BookingRepository $bookingRepository): Response
     {
@@ -91,7 +95,7 @@ final class BookingController extends AbstractController
 
             $this->addFlash('success', 'Votre réservation a été modifiée');
 
-            return $this->redirectToRoute('show_bookings');
+            return $this->redirectToRoute('show_customer_bookings');
         }
 
         return $this->renderForm('BackOffice/CustomerAccount/Booking/edit_booking.html.twig', [
@@ -102,13 +106,13 @@ final class BookingController extends AbstractController
 
     #[Route('/delete_booking/{id}', name:'delete_booking')]
     #[IsGranted('ROLE_CUSTOMER')]
-    public function deleteBooking(Request $request, Booking $booking): Response
+    public function deleteBooking(Booking $booking): Response
     {        
         $this->entityManager->remove($booking);
         $this->entityManager->flush();
 
         $this->addFlash('success', 'Votre réservation a été annulée');
 
-        return $this->redirectToRoute('show_bookings',);
+        return $this->redirectToRoute('show_customer_bookings',);
     }
 }

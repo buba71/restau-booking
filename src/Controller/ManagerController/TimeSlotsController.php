@@ -64,7 +64,7 @@ final class TimeSlotsController extends AbstractController
     } 
     
     #[Route('/update_time_slots', name: 'update_timeSlots')]
-    public function updateTimeSlot(Request $request) 
+    public function updateTimeSlot(Request $request): Response
     {   
         $restaurant = $this->getUser()->getRestaurant();
         
