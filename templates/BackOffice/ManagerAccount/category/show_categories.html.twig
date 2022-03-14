@@ -6,14 +6,6 @@
 
 {% block body %}
 
-    {% for message in app.flashes('success') %}
-
-        <div class="alert alert-success fade show" role="alert">
-            {{ message }}
-        </div>
-
-    {% endfor %}
-
     {% if categories | length > 0 %}
     
         <div>  

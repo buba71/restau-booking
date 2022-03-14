@@ -111,4 +111,15 @@ final class TimeSlotsController extends AbstractController
             'datedTimeSlots' => $datedTimeSlots->toArray()
         ]);
     }
+
+    #[Route('/dated_time_slot/delete/{id}', name: 'delete_dated_timeSlot')]
+    public function deleteDatedTimeSlot(TimeSlot $timeSlot)
+    {
+        $this->entityManager->remove($timeSlot);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Date supprimée avec succès!');
+
+        return $this->redirectToRoute('show_timeSlots');
+    }
 }

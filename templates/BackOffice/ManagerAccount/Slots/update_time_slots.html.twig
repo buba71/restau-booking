@@ -75,7 +75,7 @@
     <!-- Update schedule time slots -->
 
 
-    <!-- Update time slot on specific date -->
+    <!-- Add time slot on specific date -->
     
     <section class="card mt-2 p-3" id="dated-timeSlot-form">      
         <h3 class="card-title py-5 text-muted">Modifer vos horaires d'ouverture pour une date spécifique.</h3>
@@ -114,14 +114,14 @@
 
             </tbody>
         </table> 
-        <div class="form-controls text-center">
-            <button type="submit" class="btn btn-info w-25">ajouter</button>
+        <div class="form-controls">
+            <button type="submit" class="btn btn-info">ajouter</button>
         </div>
         {{ form_end(datedTimeSlotForm) }}           
         
     </section>   
 
-    <!-- Update time slot on specific date -->
+    <!-- Add time slot on specific date -->
 
 
     <!-- Dated time slots list -->
@@ -158,7 +158,15 @@
                                 <td class="text-center">{{ timeSlot.serviceStartAtPm|date('H:i') }}</td>
                                 <td class="text-center">{{ timeSlot.serviceCloseAtPm|date('H:i') }}</td>
                                 <td class="text-center">{{ timeSlot.intervalTime }}</td>
-                                <td class="text-center"><a href="" type="button" class="btn btn-danger btn-sm">Supprimer</a></td>
+                                <td class="text-center">
+                                    <button
+                                        class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#delete-modal"
+                                        data-timeSlotId="{{ timeSlot.id }}"
+                                         >Supprimer
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     {% endif %}
@@ -175,7 +183,11 @@
             {% endif %}
         </section>
 
+        {% include 'BackOffice/ManagerAccount/Slots/partials/update_time_slots/delete_dated_time_slot_modal.html.twig' %}
+
     <!-- Dated time slots list -->
+
+
 
 {% endblock %}
 
@@ -292,6 +304,22 @@
                         tbody.append($prototype);                    
                     }
     });
+
+</script>
+<script type="text/javascript">
+
+    // delete dated time slot modal control.
+    $(document).ready(function () {
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const timeSlotId  = event.relatedTarget.getAttribute("data-timeSlotId");
+
+            let url = `{{ path('delete_dated_timeSlot', {'id': 'timeSlot_id' }) }}`;
+            url = url.replace('timeSlot', timeSlotId);
+            $('#delete-timeSlot').attr('href', url);            
+        })
+    })
+
 
 </script>
 

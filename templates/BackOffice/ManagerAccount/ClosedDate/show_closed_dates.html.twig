@@ -19,12 +19,6 @@
 
         <h3 class="card-title text-muted py-5">Mes dates de fermeture</h3>
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-
         {% if closedDates | length > 0 %}
 
         <table class="table">
@@ -43,7 +37,15 @@
                         <td>{{ closedDate.endDate | date('d M Y')}}</th>
                         <td>{{ closedDate.reason }}</td>
                         <td>
-                            <a href="{{ path('delete_closed_date', {'id': closedDate.id}) }}" type="button" class="btn btn-secondary btn-sm">Annuler</a>
+                            <!--<a href="{{ path('delete_closed_date', {'id': closedDate.id}) }}" type="button" class="btn btn-secondary btn-sm">Annuler</a>-->
+                            <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#delete-modal"
+                                data-closedDateId="{{ closedDate.id }}"
+                                >
+                                Supprimer
+                            </button>
                         </td>                   
                     </tr>
                 {% endfor %}
@@ -55,6 +57,13 @@
                 <p>Aucune période de fermeture définie pour le moment.</p>
             </div>
         {% endif %}
+
+        <!-- Modal -->
+
+        {% include 'BackOffice/ManagerAccount/ClosedDate/partials/delete/delete_modal.html.twig'%}
+
+        <!-- Modal -->
+
     </section>
     
     <section class="card mt-2 p-3" id="closed-date-form">
@@ -100,6 +109,21 @@
             todayHighlight: true
         });
     });
+</script>
+<script type="text/javascript">
+
+    // delete dated time slot modal control.
+    $(document).ready(function () {
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const closedDateId  = event.relatedTarget.getAttribute("data-closedDateId");
+
+            let url = `{{ path('delete_closed_date', {'id': 'closedDateId_id' }) }}`;
+            url = url.replace('closedDateId_id', closedDateId);
+            $('#delete-closedDate').attr('href', url);            
+        })
+    })
+
 </script>
 
 {% endblock %}
