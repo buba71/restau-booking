@@ -27,7 +27,7 @@ final class ClosedDateController extends AbstractController
         date_default_timezone_set('Europe/Paris');
     }
 
-    #[Route('/show_closed_date', name: 'show_closed_date')]
+    #[Route('/closed_date/show', name: 'show_closed_date')]
     public function show_closed_date(
         ClosedDateRepository $closedDateRepository,
         Request $request
@@ -82,7 +82,7 @@ final class ClosedDateController extends AbstractController
         ]);
     }
 
-    #[Route('/delete_closed_date/{id}', name: 'delete_closed_date')]
+    #[Route('/closed_date/delete/{id}', name: 'delete_closed_date')]
     public function deleteClosedDate(ClosedDate $closedDate): Response
     {
         $this->entityManager->remove($closedDate);
