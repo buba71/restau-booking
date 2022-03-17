@@ -20,3 +20,7 @@
 .container-fluid#back-layout {
     padding-left: 0;
 }
+
+#menu-details li, #order-details li {
+    list-style: none;
+}

@@ -46,7 +46,7 @@ final class MenuItemType extends AbstractType
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-info'
+                    'class' => 'btn btn-info d-inline'
                 ]
             ])
         ;

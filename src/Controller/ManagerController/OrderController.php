@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\ManagerController;
 
+use App\Entity\BookingOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_MANAGER')]
 final class OrderController extends AbstractController
 {
-    #[Route('/show_restaurant_orders', name: 'show_restaurant_orders')]
+    #[Route('/restaurant_orders/show', name: 'show_orders')]
     public function showOrders(): Response
     {
         $restaurant = $this->getUser()->getRestaurant();
@@ -25,6 +26,15 @@ final class OrderController extends AbstractController
 
         return $this->render('BackOffice/ManagerAccount/Order/show_orders.html.twig', [
             'bookings' => $bookings
+        ]);
+    }
+
+    #[Route('restaurant_order/show/{id}', name: 'show_order_details')]
+    public function showOrderDetails(BookingOrder $order)
+    {
+        return $this->render('BackOffice/ManagerAccount/Order/show_order_details.html.twig', [
+            'booking' => $order->getBooking(),
+            'order' => $order
         ]);
     }
 }

@@ -8,7 +8,7 @@
 
     <section class="card mt-5 p-3" id="order_list">
 
-    {% set status = ['En attente']%}
+    {% set status = ['En attente', 'Validée']%}
         
 
         {% if bookings | length > 0 %}
@@ -39,9 +39,8 @@
                             <td>{{ booking.bookingOrder.amount | format_currency('EUR') }}</td>
                             <td>{{ status[booking.bookingOrder.status] }}</td>                            
                             <td>
-                                <i class="fa fa-eye mr-2"></i>
+                                <a href="{{path('show_order_details', {'id': booking.bookingOrder.id}) }}" type="button"><i class="fa fa-eye mr-2"></i></a>
                                 <i class="fa fa-check mr-2"></i>
-                                <i class="fa fa-trash"></i>
                             </td>
                         </tr>
                         

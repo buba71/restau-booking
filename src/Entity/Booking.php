@@ -59,7 +59,7 @@ class Booking
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="bookings")
      * @ORM\JoinColumn(name="restaurant_id", nullable=false)
      */
-    private Restaurant $restaurant;
+    private Restaurant $restaurant; 
 
     public function __construct()
     {

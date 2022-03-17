@@ -18,25 +18,24 @@
                 <thead>
                     <tr>
                         <th class="p-3" scope="col">Menu</th>
-                        <th class="p-3" scope="col">Description</th>
-                        <th class="p-3" scope="col">Composition</th>                        
-                        <th class="p-3" scope="col">Prix(Euros)</th>
-                        <th class="p-3" scope="col">Ajouté le</th>
-                        <th class="p-3" scope="col">Actions</th>                        
+                        <th class="p-3" scope="col">Description</th>                     
+                        <th class="p-3 text-center" scope="col">Prix(Euros)</th>
+                        <th class="p-3 text-center" scope="col">Ajouté le</th>
+                        <th class="p-3 text-center" scope="col">Actions</th>                        
                     </tr>
                 </thead>
                 {% for menu in menus %}
                 <tbody>                    
                     <tr>
                         <td class="p-3">{{ menu.name }}</td>
-                        <td class="p-3">{{ menu.description|u.truncate(30, '...') }}</td>
-                        <td class="p-3">{% for menuItem in menu.menuItems %}{{ menuItem }},{% endfor %}</td>                        
-                        <td class="p-3">{{ menu.price | format_currency('EUR')}}</td>
-                        <td class="p-3">{{ menu.createdAt|date('d-M-Y') }}</td>
-                        <td class="p-3">
-                            <a href="" type="button" class="btn btn-info btn-sm">Modifier</a>
+                        <td class="p-3">{{ menu.description|u.truncate(30, '...') }}</td>                      
+                        <td class="p-3 text-center">{{ menu.price | format_currency('EUR')}}</td>
+                        <td class="p-3 text-center">{{ menu.createdAt|date('d-M-Y') }}</td>
+                        <td class="p-3 text-center">
+                            <a href="{{ path('show_menu_details', {'id': menu.id}) }}" type="button" class="btn btn-info btn-sm mx-1">Afficher</a>
+                            <a href="{{ path('edit_menu', {'id': menu.id}) }}" type="button" class="btn btn-info btn-sm mx-1">Modifier</a>
                             <button
-                                class="btn btn-secondary btn-sm mx-1"
+                                class="btn btn-danger btn-sm mx-1"
                                 data-toggle="modal"
                                 data-target="#delete-modal"
                                 data-menuId ="{{ menu.id }}"
@@ -72,9 +71,9 @@
 
     <section class="card mt-5 p-3">
         <h2>Composer un nouveau menu</h2>
-        <ul>
+        <ul class="p-0">
             {% for error in errors %}
-                <li class="form-error">{{ error.message }}</li>
+                <li class="form-errors">{{ error.message }}</li>
             {% endfor %}
         </ul>
             
@@ -138,21 +137,7 @@
 
     <!-- Modal -->
     
-    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">          
-          <div class="modal-body text-center m-2">
-            <h5>Voulez vraiment supprimer ce menu?</h5>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-            <a href="" id="delete-menu">
-                <button type="button" class="btn btn-info">Confirmer</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% include('BackOffice/ManagerAccount/Menu/Partials/Delete/delete_modal.html.twig') %}
 
     <!-- Modal -->
 
