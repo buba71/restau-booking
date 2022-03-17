@@ -19,7 +19,7 @@ final class ProductController extends AbstractController
 {    
     public function __construct(private EntityManagerInterface $entityManager) {}
 
-    #[Route('/show_products', name: 'show_products')]
+    #[Route('/products/show', name: 'show_products')]
     public function showDishes(Request $request): Response
     {
         $restaurant = $this->getUser()->getRestaurant();
@@ -44,9 +44,42 @@ final class ProductController extends AbstractController
         }
 
 
-        return $this->renderForm('BackOffice/ManagerAccount/product/show_products.html.twig', [
+        return $this->renderForm('BackOffice/ManagerAccount/Product/show_products.html.twig', [
             'products' => $products,
             'form' => $form
         ]);
     }
+
+    #[Route('/product/edit/{id}', name: 'edit_product')]
+    public function editProduct(MenuItem $menuItem, Request $request): Response
+    {
+        $form = $this->createForm(MenuItemType::class, $menuItem);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Ce produit a été modifié.');
+
+            return $this->redirectToRoute('show_products');
+        }
+
+        return $this->renderForm('BackOffice/ManagerAccount/Product/edit_product.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('product/delete/{id}', name: 'delete_product')]
+    public function deleteProduct(MenuItem $menuItem): Response
+    {
+        $this->entityManager->remove($menuItem);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Produit supprimé.');
+
+        return $this->redirectToRoute('show_products');
+    }
+
 }

@@ -25,13 +25,13 @@ final class Menu implements Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Le nom n'est pas valide.")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="La description n'est pas valide.")
      */
     private string $description;
 
@@ -41,7 +41,20 @@ final class Menu implements Product
     private DateTimeImmutable $createdAt;
 
     /**
+     * @ORM\Column(type="float", nullable="false")
+     * @Assert\NotBlank
+     * @Assert\Positive(message="Le menu doit contenir un prix valide.")
+     */
+    private float $price = 0;
+
+
+    /**
      * @ORM\ManyToMany(targetEntity=MenuItem::class, inversedBy="menus")
+     * @Assert\Count(
+     *      min = 1,
+     *      minMessage = "Vous devez sélectionner au moin un produit."
+     * )
+     * 
      */
     private Collection $menuItems;
 
@@ -50,11 +63,6 @@ final class Menu implements Product
      * @ORM\JoinColumn(name="restaurant_id", referencedColumnName="id")
      */
     private Restaurant $restaurant;
-
-    /**
-     * @ORM\Column(type="float", nullable="false")
-     */
-    private float $price = 0;
 
     public function __construct()
     {

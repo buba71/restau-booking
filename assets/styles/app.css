@@ -42,7 +42,7 @@ p {
     color: red;
 }
 
-.form-errors li {
+li.form-errors {
     list-style: none;
 }
 

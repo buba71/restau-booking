@@ -14,12 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @package App\Entity
  *
- * @ORM\Entity(repositoryClass=BookingOrderRepository::class)
+ * @ORM\Entity()
  */
 final class BookingOrder
 {
     private const TAKE_AWAY = "takeAway";
     private const ON_SPOT = "onSpot";
+    
     private const ORDER_PENDING = 0;
     private const ORDER_VALIDATED = 1;
     private const ORDER_PROCESSING = 2;

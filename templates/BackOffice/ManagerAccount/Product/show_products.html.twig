@@ -12,7 +12,7 @@
 
     {% if products | length > 0 %}
 
-        <section class="card mt-5 p-3" id="dishes-list">
+        <section class="card mt-5 p-3" id="products-list">
             <table class="table">
                 <thead>
                     <tr>
@@ -32,7 +32,15 @@
                         <td class="p-3">{{ product.price|format_currency('EUR') }}</td>
                         <td class="p-3">{{ product.addedAt|date('d-M-Y') }}</td>
                         <td class="p-3">
-                            <a href="#" type="button" class="btn btn-danger btn-sm">Supprimer</a>
+                            <a href="{{ path('edit_product', {'id': product.id}) }}" type="button" class="btn btn-secondary btn-sm mx-2">Modifier</a>
+                            <button 
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#delete-modal"
+                                data-productId="{{ product.id }}"
+                                >
+                                Supprimer
+                            </button>
                         </td>
                     </tr>                                     
                 </tbody>
@@ -40,6 +48,8 @@
                 {% endfor %} 
             </table>
         </section>
+
+        {% include 'BackOffice/ManagerAccount/Product/partials/delete/delete_modal.html.twig' %}
 
 
     {% else %}
@@ -58,4 +68,22 @@
 
         </section>
 
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+
+    // delete dated time slot modal control.
+    $(document).ready(function () {
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const productId  = event.relatedTarget.getAttribute("data-productId");
+
+            let url = `{{ path('delete_product', {'id': 'product_id' }) }}`;
+            url = url.replace('product_id', productId);
+            $('#delete-product').attr('href', url);            
+        })
+    })
+
+</script>
 {% endblock %}

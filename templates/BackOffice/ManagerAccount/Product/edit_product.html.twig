@@ -1,0 +1,27 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block body %}
+
+    <div class="text-muted">
+        <h1>Modifier ce produit</h1>
+    </div> 
+
+    <section class="card mt-5 p-3">
+        <div>
+            {{ form_start(form) }}
+                {{ form_row(form.name, { 'label': 'Nom' }) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.price, { 'label' : 'prix' }) }}
+                {{ form_row(form.category) }}
+                {{ form_row(form._token) }}
+                <div class="form-controls">
+                    <button type="submit" class="btn btn-info">Modifier</button>
+                    <a href="{{ path('show_products') }}" type="button" class="btn btn-secondary mx-2">Annuler</a>
+                </div>
+                    
+            {{ form_end(form, {render_rest: false}) }}
+        </div>
+    
+    </section>
+    
+{% endblock %}
