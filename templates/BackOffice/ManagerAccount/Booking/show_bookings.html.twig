@@ -18,6 +18,7 @@
                         <th>Nom du client</th>
                         <th>Téléphone</th>                            
                         <th class="text-center">Nombre de couverts</th>
+                        <th>Réservation effectuée le</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -30,11 +31,11 @@
                             <td>{{ booking.bookingDate | date('H:i') }}</td>
                             <td>{{ booking.user.lastName }} {{ booking.user.firstName }}</td>
                             <td>{{ booking.user.phone }}</td> 
-                            <td class="text-center">{{ booking.coversNumber }}</td>                        
+                            <td class="text-center">{{ booking.coversNumber }}</td>        
+                            <td>{{ booking.bookingAt | date('d M Y') }}</td>                
                             <td>
-                                <i class="fa fa-eye mr-2"></i>
-                                <i class="fa fa-check mr-2"></i>
-                                <i class="fa fa-trash"></i>
+                                <i class="fa fa-eye mr-3 text-info"></i>
+                                <i class="fa fa-trash text-danger"></i>
                             </td>
                         </tr>
                         
