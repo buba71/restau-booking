@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class BookingOrder
@@ -18,42 +19,48 @@ use Doctrine\ORM\Mapping as ORM;
  */
 final class BookingOrder
 {
-    private const TAKE_AWAY = "takeAway";
-    private const ON_SPOT = "onSpot";
+    public const TAKE_AWAY = "takeAway";
+    public const ON_SPOT = "onSpot";
     
-    private const ORDER_PENDING = 0;
-    private const ORDER_VALIDATED = 1;
-    private const ORDER_PROCESSING = 2;
+    public const ORDER_PENDING = 0;
+    public const ORDER_VALIDATED = 1;
+    public const ORDER_PROCESSING = 2;
     
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("order:read")
      */
     private int $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups("order:read")
      */
     private ?string $comment;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("order:read")
      */
     private DateTimeImmutable $registeredAt;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("order:read")
      */
     private float $amount;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("order:read")
      */
     private int $status = self::ORDER_PENDING;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("order:read")
      */
     private string $type;
 

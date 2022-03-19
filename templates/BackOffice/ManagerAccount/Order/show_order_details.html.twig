@@ -3,12 +3,13 @@
 {% block body %}
 
 {% set status = ['En attente', 'Validée']%}
+{% set color = ['warning', 'success']%}
 
     <div class="text-muted">
         <h1>Détails de la commande</h1>
     </div>
     <section class="card mt-5 p-3" id="order-details">
-        <h2>Commandée par {{ booking.user.firstName }} {{ booking.user.lastName }} <small>le {{ booking.bookingAt | date('d M Y') }}</small>. <span class="badge badge-warning text-white">{{ status[order.status] }}</span></h2> 
+        <h2>Commandée par {{ booking.user.firstName }} {{ booking.user.lastName }} <small>le {{ booking.bookingAt | date('d M Y') }}</small>. <span class="badge badge-{{ color[order.status] }} text-white">{{ status[order.status] }}</span></h2> 
         <ul class="p-0">
             <li>Téléphone du client: {{ booking.user.phone }}</li>
             <li>Type de commande: {% if order.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</li>
@@ -34,22 +35,26 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>produit</th>
-                        <th>quantité</th>
-                        <th>prix</th>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
                     </tr>
                 </thead>
                 <tbody>
+                    
+                    {% for orderLine in order.orderLines %}
+
                     <tr>
-                        {% for orderLine in order.orderLines %}
                         <td>{{ orderLine.name }}</td>
                         <td>{{ orderLine.quantity }}</td>
-                        <td>{{ orderLine.price | format_currency('EUR') }}</td>
-                        {% endfor %}
+                        <td>{{ orderLine.price | format_currency('EUR') }}</td>                        
                     </tr>
+                    
+                    {% endfor %}
+                    
                     <tr>
                         <td></td>
-                        <td class="text-right font-weight-bold">Total:</td>
+                        <td class="text-right font-weight-bold">Montant total de la commande:</td>
                         <td>{{ order.amount | format_currency('EUR') }}</td>
                     </tr>
                 </tbody>

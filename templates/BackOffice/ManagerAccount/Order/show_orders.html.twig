@@ -9,7 +9,7 @@
     <section class="card mt-5 p-3" id="order_list">
 
     {% set status = ['En attente', 'Validée']%}
-        
+    {% set color = ['warning', 'success']%}        
 
         {% if bookings | length > 0 %}
 
@@ -22,7 +22,7 @@
                         <th>Nom du client</th>
                         <th>Téléphone</th>
                         <th>Total</th>                            
-                        <th>Statut</th>
+                        <th class="text-center">Statut</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -37,10 +37,15 @@
                             <td>{{ booking.user.lastName }} {{ booking.user.firstName }}</td>
                             <td>{{ booking.user.phone }}</td>                            
                             <td>{{ booking.bookingOrder.amount | format_currency('EUR') }}</td>
-                            <td>{{ status[booking.bookingOrder.status] }}</td>                            
+                            <td class="order-status-{{ booking.bookingOrder.id }} text-center">
+                                <h5><small><span class="badge badge-{{ color[booking.bookingOrder.status] }} text-white">{{ status[booking.bookingOrder.status] }}</span></small></h5>
+                            </td>                            
                             <td>
-                                <a href="{{path('show_order_details', {'id': booking.bookingOrder.id}) }}" type="button"><i class="fa fa-eye mr-2"></i></a>
-                                <i class="fa fa-check mr-2"></i>
+                                <a href="{{path('show_order_details', {'id': booking.bookingOrder.id}) }}" type="button">
+                                    <i class="fa fa-eye mr-3 text-info"></i>
+                                </a>
+                                <i type="button" class="fa fa-check mr-3 text-success order-validation" data-orderId="{{ booking.bookingOrder.id }}"></i>
+                                <a href="{{path('delete_order', {'id': booking.bookingOrder.id}) }}" type="button" id="order-delete"><i class="fa fa-trash text-danger mr-3"></i></a>
                             </td>
                         </tr>
                         
@@ -59,4 +64,34 @@
     </section>
     
 
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+
+<script >
+
+    $(document).ready(function () {
+        
+        const validOrderButton = $('.order-validation');
+        validOrderButton.click(function(event) {
+
+            const orderId = $(this).attr('data-orderId');
+            let url = `{{ path('valid_order', {'id': 'order_id' })}}`;
+            url = url.replace('order_id', orderId);
+
+            fetch(url, {
+                method: 'post',                
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(JSON.parse(data))
+                const selector = '.order-status' + '-' + orderId;
+                $(selector).html('<h5><small><span class="badge badge-success text-white">Validée</span></small></h5>')
+            })
+        }) 
+
+    })
+
+    
+</script>
 {% endblock %}
