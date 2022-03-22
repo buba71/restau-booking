@@ -6,19 +6,23 @@
     </div>
     <section class="card mt-5 p-3" id="menu-details">
         <ul class="p-0">
-            <li>Date de création: {{ menu.createdAt | date('d M Y') }}</li>
-            <li>Nom: {{ menu.name }}</li>
-            <li>Description: {{ menu.description }}</li>
-            <li>Composition:
+            <li><strong>Date de création:</strong> {{ menu.createdAt | date('d M Y') }}</li>
+            <li><strong>Nom:</strong> {{ menu.name }}</li>
+            <li><strong>Description:</strong> {{ menu.description }}</li>
+            <li><strong>Composition:</strong>
                 <ul> 
                 {% for menuItem in menu.menuItems %}
                 
-                    <li>{{ menuItem }}</li>                
+                    <li>
+                        <a href="{{ path('show_product_details', {'id': menuItem.id}) }}">
+                            <h6><span class="badge badge-info">{{ menuItem.name }}</span></h6>
+                        </a>
+                    </li>                
                 
                 {% endfor %}
                 </ul>
             </li>
-            <li>Prix: {{ menu.price | format_currency('EUR') }}</li>
+            <li><strong>Prix:</strong> {{ menu.price | format_currency('EUR') }}</li>
         </ul>
         <div class="form-controls">
             <a href="{{ path('show_menus') }}" type="button" class="btn btn-secondary">Retour</a>

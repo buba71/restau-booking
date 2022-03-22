@@ -9,12 +9,12 @@
         <h1>Détails de la commande</h1>
     </div>
     <section class="card mt-5 p-3" id="order-details">
-        <h2>Commandée par {{ booking.user.firstName }} {{ booking.user.lastName }} <small>le {{ booking.bookingAt | date('d M Y') }}</small>. <span class="badge badge-{{ color[order.status] }} text-white">{{ status[order.status] }}</span></h2> 
+        <h2>Commande effectuée par {{ booking.user.firstName }} {{ booking.user.lastName }} <small>le {{ booking.bookingAt | date('d M Y') }}</small>. <span class="badge badge-{{ color[order.status] }} text-white">{{ status[order.status] }}</span></h2> 
         <ul class="p-0">
-            <li>Téléphone du client: {{ booking.user.phone }}</li>
-            <li>Type de commande: {% if order.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</li>
-            <li>Date: {{ booking.bookingDate | date('d M Y') }} à {{ booking.bookingDate | date('H:i') }}</li>
-            <li>Nombre de couverts: {{ booking.coversNumber }}</li>
+            <li><strong>Téléphone du client:</strong> {{ booking.user.phone }}</li>
+            <li><strong>Type de commande:</strong> {% if order.type == "onSpot" %}Sur place{% else %}A emporter{% endif %}</li>
+            <li><strong>Date:</strong> {{ booking.bookingDate | date('d M Y') }} à {{ booking.bookingDate | date('H:i') }}</li>
+            <li><strong>Nombre de couverts:</strong> {{ booking.coversNumber }}</li>
         </ul>
         <div class="about">
 
@@ -54,7 +54,7 @@
                     
                     <tr>
                         <td></td>
-                        <td class="text-right font-weight-bold">Montant total de la commande:</td>
+                        <td class="text-right"><strong>Montant total de la commande:</strong></td>
                         <td>{{ order.amount | format_currency('EUR') }}</td>
                     </tr>
                 </tbody>

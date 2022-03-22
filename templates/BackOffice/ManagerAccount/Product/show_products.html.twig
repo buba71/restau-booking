@@ -32,15 +32,20 @@
                         <td class="p-3">{{ product.price|format_currency('EUR') }}</td>
                         <td class="p-3">{{ product.addedAt|date('d-M-Y') }}</td>
                         <td class="p-3">
-                            <a href="{{ path('edit_product', {'id': product.id}) }}" type="button" class="btn btn-secondary btn-sm mx-2">Modifier</a>
-                            <button 
-                                class="btn btn-danger btn-sm"
+                            <a href="{{ path('show_product_details', {'id': product.id}) }}" type="button">
+                                <i class="fa fa-eye text-info mr-3"></i>
+                            </a>
+                            <a href="{{ path('edit_product', {'id': product.id}) }}" type="button" class="mr-3">
+                                <i class="fa fa-edit text-success"></i>
+                            </a>
+                            <i
+                                type="button"
+                                class="fa fa-trash text-danger mr-3"
                                 data-toggle="modal"
                                 data-target="#delete-modal"
                                 data-productId="{{ product.id }}"
                                 >
-                                Supprimer
-                            </button>
+                            </i>
                         </td>
                     </tr>                                     
                 </tbody>

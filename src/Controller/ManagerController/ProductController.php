@@ -50,6 +50,14 @@ final class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/product/show/{id}', name: 'show_product_details')]
+    public function showProductDetails(MenuItem $menuItem): Response
+    {
+        return $this->render('BackOffice/ManagerAccount/Product/show_product_details.html.twig', [
+            'product' => $menuItem
+        ]);
+    }
+
     #[Route('/product/edit/{id}', name: 'edit_product')]
     public function editProduct(MenuItem $menuItem, Request $request): Response
     {
