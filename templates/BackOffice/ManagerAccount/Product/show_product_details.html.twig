@@ -1,0 +1,16 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+{% block body %}
+    <div>
+        <h1 class="text-muted">Détails du produit</h1>
+    </div>
+
+    <section class="card mt-5 p-3" id="product-details">
+        <ul class="p-0">
+            <li><strong>Nom: </strong>{{ product.name }}</li>
+            <li><strong>Description: </strong>{{ product.description }}</li>
+            <li><strong>Prix unitaire: </strong>{{ product.price | format_currency('EUR')}}</li>
+            <li><strong>Ajouté le: </strong>{{ product.addedAt | date('d M Y')}}</li>
+        </ul>    
+    </section>
+{% endblock %}

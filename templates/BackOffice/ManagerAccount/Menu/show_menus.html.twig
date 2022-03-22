@@ -32,15 +32,20 @@
                         <td class="p-3 text-center">{{ menu.price | format_currency('EUR')}}</td>
                         <td class="p-3 text-center">{{ menu.createdAt|date('d-M-Y') }}</td>
                         <td class="p-3 text-center">
-                            <a href="{{ path('show_menu_details', {'id': menu.id}) }}" type="button" class="btn btn-info btn-sm mx-1">Afficher</a>
-                            <a href="{{ path('edit_menu', {'id': menu.id}) }}" type="button" class="btn btn-info btn-sm mx-1">Modifier</a>
-                            <button
-                                class="btn btn-danger btn-sm mx-1"
+                            <a href="{{ path('show_menu_details', {'id': menu.id}) }}" class="mr-3 text-info">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a href="{{ path('edit_menu', {'id': menu.id}) }}" type="button" class="mr-3">
+                                <i class="fa fa-edit text-success"></i>
+                            </a>
+                            <i
+                                type="button"
+                                class="fa fa-trash text-danger mr-3"
                                 data-toggle="modal"
                                 data-target="#delete-modal"
                                 data-menuId ="{{ menu.id }}"
-                                >Supprimer
-                            </button>  
+                                >
+                            </i>  
                         </td>
                     </tr>                                     
                 </tbody>

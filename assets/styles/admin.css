@@ -21,6 +21,6 @@
     padding-left: 0;
 }
 
-#menu-details li, #order-details li {
+#menu-details li, #order-details li, #product-details li {
     list-style: none;
 }

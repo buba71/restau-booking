@@ -45,7 +45,14 @@
                                     <i class="fa fa-eye mr-3 text-info"></i>
                                 </a>
                                 <i type="button" class="fa fa-check mr-3 text-success order-validation" data-orderId="{{ booking.bookingOrder.id }}"></i>
-                                <a href="{{path('delete_order', {'id': booking.bookingOrder.id}) }}" type="button" id="order-delete"><i class="fa fa-trash text-danger mr-3"></i></a>
+                                <i
+                                    type="button"
+                                    class="fa fa-trash text-danger mr-3"
+                                    data-toggle="modal"
+                                    data-target="#delete-modal"
+                                    data-orderId="{{ booking.bookingOrder.id }}"
+                                    >
+                                </i>
                             </td>
                         </tr>
                         
@@ -62,6 +69,12 @@
         {% endif %}
                 
     </section>
+
+    <!-- Delete order modal -->
+
+        {% include 'BackOffice/ManagerAccount/Order/Partials/delete/delete_modal.html.twig' %}
+
+    <!-- Delete order Modal -->
     
 
 {% endblock %}
@@ -72,6 +85,7 @@
 
     $(document).ready(function () {
         
+        // Order validation(change order status from pending to validated).
         const validOrderButton = $('.order-validation');
         validOrderButton.click(function(event) {
 
@@ -88,7 +102,17 @@
                 const selector = '.order-status' + '-' + orderId;
                 $(selector).html('<h5><small><span class="badge badge-success text-white">Validée</span></small></h5>')
             })
-        }) 
+        })
+        
+        // Control order delete modal
+        $('#delete-modal').on('show.bs.modal', function (event) {
+
+            const orderId  = event.relatedTarget.getAttribute("data-orderId");
+
+            let url = `{{ path('delete_order', {'id': 'orderId_id' }) }}`;
+            url = url.replace('orderId_id', orderId);
+            $('#delete-order').attr('href', url);            
+        })
 
     })
 
