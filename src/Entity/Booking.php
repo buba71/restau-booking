@@ -28,7 +28,7 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Vous devez sélectionner une date.")
      */
     private DateTime $bookingDate;
 
@@ -39,7 +39,7 @@ class Booking
 
     /**
      * @ORM\Column(type="string", nullable=false)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="vous devez saisir un nombre de couverts.")
      */
     private string $coversNumber;
 

@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * class TimeSlot
@@ -58,6 +59,7 @@ class TimeSlot
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * 
      */
     private ?DateTime $serviceStartAtAm;
 
@@ -84,7 +86,7 @@ class TimeSlot
     /**
      * @ORM\Column(type="datetime", nullable=true, unique=true)
      */
-    private DateTime $dateOfDay;
+    private ?DateTime $dateOfDay = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Restaurant", inversedBy="timeSlots")
@@ -183,7 +185,7 @@ class TimeSlot
         $this->intervalTime = $intervalTime;
     }
 
-    public function getDateOfDay(): DateTime
+    public function getDateOfDay(): ?DateTime
     {
         return $this->dateOfDay;
     }
