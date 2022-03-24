@@ -2,8 +2,13 @@
 
 
 {% form_theme timeSlotcollectionForm _self %}
+
 {% block _time_slots_timeSlots_entry_row %}
-    <tr>
+
+{% if form.vars.data %}
+    {# display only weekly timeSlots #}
+    {% if form.vars.data.dateOfDay == null %}
+        <tr>
         <th class="time_slot-day pr-5 align-middle" scope="row" rowspan="2"></th>
         <td class="p-4"><em>Ouverture</em></td>
         <td class="p-4 slot-item start-am">{{ form_row(form.serviceStartAtAm)}}</td>
@@ -16,7 +21,18 @@
         <td class="p-4"><em>Fermeture</em></td>
         <td class="p-4 slot-item close-am">{{ form_row(form.serviceCloseAtAm)}}</td>
         <td class="p-4 slot-item close-pm">{{ form_row(form.serviceCloseAtPm)}}</td>          
-    </tr>
+    </tr>  
+    {# Not display timeSlots with dates (closed or specific dates)#}
+    {% else %}  
+        <div class ="d-none">
+            {{ form(form)}}
+        </div>
+    {% endif %}
+{% endif %}
+
+     
+    
+    
 {% endblock %}
 
 
@@ -234,7 +250,7 @@
         $('select').addClass('form-control');
         $('#dated_time_slot_dateOfDay').css('width', '130px');
 
-        //Change form render regardling the timeSlot status.
+        //Change form rendering regardling the timeSlot status.
 
         const status = $('.timeslot-status select');
         status.on('change', function (event) {

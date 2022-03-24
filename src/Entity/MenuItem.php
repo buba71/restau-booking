@@ -9,6 +9,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MenuItemRepository::class)
@@ -24,16 +25,19 @@ final class MenuItem implements Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un nom valide.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir une description.")
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Positive(message="Vous devez saisir un prix valide")
      */
     private $price;
 

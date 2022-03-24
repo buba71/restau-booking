@@ -36,6 +36,17 @@
                     <th scope="row">Spécialité:</th>
                     <td class="px-3">{{ restaurant.speciality }}</td>         
                 </tr>
+                <tr><td class="p-3"></td></tr>
+                <tr>
+                    <th scope="row">Commander en ligne:</th>
+                    <td class="px-3">
+                        {% if restaurant.orderEnabled %}
+                            <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-height="25" data-width="75" disabled>
+                        {% else %}
+                            <input type="checkbox" data-toggle="toggle" data-onstyle="info" data-height="25" data-width="75" disabled>
+                        {% endif %}
+                    </td>         
+                </tr>
                 
             </table>
         </div>
@@ -45,4 +56,7 @@
         </div>
         
     </section>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
 {% endblock %}

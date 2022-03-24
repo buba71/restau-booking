@@ -24,3 +24,7 @@
 #menu-details li, #order-details li, #product-details li {
     list-style: none;
 }
+
+#manager-profile-edit .form-check {
+    padding: 0;
+}

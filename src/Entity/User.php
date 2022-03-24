@@ -30,29 +30,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Email()
+     * @Assert\NotBlank(message="Vous devez saisir une adresse valide")
+     * @Assert\Email(message="Vous devez saisir une adresse valide")
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un prénom.")
      */
     private ?string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un nom.")
      */
     private ?string $lastName; 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(@Assert\NotBlank(message="Vous devez saisir un mot de passe."))
      */
     private string $password;   
     
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un numéro de téléphone valide.")
      */
     private ?string $phone;
 

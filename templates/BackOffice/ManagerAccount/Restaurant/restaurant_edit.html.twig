@@ -13,6 +13,10 @@
             {{ form_row(form.city) }}
             {{ form_row(form.phone) }}
             {{ form_row(form.speciality) }}
+            <div>
+                <span class="mb-2 d-block">Permettre les commandes en ligne</span>
+                {{ form_row(form.orderEnabled) }}
+            </div>
             <div class="form-controls">
                 <div class="d-inline-block">
                     <button type="submit" class="btn btn-info">Modifier</button>                      

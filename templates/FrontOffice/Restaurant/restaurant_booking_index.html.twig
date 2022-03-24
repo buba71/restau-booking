@@ -122,12 +122,15 @@
           <div class="booking-controls mt-5 d-flex justify-content-around">
 
             {{ form_row(form.booking) }}
-            {{ form_row(form.bookingOrder) }}           
             
-         
+            {% if restaurant.orderEnabled %}
+              {{ form_row(form.bookingOrder)}}
+            {% endif %}                      
+
           </div> 
     </section>
-   {{ form_end(form)}}
+    {{ form(form._token)}}
+    {{ form_end(form, {'render_rest': false})}}
     
   <!-- Booking calendar -->
 

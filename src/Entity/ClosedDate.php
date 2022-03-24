@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClosedDateRepository::class)
@@ -24,11 +25,13 @@ class ClosedDate
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Vous devez indiquer une date de début.")
      */
     private DateTime $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Vous devez indiqur une date de fin.")
      */
     private DateTime $endDate;
 

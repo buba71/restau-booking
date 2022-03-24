@@ -8,6 +8,7 @@ use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Restaurant
@@ -27,26 +28,31 @@ class Restaurant
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un nom valide.")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir une adresse valide.")
      */
     private string $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un code postal valide.")
      */
     private string $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir une ville valide.")
      */
     private string $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez saisir un numéro de téléphone valide.")
      */
     private string $phone;
 
@@ -54,6 +60,11 @@ class Restaurant
      * @ORM\Column(type="string", length=255, nullable="true")
      */
     private ?string $speciality;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $orderEnabled = true;
 
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
@@ -175,6 +186,16 @@ class Restaurant
         return $this;
     }
 
+    public function orderEnabled(): bool
+    {
+        return $this->orderEnabled;
+    }
+
+    public function setOrderEnabled(bool $orderEnabled): void
+    {
+        $this->orderEnabled = $orderEnabled;
+    }
+
     public function getTimeSlots(): Collection
     {
         return $this->timeSlots;
@@ -230,8 +251,9 @@ class Restaurant
 
     public function removeTimeSlot(TimeSlot $timeSlot): void
     {
+        dump($timeSlot);
         if($this->timeSlots->contains($timeSlot)) {
-            $this->timeSlots->remove($timeSlot);
+            $this->timeSlots->removeElement($timeSlot);
         }
     }
 

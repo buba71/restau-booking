@@ -33,7 +33,7 @@ final class TimeSlotsController extends AbstractController
         })->toArray();        
         
         $datedTimeSlots = $restaurant->getTimeSlots()->filter(function($element) {
-            return $element->hasDate();
+            return $element->hasDate() && ($element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
         })->toArray();
 
         return $this->render('BackOffice/ManagerAccount/Slots/show_time_slots.html.twig', [
@@ -86,14 +86,14 @@ final class TimeSlotsController extends AbstractController
         $timeSlotcollectionForm->handleRequest($request);
         $datedTimeSlotForm->handleRequest($request);
 
-        if ($timeSlotcollectionForm->isSubmitted()) {            
+        if ($timeSlotcollectionForm->isSubmitted() && $timeSlotcollectionForm->isValid()) {            
             
             $this->entityManager->flush();
 
             return $this->redirectToRoute('show_timeSlots');
         }
         
-        if ($datedTimeSlotForm->isSubmitted()) {
+        if ($datedTimeSlotForm->isSubmitted() && $datedTimeSlotForm->isValid()) {
             
             $dayOfWeek = intval(date('w', strtotime(($nextDatedTimeSlot->getDateOfDay())->format('Y-m-d H:i:s'))));
             $nextDatedTimeSlot->setDayOfWeek($dayOfWeek);
