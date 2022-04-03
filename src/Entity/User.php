@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(@Assert\NotBlank(message="Vous devez saisir un mot de passe."))
+     * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
      */
     private string $password;   
     

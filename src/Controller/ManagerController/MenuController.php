@@ -26,8 +26,6 @@ final class MenuController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MenuItemRepository $menuItemRepository,
-        private ValidatorInterface $validator
     ) {}
 
     #[Route('/menus/show', name: 'show_menus')]

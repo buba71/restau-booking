@@ -8,6 +8,7 @@ use App\Entity\Restaurant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -31,7 +32,7 @@ final class UserFormAuthenticator extends AbstractAuthenticator
         private FlashBagInterface $flashBag,
         private RouterInterface $router,
         private Security $security,
-        private SessionInterface $session
+        private RequestStack $requestStack
         ) {}
 
     public function supports(Request $request): ?bool
@@ -55,10 +56,10 @@ final class UserFormAuthenticator extends AbstractAuthenticator
         if ($this->security->isGranted('ROLE_CUSTOMER')) {
 
             // User have validated a booking before login.
-            if ($this->session->has('order') && $this->session->has('booking')) {
+            if ($this->requestStack->getSession()->has('order') && $this->requestStack->getSession()->has('booking')) {
 
-                $booking = $this->session->get('booking');
-                $order = $this->session->get('order');
+                $booking = $this->requestStack->getSession()->get('booking');
+                $order = $this->requestStack->getSession()->get('order');
 
                 // Reset restaurant from bookingController::bookTable
                 $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $booking->getRestaurant()->getId()]);
@@ -70,17 +71,17 @@ final class UserFormAuthenticator extends AbstractAuthenticator
                 $this->entityManager->persist($booking);
                 $this->entityManager->flush();
 
-                $this->session->remove('booking');
-                $this->session->remove('order');
+                $this->requestStack->getSession()->remove('booking');
+                $this->requestStack->getSession()->remove('order');
 
                 $this->flashBag->add('success', 'Votre commande a bien été enregistrée.');
 
                 return new RedirectResponse($this->router->generate('show_customer_orders', ['id' => $this->security->getUser()->getId()]));
 
             // User have validated an order before login.
-            } else if ($this->session->has('booking')) {                
+            } else if ($this->requestStack->getSession()->has('booking')) {                
 
-                $booking = $this->session->get('booking');
+                $booking = $this->requestStack->getSession()->get('booking');
 
                 // Reset restaurant from bookingController::bookTable
                 $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $booking->getRestaurant()->getId()]);
@@ -90,7 +91,7 @@ final class UserFormAuthenticator extends AbstractAuthenticator
                 $this->entityManager->persist($booking);
                 $this->entityManager->flush();
 
-                $this->session->remove(('booking'));
+                $this->requestStack->getSession()->remove(('booking'));
 
                 $this->flashBag->add('success', 'Votre réservation a bien été prise en compte.');
                 
@@ -102,7 +103,7 @@ final class UserFormAuthenticator extends AbstractAuthenticator
          * Redirect user to previous url before login.
          * Set target Url from session(SecurityController) where redirect user.
          */
-        $targetUrl = $this->session->get('_security_referer_url');
+        $targetUrl = $this->requestStack->getSession()->get('_security_referer_url');
 
         if ($targetUrl) {
             return new RedirectResponse($targetUrl);

@@ -37,6 +37,7 @@ final class MenuItem implements Product
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\NotBlank(message="Vous devez saisir un prix valide.")
      * @Assert\Positive(message="Vous devez saisir un prix valide")
      */
     private $price;
