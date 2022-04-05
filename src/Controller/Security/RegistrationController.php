@@ -8,9 +8,8 @@ use App\Entity\TimeSlot;
 use App\Entity\User;
 use App\Form\CustomerType;
 use App\Form\ManagerType;
-use DateInterval;
+use App\Services\UploadFilesServices\ImageUpLoaderHelper;
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,9 +39,9 @@ final class RegistrationController extends AbstractController
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
-
                 )
             );
+
             $user->setRoles(['ROLE_CUSTOMER']);
 
             $this->entityManager->persist($user);
@@ -57,25 +56,37 @@ final class RegistrationController extends AbstractController
     }
 
     #[Route('/register_manager', name: 'register_manager')]
-    public function registerManager(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function registerManager(ImageUpLoaderHelper $imageUpLoaderHelper, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
 
         $form = $this->createForm(ManagerType::class, $user);
+        $form['restaurant']->remove('orderEnabled'); // remove field
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {   
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $restaurant = $user->getRestaurant();
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
-
                 )
             );
+
+            $user->setRoles(['ROLE_MANAGER']);
+           
+            // Upload image background
+            $uploadedFile = $form['restaurant']['imageFile']->getData();
             
-            // TODO refacto
+            if ($uploadedFile) {
+                $newFileName = $imageUpLoaderHelper->uploadRestaurantImage($uploadedFile);
+                $restaurant->setImageFilePath($this->getParameter('image_directory') . $newFileName);
+            }
+            
+            // TODO refacto set default timeSlots to unix timestamp with timeslot time.
             
             $startAtAm = new DateTime('@-0');
             $startAtAm->setTime(10, 00);
@@ -86,11 +97,7 @@ final class RegistrationController extends AbstractController
             $closeAtPm = new DateTime('@-0');
             $closeAtPm->setTime(22, 00);
             
-            
-            $user->setRoles(['ROLE_MANAGER']);
             $user->getRestaurant()->setUser($user);
-
-            $restaurant = $user->getRestaurant();
 
             for ($i = 1; $i < 8; $i++) {
 

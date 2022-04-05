@@ -32,7 +32,6 @@ p {
     padding-bottom: 4rem;   
 }
 
-
 .search-restaurant {
     margin: auto;
     width: 50%;
@@ -45,5 +44,6 @@ p {
 li.form-errors {
     list-style: none;
 }
+
 
 /* comments here */

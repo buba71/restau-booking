@@ -30,6 +30,7 @@
 
                         {{ form_row(form.restaurant.phone) }}
                         {{ form_row(form.restaurant.speciality) }}
+                        {{ form_row(form.restaurant.imageFile) }}
                     </div>
                 </div>
                 <div class="card mt-2">
@@ -57,3 +58,15 @@
     </div>
     
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.custom-file-input').on('change', function(event) {
+            var inputFile = event.currentTarget;
+            $(inputFile).parent()
+                .find('.custom-file-label')
+                .html(inputFile.files[0].name);
+        });
+    </script>
+{% endblock %} 

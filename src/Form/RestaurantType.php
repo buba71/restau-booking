@@ -7,11 +7,13 @@ namespace App\Form;
 use App\Entity\Restaurant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class RestaurantType extends AbstractType
 {
@@ -38,8 +40,20 @@ final class RestaurantType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Asiatique',
+                ]                
+            ])
+            ->add('imageFile', FileType::class, [
+                'mapped' => false,
+                'label' => false,
+                'attr' => ['placeholder' => 'Choisir  une image'],
+                'constraints' => [
+                    new NotBlank(),
+                    new Image([
+                        'mimeTypes' => ['image/jepg', 'image/png', 'image/jpg'],
+                        'maxSize' => '200k',
+                        'maxSizeMessage' => "Cette image est trop volumineuse {{ size }}. Max  {{ limit }}"
+                    ])
                 ]
-                
             ])
             ->add('orderEnabled', CheckboxType::class, [    
                 'label' => false,  

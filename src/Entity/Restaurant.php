@@ -33,6 +33,12 @@ class Restaurant
     private string $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
+     */
+    private ?string $imageFilePath = null;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir une adresse valide.")
      */
@@ -112,6 +118,16 @@ class Restaurant
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getImageFilePath(): ?string
+    {
+        return $this->imageFilePath;
+    }
+
+    public function setImageFilePath(?string $imageFilePath)
+    {
+        $this->imageFilePath = $imageFilePath;
     }
 
     public function getName(): ?string

@@ -9,6 +9,7 @@ analyse:
 	make phpinsights
 
 test:
+	php bin/console doctrine:fixtures:load --no-interaction --env=test
 	php bin/phpunit
 
 fix:

@@ -113,7 +113,7 @@ final class TimeSlotsController extends AbstractController
     }
 
     #[Route('/dated_time_slot/delete/{id}', name: 'delete_dated_timeSlot')]
-    public function deleteDatedTimeSlot(TimeSlot $timeSlot)
+    public function deleteDatedTimeSlot(TimeSlot $timeSlot): Response
     {
         $this->entityManager->remove($timeSlot);
         $this->entityManager->flush();

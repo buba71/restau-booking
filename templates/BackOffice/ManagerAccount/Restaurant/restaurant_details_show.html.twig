@@ -7,7 +7,9 @@
 
 
     <section class="card user-profile mt-5 p-3" id="manager-profile">
-    
+
+        <img src="{{ asset(restaurant.imageFilePath) }}" alt="" class="img-thumbnail img-fluid">
+        
         <h3 class="card-title py-5 text-muted">Détails du restaurant</h3>
         <div class="car-body">
             <table>
@@ -22,8 +24,7 @@
                             <ul class="nav flex-column">
                                 <li class="nav-item">{{ restaurant.address }}</li>
                                 <li class="nav-item">{{ restaurant.zipcode}} {{ restaurant.city }}</li>
-                            </ul>
-                        
+                            </ul>                        
                         </address>
                         
                     </td>         

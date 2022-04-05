@@ -20,7 +20,6 @@ final class RegisterMenu
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private Environment $twig,
         private MenuItemRepository $menuItemRepository,
         private RouterInterface $router,
         private Security $security,
@@ -28,7 +27,7 @@ final class RegisterMenu
         private ValidatorInterface $validator        
         ) {}
 
-    public function save(array $formData = null, Menu $menu = null)
+    public function save(array $formData = null, Menu $menu = null): mixed
     {
         $restaurant = $this->security->getUser()->getRestaurant();
         $message = 'Menu modifié avec succès.';
