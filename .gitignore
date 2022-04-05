@@ -47,3 +47,7 @@ typesense-data/
 ###> vscode ###
 .vscode/
 ###< vscode ###
+
+###< uploads ###
+/public/uploads/
+###> uploads ###
