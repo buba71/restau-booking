@@ -272,12 +272,24 @@
                 $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', 'disabled')
                 $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', 'disabled')
 
-            } else if (event.target.value == 9){
+            } else if (event.target.value == 9) {
                 $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', false)
                 $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', false)
                 $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', false)
                 $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', false)
-            }            
+            
+            } else if (event.target.value == 10) {
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', 'disabled')
+
+            } else if (event.target.value == 11) {
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtAm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtAm').parent().prop('disabled', 'disabled')
+                $('#time_slots_timeSlots_' + numberId + '_serviceStartAtPm').parent().prop('disabled', false)
+                $('#time_slots_timeSlots_' + numberId + '_serviceCloseAtPm').parent().prop('disabled', false)
+            }         
         })
 
         

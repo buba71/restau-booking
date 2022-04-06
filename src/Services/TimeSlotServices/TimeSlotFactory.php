@@ -89,7 +89,25 @@ final class TimeSlotFactory
 
                 $dayTimeSlot = array_merge($amTimeSlot, [' '], $pmTimeSlot);
                 $timeSlotsViewModel[] = $dayTimeSlot;
-            }    
+            }  else if  ($timeSlot->getStatus() == TimeSlot::AM_TIMESLOT_STATUS) {
+
+                $timeSlot = $this->buildTimeSlot(
+                    $timeSlot->getServiceStartAtAm(),
+                    $timeSlot->getServiceCloseAtAm(),
+                    $timeSlot->getIntervalTime()
+                );
+                $timeSlotsViewModel[] = $timeSlot;
+
+            }  else if ($timeSlot->getStatus() == TimeSlot::PM_TIMESLOT_STATUS) {
+
+                $timeSlot = $this->buildTimeSlot(
+                    $timeSlot->getServiceStartAtPm(),
+                    $timeSlot->getServiceCloseAtPm(),
+                    $timeSlot->getIntervalTime()
+                );
+
+                $timeSlotsViewModel[] = $timeSlot;
+            }
         }
 
         return $timeSlotsViewModel;

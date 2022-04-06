@@ -51,9 +51,9 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th>Service midi</th>
-                  <th>Service Soir</th>
-                  <th>Service continu</th>
+                  <th class="mx-2">Service midi</th>
+                  <th class="mx-2">Service Soir</th>
+                  <th class="mx-2">Service continu</th>
                 </tr>
               </thead>
               <tbody>
@@ -63,7 +63,15 @@
                     <tr>
                       <th class="text-muted" scope="row">{{ days[index] }}</th>
 
-                        {% if timeSlot.status == 9 %}
+                        {% if timeSlot.status == 10 %}
+                            <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
+                            <td class="px-2 text-center">Fermé</td>
+                            <td class="px-2 text-center">-</td>
+                        {% elseif timeSlot.status == 11 %}
+                            <td class="px-2 text-center"><em>Fermé</em></td>
+                            <td class="px-2 text-center"><em>{{ timeSlot.serviceStartAtPm|date('H:i') }}-{{ timeSlot.serviceCloseAtPm|date('H:i') }}</em></td>
+                            <td class="px-2 text-center">-</td>
+                        {% elseif timeSlot.status == 9 %}
                           <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
                           <td class="px-2"><em>{{ timeSlot.serviceStartAtPm|date('H:i') }}-{{ timeSlot.serviceCloseAtPm|date('H:i') }}</em></td>
                           <td class="px-2 text-center">-</td>
