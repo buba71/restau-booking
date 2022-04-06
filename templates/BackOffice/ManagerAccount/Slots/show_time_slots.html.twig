@@ -28,20 +28,29 @@
             <tbody>
             
                 {% for timeSlot in timeSlots %}
-                        
-                            {% if timeSlot.status == 9 %}
-
-                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/normal_day.html.twig' %}
-
-                            {% elseif timeSlot.status == 8 %}
-
-                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/continous_day.html.twig' %}
-
-                            {% elseif timeSlot.status == 7 %}
                             
-                                {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/closed_day.html.twig' %}
+                        
+                    {% if timeSlot.status == 9 %}
 
-                            {% endif %}                            
+                        {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/normal_day.html.twig' %}
+
+                    {% elseif timeSlot.status == 8 %}
+
+                        {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/continous_day.html.twig' %}
+
+                    {% elseif timeSlot.status == 7 %}
+                            
+                        {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/closed_day.html.twig' %}
+
+                    {% elseif timeSlot.status == 10 %}
+
+                        {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/am_day.html.twig' %}
+
+                    {% elseif timeSlot.status == 11 %}
+
+                        {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/pm_day.html.twig' %}
+
+                    {% endif %}                            
                     
                 {% set index = index + 1 %}
                 {% endfor %}

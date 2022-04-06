@@ -27,6 +27,8 @@ class TimeSlot
     public const CLOSED_DAY_TIMESLOT_STATUS = 7;
     public const CONTINOUS_DAY_TIMESLOT_STATUS = 8;
     public const NORMAL_DAY_TIMESLOT_STATUS = 9;
+    public const AM_TIMESLOT_STATUS = 10;
+    public const PM_TIMESLOT_STATUS = 11;
 
     /**
      * @ORM\Id 

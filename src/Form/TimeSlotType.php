@@ -56,7 +56,8 @@ final class TimeSlotType extends AbstractType
                     "Normale" => 9,
                     "Continue" => 8,
                     "Fermé" => 7,
-                    
+                    "Matin" => 10,
+                    "Après-midi" => 11
                 ],
                 'label' => false
             ])
