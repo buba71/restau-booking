@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class RestaurantType extends AbstractType
 {
@@ -45,17 +44,32 @@ final class RestaurantType extends AbstractType
             ->add('imageFile', FileType::class, [
                 'mapped' => false,
                 'label' => false,
+                'required' => false,
                 'attr' => ['placeholder' => 'Choisir  une image'],
                 'constraints' => [
-                    new NotBlank(),
                     new Image([
-                        'mimeTypes' => ['image/jepg', 'image/png', 'image/jpg'],
-                        'maxSize' => '200k',
-                        'maxSizeMessage' => "Cette image est trop volumineuse {{ size }}. Max  {{ limit }}"
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/jpg'],
+                        'maxSize' => '500k',
+                        'maxSizeMessage' => "Cette image est trop volumineuse: {{ size }}ko. Max  {{ limit }}ko",
+                        'maxHeight' =>  '500',
+                        'maxHeightMessage' => "Cette image est trop haute: {{ height }}px. Max {{ max_height }}px",
+                        'maxWidth' =>  '700',
+                        'maxWidthMessage' => "Cette image est trop large: {{ width }}px. Max {{ max_width }}px"
                     ])
                 ]
             ])
             ->add('orderEnabled', CheckboxType::class, [    
+                'label' => false,  
+                'required' => false,          
+                'attr' => [
+                    'class' => 'pl-0 mb-2',
+                    'data-toggle' => 'toggle',
+                    'data-onstyle' => 'info',
+                    'data-height' => '25',
+                    'data-width' => '75'
+                ]            
+            ])
+            ->add('bookingEnabled', CheckboxType::class, [    
                 'label' => false,  
                 'required' => false,          
                 'attr' => [

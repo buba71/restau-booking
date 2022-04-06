@@ -8,9 +8,12 @@
 
     <section class="card user-profile mt-5 p-3" id="manager-profile">
 
-        <img src="{{ asset(restaurant.imageFilePath) }}" alt="" class="img-thumbnail img-fluid">
         
-        <h3 class="card-title py-5 text-muted">Détails du restaurant</h3>
+        
+        <h3 class="card-title pt-5 pb-2 text-muted">Détails du restaurant</h3>
+        <div class="restaurant-background w-25 mb-5">
+            <img src="{{ asset(restaurant.imageFilePath) }}" alt="" class="img-thumbnail img-fluid">
+        </div>
         <div class="car-body">
             <table>
                 <tr>
@@ -39,16 +42,25 @@
                 </tr>
                 <tr><td class="p-3"></td></tr>
                 <tr>
-                    <th scope="row">Commander en ligne:</th>
+                    <th scope="row">Réservations en ligne:</th>
                     <td class="px-3">
-                        {% if restaurant.orderEnabled %}
-                            <input type="checkbox" checked data-toggle="toggle" data-onstyle="info" data-height="25" data-width="75" disabled>
+                        {% if restaurant.bookingEnabled %}
+                            <big><span class="badge badge-info">Activées</span></big>
                         {% else %}
-                            <input type="checkbox" data-toggle="toggle" data-onstyle="info" data-height="25" data-width="75" disabled>
+                            <big><span class="badge badge-info">Désactivées</span></big>
                         {% endif %}
                     </td>         
                 </tr>
-                
+                <tr>
+                    <th scope="row">Commandes en ligne:</th>
+                    <td class="px-3">
+                        {% if restaurant.orderEnabled %}
+                            <big><span class="badge badge-info">Activées</span></big>
+                        {% else %}
+                            <big><span class="badge badge-info">Désactivées</span></big>
+                        {% endif %}
+                    </td>         
+                </tr>
             </table>
         </div>
 

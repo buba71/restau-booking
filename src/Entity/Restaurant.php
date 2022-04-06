@@ -70,7 +70,12 @@ class Restaurant
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $orderEnabled = true;
+    private bool $orderEnabled = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $bookingEnabled = false;
 
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
@@ -210,6 +215,16 @@ class Restaurant
     public function setOrderEnabled(bool $orderEnabled): void
     {
         $this->orderEnabled = $orderEnabled;
+    }
+
+    public function bookingEnabled(): bool
+    {
+        return $this->bookingEnabled;
+    }
+
+    public function setBookingEnabled(bool $bookingEnabled): void
+    {
+        $this->bookingEnabled = $bookingEnabled;
     }
 
     public function getTimeSlots(): Collection

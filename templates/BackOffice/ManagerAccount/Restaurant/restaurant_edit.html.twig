@@ -1,4 +1,21 @@
+{% form_theme form _self %}
+
+{# form_errors.html.twig #}
+{% block form_errors %}
+    
+        {% if errors|length > 0 %}
+        <ul class="p-0">
+            {% for error in errors %}
+                <li class="form-errors">{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    
+{% endblock form_errors %}
+
 {% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
+
 
 {% block body %}
 
@@ -7,6 +24,14 @@
     </div>
     <section class="card user-profile mt-5 p-3" id="manager-profile-edit">
         {{ form_start(form) }}
+
+            {% if form.imageFile.vars.data %}
+                <div class="w-25 mb-2">
+                    <img src="{{ asset('uploads/images/' ~ form.imageFile.vars.data.filename)}}" alt="" class="img-thumbnail">  
+                </div>              
+            {% endif %}
+
+            {{ form_row(form.imageFile) }}
             {{ form_row(form.name) }}
             {{ form_row(form.address) }}
             {{ form_row(form.zipcode) }}
@@ -14,18 +39,17 @@
             {{ form_row(form.phone) }}
             {{ form_row(form.speciality) }}
             
-            {% if form.imageFile.vars.data %}
+            <div class="d-flex flex-row">
                 <div>
-                    <img src="{{ asset('uploads/images/' ~ form.imageFile.vars.data.filename)}}" alt="" class="img-thumbnail">  
-                </div>              
-            {% endif %}
-
-            {{  form_row(form.imageFile) }}
-            
-            <div>
-                <span class="mb-2 d-block">Permettre les commandes en ligne</span>
-                {{ form_row(form.orderEnabled) }}
+                    <span class="mb-2 d-block">Activer les réservations en ligne</span>
+                    {{ form_row(form.bookingEnabled) }}
+                </div>
+                <div class="ml-5">
+                    <span class="mb-2 d-block">Activer les commandes en ligne</span>
+                    {{ form_row(form.orderEnabled) }}                    
+                </div>
             </div>
+
             <div class="form-controls">
                 <div class="d-inline-block">
                     <button type="submit" class="btn btn-info">Modifier</button>                      
@@ -33,9 +57,6 @@
                 <div class="d-inline-block ml-3">
                     <a href="{{ path('show_restaurant_details') }}" type="button" class="btn btn-secondary">Annuler</a>
                 </div>
-            </div>
-            <div class="submit-form">
-                
             </div>
         {{ form_end(form) }}
     </section>
@@ -45,6 +66,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        // Customize Image Form input (Set the file name on input).
         $('.custom-file-input').on('change', function(event) {
             var inputFile = event.currentTarget;
             $(inputFile).parent()
