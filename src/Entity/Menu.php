@@ -50,10 +50,6 @@ final class Menu implements Product
 
     /**
      * @ORM\ManyToMany(targetEntity=MenuItem::class, inversedBy="menus")
-     * @Assert\Count(
-     *      min = 1,
-     *      minMessage = "Vous devez sélectionner au moin un produit."
-     * )
      * 
      */
     private Collection $menuItems;

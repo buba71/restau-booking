@@ -62,6 +62,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        // Customize Image Form input (Set the file name on input).
         $('.custom-file-input').on('change', function(event) {
             var inputFile = event.currentTarget;
             $(inputFile).parent()

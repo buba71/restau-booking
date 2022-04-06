@@ -129,11 +129,8 @@
           
           <div class="booking-controls mt-5 d-flex justify-content-around">
 
-            {{ form_row(form.booking) }}
-            
-            {% if restaurant.orderEnabled %}
-              {{ form_row(form.bookingOrder)}}
-            {% endif %}                      
+            {% if restaurant.bookingEnabled %} {{ form_row(form.booking) }} {% endif %}            
+            {% if restaurant.orderEnabled %} {{ form_row(form.bookingOrder)}} {% endif %}                      
 
           </div> 
     </section>
@@ -143,8 +140,6 @@
   <!-- Booking calendar -->
 
   </div>
-      
-       
      
 </div>
 

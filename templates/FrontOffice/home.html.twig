@@ -88,8 +88,8 @@
             </div>
             <div class="row mt-1">
                 <div class="col d-flex justify-content-end">
-                    <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info">Réserver</a>
-                    <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info ml-2">Commander</a>
+                    {% if restaurant.bookingEnabled %} <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info">Réserver</a> {% endif %}
+                    {% if restaurant.orderEnabled %} <a href="{{ path('booking', { id: restaurant.id }) }}" class="btn btn-info ml-2">Commander</a> {% endif %}
                 </div>
             </div>
                                              
