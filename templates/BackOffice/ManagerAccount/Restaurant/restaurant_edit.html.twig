@@ -1,3 +1,5 @@
+{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
+
 {% form_theme form _self %}
 
 {# form_errors.html.twig #}
@@ -13,9 +15,7 @@
     
 {% endblock form_errors %}
 
-{% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
-
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
 

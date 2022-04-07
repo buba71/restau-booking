@@ -73,7 +73,7 @@
 
                 const bookingId  = event.relatedTarget.getAttribute("data-bookingId");
 
-                let url = `{{ path('delete_booking', {'id': 'booking_id' }) }}`;
+                let url = `{{ path('manager_delete_booking', {'id': 'booking_id' }) }}`;
                 url = url.replace('booking_id', bookingId);
                 $('#delete-booking').attr('href', url);            
             })
