@@ -32,7 +32,7 @@ final class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/restaurant_booking/delete/{id}', name: 'delete_booking')]
+    #[Route('/restaurant_booking/delete/{id}', name: 'manager_delete_booking')]
     public function deleteBooking(Booking $booking, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($booking);

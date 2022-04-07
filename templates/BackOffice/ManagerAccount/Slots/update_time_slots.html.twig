@@ -1,6 +1,5 @@
 {% extends 'BackOffice/ManagerAccount/layout.html.twig' %}
 
-
 {% form_theme timeSlotcollectionForm _self %}
 
 {% block _time_slots_timeSlots_entry_row %}
@@ -29,9 +28,6 @@
         </div>
     {% endif %}
 {% endif %}
-
-     
-    
     
 {% endblock %}
 
@@ -77,8 +73,10 @@
                 </div>
                 <div>
                     {{ form_widget(timeSlotcollectionForm.Valider)}}
+                    <a href="{{ path('show_timeSlots') }}" type="button" class="btn btn-secondary ml-2">Annuler</a>
                 </div>            
             {{ form_end(timeSlotcollectionForm) }} 
+            
         {% else %}
             <div class="alert alert-info">
                 <p>Vous n'avez pas défini vos horaires d'ouverture pour le moment.
