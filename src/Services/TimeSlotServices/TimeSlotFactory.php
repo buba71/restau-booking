@@ -61,11 +61,11 @@ final class TimeSlotFactory
         foreach($formattedTimeSlots as $timeSlot) {
 
             // Restaurant is closed return empty array.
-            if ($timeSlot->getStatus() == TimeSlot::CLOSED_DAY_TIMESLOT_STATUS) {
+            if ($timeSlot->getType() == TimeSlot::CLOSED_DAY_TIMESLOT_STATUS) {
 
                 $timeSlotsViewModel[] = ['Fermé'];
 
-            } else if ($timeSlot->getStatus() == TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS) {
+            } else if ($timeSlot->getType() == TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS) {
 
                 $timeSlot = $this->buildTimeSlot(
                     $timeSlot->getServiceStartAtAm(),
@@ -74,7 +74,7 @@ final class TimeSlotFactory
                 );
                 $timeSlotsViewModel[] = $timeSlot;
 
-            } else if ($timeSlot->getStatus() == TimeSlot::NORMAL_DAY_TIMESLOT_STATUS){
+            } else if ($timeSlot->getType() == TimeSlot::NORMAL_DAY_TIMESLOT_STATUS){
                 
                 $amTimeSlot = $this->buildTimeSlot(
                     $timeSlot->getServiceStartAtAm(),
@@ -89,7 +89,7 @@ final class TimeSlotFactory
 
                 $dayTimeSlot = array_merge($amTimeSlot, [' '], $pmTimeSlot);
                 $timeSlotsViewModel[] = $dayTimeSlot;
-            }  else if  ($timeSlot->getStatus() == TimeSlot::AM_TIMESLOT_STATUS) {
+            }  else if  ($timeSlot->getType() == TimeSlot::AM_TIMESLOT_STATUS) {
 
                 $timeSlot = $this->buildTimeSlot(
                     $timeSlot->getServiceStartAtAm(),
@@ -98,7 +98,7 @@ final class TimeSlotFactory
                 );
                 $timeSlotsViewModel[] = $timeSlot;
 
-            }  else if ($timeSlot->getStatus() == TimeSlot::PM_TIMESLOT_STATUS) {
+            }  else if ($timeSlot->getType() == TimeSlot::PM_TIMESLOT_STATUS) {
 
                 $timeSlot = $this->buildTimeSlot(
                     $timeSlot->getServiceStartAtPm(),

@@ -30,23 +30,23 @@
                 {% for timeSlot in timeSlots %}
                             
                         
-                    {% if timeSlot.status == 9 %}
+                    {% if timeSlot.type == 9 %}
 
                         {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/normal_day.html.twig' %}
 
-                    {% elseif timeSlot.status == 8 %}
+                    {% elseif timeSlot.type == 8 %}
 
                         {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/continous_day.html.twig' %}
 
-                    {% elseif timeSlot.status == 7 %}
+                    {% elseif timeSlot.type == 7 %}
                             
                         {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/closed_day.html.twig' %}
 
-                    {% elseif timeSlot.status == 10 %}
+                    {% elseif timeSlot.type == 10 %}
 
                         {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/am_day.html.twig' %}
 
-                    {% elseif timeSlot.status == 11 %}
+                    {% elseif timeSlot.type == 11 %}
 
                         {% include 'BackOffice/ManagerAccount/Slots/partials/show_time_slots/pm_day.html.twig' %}
 
@@ -94,7 +94,7 @@
 
 
             <!-- TODO delete condition : ne pas afficher les dates de fermeture dans cette vue -->
-                {% if timeSlot.status == 9 %}
+                {% if timeSlot.type == 9 %}
 
                     <tbody>
                         <tr>

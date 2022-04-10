@@ -51,7 +51,7 @@ final class TimeSlotType extends AbstractType
                 'required' => false,
                 'label' => false
             ])
-            ->add('status', ChoiceType::class, [
+            ->add('type', ChoiceType::class, [
                 'choices' => [
                     "Normale" => 9,
                     "Continue" => 8,

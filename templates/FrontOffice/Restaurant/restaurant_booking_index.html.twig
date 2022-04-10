@@ -20,7 +20,7 @@
         <div class="restaurant-infos" style="width: 100%;">
             <div class="row g-0">
                 <div class="col-md-6">
-                  <img src="{{ asset('/images/restaurant.png') }}" class="img-fluid" alt="image-restaurant">
+                  <img src="{{ asset(restaurant.imageFilePath) }}" class="img-fluid" alt="image-restaurant">
                 </div>
                 <address class="col-md-6 py-2 restaurant-infos">                  
                     <div class="card-body">
@@ -63,23 +63,23 @@
                     <tr>
                       <th class="text-muted" scope="row">{{ days[index] }}</th>
 
-                        {% if timeSlot.status == 10 %}
+                        {% if timeSlot.type == 10 %}
                             <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
                             <td class="px-2 text-center">Fermé</td>
                             <td class="px-2 text-center">-</td>
-                        {% elseif timeSlot.status == 11 %}
+                        {% elseif timeSlot.type == 11 %}
                             <td class="px-2 text-center"><em>Fermé</em></td>
                             <td class="px-2 text-center"><em>{{ timeSlot.serviceStartAtPm|date('H:i') }}-{{ timeSlot.serviceCloseAtPm|date('H:i') }}</em></td>
                             <td class="px-2 text-center">-</td>
-                        {% elseif timeSlot.status == 9 %}
+                        {% elseif timeSlot.type == 9 %}
                           <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
                           <td class="px-2"><em>{{ timeSlot.serviceStartAtPm|date('H:i') }}-{{ timeSlot.serviceCloseAtPm|date('H:i') }}</em></td>
                           <td class="px-2 text-center">-</td>
-                        {% elseif timeSlot.status == 8 %}
+                        {% elseif timeSlot.type == 8 %}
                           <td class="px-2 text-center">-</td>
                           <td class="px-2 text-center">-</td>
                           <td class="px-2"><em>{{ timeSlot.serviceStartAtAm|date('H:i') }}-{{ timeSlot.serviceCloseAtAm|date('H:i') }}</em></td>
-                        {% elseif timeSlot.status == 7 %}
+                        {% elseif timeSlot.type == 7 %}
                           <td class="px-2 text-center"><em>Fermé</em></td>
                           <td class="px-2 text-center"><em>Fermé</em></td>
                           <td class="px-2 text-center">-</td>
@@ -267,7 +267,7 @@ const calendar = () => {
 
       const navigationStartDate = new Date(englishMonth + ' ' + daysNumber[0] + ',' + year);
       // fix temporarily the lag between frontend call date and backend date request.
-      navigationStartDate.setHours(1);
+      navigationStartDate.setHours(2);
 
       const timeSlot = [];
 

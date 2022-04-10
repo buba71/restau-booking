@@ -49,11 +49,13 @@ final class RestaurantType extends AbstractType
                 'constraints' => [
                     new Image([
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/jpg'],
-                        'maxSize' => '500k',
+                        'maxSize' => '700k',
                         'maxSizeMessage' => "Cette image est trop volumineuse: {{ size }}ko. Max  {{ limit }}ko",
+                        'minHeight' => '350',
+                        'minHeightMessage' => "Cette image n'est pas assez haute: {{ height }}px. Min {{ min_height }}",
                         'maxHeight' =>  '500',
                         'maxHeightMessage' => "Cette image est trop haute: {{ height }}px. Max {{ max_height }}px",
-                        'maxWidth' =>  '700',
+                        'maxWidth' =>  '750',
                         'maxWidthMessage' => "Cette image est trop large: {{ width }}px. Max {{ max_width }}px"
                     ])
                 ]

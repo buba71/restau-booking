@@ -7,6 +7,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * class TimeSlot
@@ -51,7 +52,7 @@ class TimeSlot
     /**
      * @ORM\Column(type="integer")
      */
-    private int $status = 9;
+    private int $type = self::NORMAL_DAY_TIMESLOT_STATUS;
 
     /**
      * @ORM\ManyToOne(targetEntity="ClosedDate", inversedBy="timeSlots")
@@ -127,14 +128,14 @@ class TimeSlot
         $this->dayOfWeek = $dayOfWeek;
     }
 
-    public function getStatus(): int
+    public function getType(): int
     {
-        return $this->status;
+        return $this->type;
     }
 
-    public function setStatus(int $status)
+    public function setType(int $type)
     {
-        $this->status = $status;
+        $this->type = $type;
     }
 
     public function getServiceStartAtAm(): ?DateTime
@@ -206,5 +207,51 @@ class TimeSlot
     public function setRestaurant(Restaurant $restaurant): void
     {
         $this->restaurant = $restaurant;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if ($this->type === 7) {
+            if ($this->serviceStartAtAm !== null | $this->serviceCloseAtAm !== null | $this->serviceStartAtPm !== null | $this->serviceCloseAtPm !== null) {
+                $context->buildViolation('Laisser tous les champs vides.')
+                        ->atPath('type')
+                        ->addViolation();                        
+            }
+        }
+
+        if ($this->type === 8) {
+            if ($this->serviceStartAtPm !== null | $this->serviceCloseAtPm !== null) {
+                $context->buildViolation('Remplir uniquement les champs du premier service.')
+                        ->atPath('type')
+                        ->addViolation();
+            }
+        }
+
+        if ($this->type === 9) {
+            if ($this->serviceStartAtAm === null | $this->serviceStartAtAm === null | $this->serviceStartAtPm === null | $this->serviceCloseAtPm === null) {
+                $context->buildViolation('Remplir tous les champs horaires.')
+                        ->atPath('serviceStartAtAm')
+                        ->addViolation();                        
+            }
+        }
+        
+        if ($this->type === 10) {
+            if ($this->serviceStartAtPm !== null | $this->serviceCloseAtPm !== null) {
+                $context->buildViolation('Remplir uniquement les champs du premier service')
+                        ->atPath('type')
+                        ->addViolation();
+            }
+        }
+
+        if  ($this->type === 11) {
+            if ($this->serviceStartAtAm !== null | $this->serviceCloseAtAm !== null) {
+                $context->buildViolation('Remplir uniquement les champs du deuxième service')
+                        ->atPath('type')
+                        ->addViolation();
+            }
+        }
     }
 }
