@@ -13,7 +13,7 @@
         <td class="p-4 slot-item start-am">{{ form_row(form.serviceStartAtAm)}}</td>
         <td class="p-4 slot-item start-pm">{{ form_row(form.serviceStartAtPm)}}</td>
         <td class="p-4 slot-item d-flex justify-content-center">{{ form_row(form.intervalTime)}}</td>
-        <td class="p-4 slot-item timeslot-status">{{ form_row(form.status) }}</td>
+        <td class="p-4 slot-item timeslot-type">{{ form_row(form.type) }}</td>
         <td>{{ form_row(form.dayOfWeek) }}</td>
     </tr>
     <tr style="border-bottom: 1px solid #dee2e6;">
@@ -164,7 +164,7 @@
                     </thead>
                 {% for timeSlot in datedTimeSlots | sort((a, b) => a.dateOfDay <=> b.dateOfDay) %}
 
-                    {% if timeSlot.status != 7 %}
+                    {% if timeSlot.type != 7 %}
                         <tbody>
                             <tr>
                                 <td>{{ timeSlot.dateOfDay|date("d-M-Y") }}</td>
@@ -248,10 +248,10 @@
         $('select').addClass('form-control');
         $('#dated_time_slot_dateOfDay').css('width', '130px');
 
-        //Change form rendering regardling the timeSlot status.
+        //Change form rendering regardling the timeSlot type.
 
-        const status = $('.timeslot-status select');
-        status.on('change', function (event) {
+        const type = $('.timeslot-type select');
+        type.on('change', function (event) {
             console.log(event.target.value)
             const id = $(this).attr('id');
             const numberId = id.replace(/\D/g,'');

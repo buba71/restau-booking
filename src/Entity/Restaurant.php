@@ -80,6 +80,7 @@ class Restaurant
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private Collection $timeSlots;
 

@@ -62,6 +62,7 @@ final class RegistrationController extends AbstractController
 
         $form = $this->createForm(ManagerType::class, $user);
         $form['restaurant']->remove('orderEnabled'); // remove field
+        $form['restaurant']->remove('bookingEnabled'); // remove field
 
         $form->handleRequest($request);
 
