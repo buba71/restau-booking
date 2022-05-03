@@ -87,7 +87,7 @@ class TimeSlot
     private ?int $intervalTime = null;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, unique=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $dateOfDay = null;
 

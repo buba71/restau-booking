@@ -25,7 +25,7 @@
     <section class="card user-profile mt-5 p-3" id="manager-profile-edit">
         {{ form_start(form) }}
 
-            {% if form.imageFile.vars.data %}
+            {% if form.imageFile.vars.data and form.imageFile.vars.data is not null %}
                 <div class="w-25 mb-2">
                     <img src="{{ asset('uploads/images/' ~ form.imageFile.vars.data.filename)}}" alt="" class="img-thumbnail">  
                 </div>              

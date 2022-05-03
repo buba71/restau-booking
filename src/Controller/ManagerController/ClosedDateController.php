@@ -62,10 +62,13 @@ final class ClosedDateController extends AbstractController
                 
                 $timeSlot->setDateOfDay($date);
                 $timeSlot->setDayOfWeek($dayOfWeek);
+                $timeSlot->setType(TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
                 $closedDate->addTimeSlot($timeSlot);
                 $closedDate->setRestaurant($restaurant);
-                $restaurant->addTimeSlot($timeSlot);                
+                $restaurant->addTimeSlot($timeSlot);
             }
+
+            
             
             $this->entityManager->persist($closedDate);
             $this->entityManager->persist($restaurant);

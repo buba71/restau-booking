@@ -33,7 +33,7 @@ final class TimeSlotsController extends AbstractController
         })->toArray();        
         
         $datedTimeSlots = $restaurant->getTimeSlots()->filter(function($element) {
-            return $element->hasDate() && ($element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
+            return $element->hasDate() && ($element->getType() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
         })->toArray();
 
         return $this->render('BackOffice/ManagerAccount/Slots/show_time_slots.html.twig', [
@@ -73,7 +73,7 @@ final class TimeSlotsController extends AbstractController
         });
 
         $datedTimeSlots = ($restaurant->getTimeSlots())->filter(function ($element) {
-            return $element->hasDate() && ($element->getStatus() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
+            return $element->hasDate() && ($element->getType() !== TimeSlot::CLOSED_DAY_TIMESLOT_STATUS);
         });
 
         $nextDatedTimeSlot = new TimeSlot();       

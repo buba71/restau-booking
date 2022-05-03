@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace tests\Functional;
+namespace App\Tests\Functional;
 
 use App\Entity\Restaurant;
 use App\Services\RestaurantSearch\ByCityLoader;

@@ -24,93 +24,92 @@ class Restaurant
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    protected int $id = 1;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un nom valide.")
      */
-    private string $name;
+    protected string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
-    private ?string $imageFilePath = null;
+    protected ?string $imageFilePath = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir une adresse valide.")
      */
-    private string $address;
+    protected string $address;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un code postal valide.")
      */
-    private string $zipcode;
+    protected string $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir une ville valide.")
      */
-    private string $city;
+    protected string $city;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez saisir un numéro de téléphone valide.")
      */
-    private string $phone;
+    protected string $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable="true")
      */
-    private ?string $speciality;
+    protected ?string $speciality;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $orderEnabled = false;
+    protected bool $orderEnabled = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $bookingEnabled = false;
+    protected bool $bookingEnabled = false;
 
     /**
      * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="restaurant", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Valid()
      */
-    private Collection $timeSlots;
+    protected Collection $timeSlots;
 
     /**
      * @ORM\OneToMany(targetEntity="Booking", mappedBy="restaurant", cascade={"persist", "remove"})
      */
-    private Collection $bookings;
+    protected Collection $bookings;
 
     /**
      * @ORM\OneToMany(targetEntity="ClosedDate", mappedBy="restaurant", cascade={"persist", "remove"})
      */
-    private Collection $closedDates;
+    protected Collection $closedDates;
 
     /**
      * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="restaurant", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
-    private Collection $menuItems;
+    protected Collection $menuItems;
 
     /**
      * @ORM\OneToMany(targetEntity="Menu", mappedBy="restaurant", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
-    private Collection $menus;
+    protected Collection $menus;
 
     /**
      * @ORM\OneToOne(targetEntity="User", mappedBy="restaurant", cascade={"persist"})
      * JoinColumn(name="manager_id", referencedColumnName="id")
      */
-    private ?User $user;
+    protected ?User $user;
 
     public function __construct()
     {
