@@ -15,6 +15,13 @@ yar run build
 
 ````
 
+Create *public/uploads/images* directory(Restaurant images are stored in this directory).
+
+````
+chmod -R 777 public/uploads/images
+
+````
+
 ---
 
 ## Create Database
