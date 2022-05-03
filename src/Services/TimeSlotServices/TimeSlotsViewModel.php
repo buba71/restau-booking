@@ -10,9 +10,9 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class TimeSlotFactory
+final class TimeSlotsViewModel
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private TimeSlotViewModelResolver $timeSlotViewModel)
     {
         date_default_timezone_set("Europe/Paris");
     }
@@ -22,18 +22,23 @@ final class TimeSlotFactory
      * @param string $today
      * 
      * @return array<string[]>
+     * 
+     * TODO refactor method naming
      */
-    public function create(int $restaurantId, string $today): array
-    {            
+    public function build(int $restaurantId, string $today): array
+    {     
+        // $today is the current day.       
         $currentWeeklyDaysDateTime = $this->resolveCalendarWeeklyDays($today);
 
+        // get restaurant weekly timeSlots.
         $timeSlots = $this->retrieveRestaurantWeeklyTimeSlots($currentWeeklyDaysDateTime, $restaurantId);
 
+        // resolve the php number of current day.
         $todayDateTime = date('D m Y', strtotime($today));
         $todayName = (substr($todayDateTime, 0, 3));
         $todayNumber = intval(date("w", strtotime($todayName)));
 
-        // Resolve timeSlots starting from today.
+        // Reorder timeSlots starting from today from restaurant timeslots list.
         $array_front = [];
         $array_back = [];
 
@@ -53,98 +58,14 @@ final class TimeSlotFactory
 
         $formattedTimeSlots = [...$array_front, ...$array_back];
 
+        // Build View model.
         $timeSlotsViewModel = [];
-        $dayTimeSlot = [];
-
-        // TODO refacto
-
         foreach($formattedTimeSlots as $timeSlot) {
 
-            // Restaurant is closed return empty array.
-            if ($timeSlot->getType() == TimeSlot::CLOSED_DAY_TIMESLOT_STATUS) {
-
-                $timeSlotsViewModel[] = ['Fermé'];
-
-            } else if ($timeSlot->getType() == TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS) {
-
-                $timeSlot = $this->buildTimeSlot(
-                    $timeSlot->getServiceStartAtAm(),
-                    $timeSlot->getServiceCloseAtAm(),
-                    $timeSlot->getIntervalTime()
-                );
-                $timeSlotsViewModel[] = $timeSlot;
-
-            } else if ($timeSlot->getType() == TimeSlot::NORMAL_DAY_TIMESLOT_STATUS){
-                
-                $amTimeSlot = $this->buildTimeSlot(
-                    $timeSlot->getServiceStartAtAm(),
-                    $timeSlot->getServiceCloseAtAm(),
-                    $timeSlot->getIntervalTime()
-                );
-                $pmTimeSlot = $this->buildTimeSlot(
-                    $timeSlot->getServiceStartAtPm(),
-                    $timeSlot->getServiceCloseAtPm(),
-                    $timeSlot->getIntervalTime()
-                );
-
-                $dayTimeSlot = array_merge($amTimeSlot, [' '], $pmTimeSlot);
-                $timeSlotsViewModel[] = $dayTimeSlot;
-            }  else if  ($timeSlot->getType() == TimeSlot::AM_TIMESLOT_STATUS) {
-
-                $timeSlot = $this->buildTimeSlot(
-                    $timeSlot->getServiceStartAtAm(),
-                    $timeSlot->getServiceCloseAtAm(),
-                    $timeSlot->getIntervalTime()
-                );
-                $timeSlotsViewModel[] = $timeSlot;
-
-            }  else if ($timeSlot->getType() == TimeSlot::PM_TIMESLOT_STATUS) {
-
-                $timeSlot = $this->buildTimeSlot(
-                    $timeSlot->getServiceStartAtPm(),
-                    $timeSlot->getServiceCloseAtPm(),
-                    $timeSlot->getIntervalTime()
-                );
-
-                $timeSlotsViewModel[] = $timeSlot;
-            }
+            $timeSlotsViewModel[] = $this->timeSlotViewModel->resolve($timeSlot);
         }
 
         return $timeSlotsViewModel;
-    }
- 
-    
-    /**
-     * @param DateTime|null $startTime
-     * @param DateTime|null $endTime
-     * @param int|null $intervalTime
-     * 
-     * @return array<string>
-     */
-    private function buildTimeSlot(?DateTime $startTime, ?DateTime $endTime, ?int $intervalTime): array
-    {
-        // if pm service close > 00:00 (ex:18H00 - 02H00), set service close at 23H59.
-        if ($startTime > $endTime) {
-            $endTime->setTime(23, 59);
-        }
-
-        $start = $startTime;
-        $startTime = $start->format('H:i');
-        $end = $endTime;
-        $interval =  new DateInterval('PT'.$intervalTime.'M');
-
-        $timeSlot = [];
-        $timeSlot[] = $startTime;
-
-        while($start < $end) {
-
-            $time = $start->add($interval);
-            $time = $time->format('H:i');
-            
-            $timeSlot[] = $time;
-        }
-
-        return $timeSlot;
     }
 
     /**

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Restaurant;
+use App\Services\TimeSlotServices\DefaultTimeSlotsFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 final class AppFixtures extends Fixture
 {
+    public function __construct(private DefaultTimeSlotsFactory $defaultTimeSlotsFactory) {}
+
     public function load(ObjectManager $manager): void
     {
         for ($index = 1; $index < 10; $index++) {
@@ -20,6 +23,8 @@ final class AppFixtures extends Fixture
             $restaurant->setZipcode('75000');
             $restaurant->setPhone('0651424874');
             $restaurant->setSpeciality('Cuisine française');
+            $restaurant->setImageFilePath('/uploads/images/restaurant-6253550f59495.png');
+            $this->defaultTimeSlotsFactory->createTimeSlots($restaurant);
 
             $manager->persist($restaurant);
         }
@@ -32,6 +37,7 @@ final class AppFixtures extends Fixture
             $restaurant->setZipcode('69000');
             $restaurant->setPhone('0651424874');
             $restaurant->setSpeciality('Cuisine Asiatique');
+            $restaurant->setImageFilePath('/uploads/images/restaurant-6253550f59495.png');
 
             $manager->persist($restaurant);
         }
@@ -44,6 +50,7 @@ final class AppFixtures extends Fixture
             $restaurant->setZipcode('69000');
             $restaurant->setPhone('0651424874');
             $restaurant->setSpeciality('Cuisine Asiatique');
+            $restaurant->setImageFilePath('/uploads/images/restaurant-6253550f59495.png');
 
             $manager->persist($restaurant);
         }

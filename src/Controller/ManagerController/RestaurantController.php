@@ -40,9 +40,11 @@ final class RestaurantController extends AbstractController
 
         $form = $this->createForm(RestaurantType::class, $restaurant);
 
-        // Set ImageFile field.
-        $oldFileUploadedPath = $this->getParameter('kernel.project_dir') . '/public' . $restaurantImage;
-        $form->get('imageFile')->setData(new File($oldFileUploadedPath));
+        if($restaurantImage !== null) {
+            // Set ImageFile field.
+            $oldFileUploadedPath = $this->getParameter('kernel.project_dir') . '/public' . $restaurantImage;
+            $form->get('imageFile')->setData(new File($oldFileUploadedPath));
+        }        
 
         $form->handleRequest($request);
 

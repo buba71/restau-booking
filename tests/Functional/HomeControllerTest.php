@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace tests\functional;
+namespace App\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

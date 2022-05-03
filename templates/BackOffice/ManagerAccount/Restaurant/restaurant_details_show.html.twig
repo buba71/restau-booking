@@ -11,9 +11,13 @@
         
         
         <h3 class="card-title pt-5 pb-2 text-muted">Détails du restaurant</h3>
-        <div class="restaurant-background w-25 mb-5">
-            <img src="{{ asset(restaurant.imageFilePath) }}" alt="" class="img-thumbnail img-fluid">
-        </div>
+
+        {% if restaurant.imagefilePath is not null %}
+            <div class="restaurant-background w-25 mb-5">
+                <img src="{{ asset(restaurant.imageFilePath) }}" alt="" class="img-thumbnail img-fluid">
+            </div>
+        {% endif %}
+        
         <div class="car-body">
             <table>
                 <tr>

@@ -10,23 +10,18 @@ use DateTime;
 
 final class TimeSlotViewModelResolver
 {
-    public function __construct()
-    {
-        
-    }
-
     public function resolve(TimeSlot $timeSlot)
     {
-        match($timeSlot->getStatus) {
-            TimeSlot::CLOSED_DAY_TIMESLOT_STATUS => ['Fermé'],
-            TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS => $this->buildTimeSlotViewModel(),
-            TimeSlot::NORMAL_DAY_TIMESLOT_STATUS => $this->buildTimeSlotViewModel(),
-            TimeSlot::AM_TIMESLOT_STATUS => $this->buildTimeSlotViewModel(),
-            TimeSlot::PM_TIMESLOT_STATUS =>  $this->buildTimeSlotViewModel(),
+        return match($timeSlot->getType()) {
+            TimeSlot::CLOSED_DAY_TIMESLOT_STATUS => $this->buildTimeSlotWhenClosed(),
+            TimeSlot::CONTINOUS_DAY_TIMESLOT_STATUS => $this->buildTimeSlotWhenContinuous($timeSlot),
+            TimeSlot::NORMAL_DAY_TIMESLOT_STATUS => $this->buildTimeSlotWhenNormal($timeSlot),
+            TimeSlot::AM_TIMESLOT_STATUS => $this->buildTimeSlotWhenAm($timeSlot),
+            TimeSlot::PM_TIMESLOT_STATUS =>  $this->buildTimeSlotWhenPm($timeSlot),
         };
     }
 
-    /**
+        /**
      * @param DateTime|null $startTime
      * @param DateTime|null $endTime
      * @param int|null $intervalTime
@@ -57,5 +52,54 @@ final class TimeSlotViewModelResolver
         }
 
         return $timeSlot;
+    }
+
+    private function buildTimeSlotWhenClosed(): array
+    {
+        return ['Fermé'];
+    }
+
+    private function buildTimeSlotWhenContinuous(TimeSlot $timeSlot): array
+    {
+        return $this->buildTimeSlotViewModel(
+            $timeSlot->getServiceStartAtAm(),
+            $timeSlot->getServiceCloseAtAm(),
+            $timeSlot->getIntervalTime()
+        );
+    }
+
+    private function buildTimeSlotWhenNormal(TimeSlot $timeSlot): array
+    {
+        $amTimeSlot = $this->buildTimeSlotViewModel(
+            $timeSlot->getServiceStartAtAm(),
+            $timeSlot->getServiceCloseAtAm(),
+            $timeSlot->getIntervalTime()
+        );
+        $pmTimeSlot = $this->buildTimeSlotViewModel(
+            $timeSlot->getServiceStartAtPm(),
+            $timeSlot->getServiceCloseAtPm(),
+            $timeSlot->getIntervalTime()
+        );
+
+        // Space represent middle day separator on viewModel.
+        return array_merge($amTimeSlot, [' '], $pmTimeSlot);
+    }
+
+    private function buildTimeSlotWhenAm(TimeSlot $timeSlot): array
+    {
+        return $this->buildTimeSlotViewModel(
+            $timeSlot->getServiceStartAtAm(),
+            $timeSlot->getServiceCloseAtAm(),
+            $timeSlot->getIntervalTime()
+        );
+    }
+
+    private function buildTimeSlotWhenPm(TimeSlot $timeSlot): array
+    {
+        return $this->buildTimeSlotViewModel(
+            $timeSlot->getServiceStartAtPm(),
+            $timeSlot->getServiceCloseAtPm(),
+            $timeSlot->getIntervalTime()
+        );
     }
 }

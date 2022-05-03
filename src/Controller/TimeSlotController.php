@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Services\TimeSlotServices\TimeSlotFactory;
+use App\Services\TimeSlotServices\TimeSlotsViewModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ final class TimeSlotController extends AbstractController
     }
 
     #[Route('/time-slots', name: 'time_slots', methods: 'POST')]
-    public function retrieveTimeSlotAjax(Request $request, TimeSlotFactory $timeSlotFactory): JsonResponse
+    public function retrieveTimeSlotAjax(Request $request, TimeSlotsViewModel $timeSlotsViewModel): JsonResponse
     {
         if($request->getMethod() === 'POST') {
 
@@ -27,7 +27,7 @@ final class TimeSlotController extends AbstractController
             $startDateString = $ajaxData['startDate'];
             $restaurantId = $ajaxData['restaurantId'];
         
-            $timeSlots = $timeSlotFactory->create($restaurantId, $startDateString);
+            $timeSlots = $timeSlotsViewModel->build($restaurantId, $startDateString);
 
             return new JsonResponse($timeSlots, 200);
         }

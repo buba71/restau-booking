@@ -70,18 +70,32 @@
                 <div class= "col d-flex justify-content-center">
                     <div class="card mt-5" style="width: 100%;">
                         <div class="row g-0">
-                            <div class="col-md-4">
-                              <img src="{{ asset(restaurant.imageFilePath) }}" class="img-fluid" alt="image-restaurant">
-                            </div>
-                            <div class="col-md-8 restaurant-infos">
-                              <div class="card-body">
-                                <h5 class="card-title">{{ restaurant.name }}</h5>
-                                <p class="card-text">{{ restaurant.address}}</p>
-                                <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
-                                <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
-                                <p class="card-text">Téléphone: {{ restaurant.phone}}</p>                                
-                              </div>
-                            </div>
+
+                            {% if restaurant.imageFilePath is not null %}
+                                <div class="col-md-4">
+                                  <img src="{{ asset(restaurant.imageFilePath) }}" class="img-fluid" alt="image-restaurant">
+                                </div>
+                                <div class="col-md-8 restaurant-infos">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{ restaurant.name }}</h5>
+                                    <p class="card-text">{{ restaurant.address}}</p>
+                                    <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
+                                    <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
+                                    <p class="card-text">Téléphone: {{ restaurant.phone}}</p>                                
+                                  </div>
+                                </div>
+                            {% else %}
+                                <div class="col-md-12 restaurant-infos">
+                                  <div class="card-body">
+                                    <h5 class="card-title">{{ restaurant.name }}</h5>
+                                    <p class="card-text">{{ restaurant.address}}</p>
+                                    <p class="card-text">{{ restaurant.zipcode}} {{ restaurant.city }}</p>
+                                    <p class="card-text"><em>{{ restaurant.speciality}}</em></p>
+                                    <p class="card-text">Téléphone: {{ restaurant.phone}}</p>                                
+                                  </div>
+                                </div>
+                            {% endif %}
+                            
                         </div>                        
                     </div>                   
                 </div>                
