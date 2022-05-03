@@ -55,7 +55,7 @@ final class RestaurantController extends AbstractController
             if ($uploadedFile) {
                 $newFileName = $imageUpLoaderHelper->uploadRestaurantImage($uploadedFile);
                 $restaurant->setImageFilePath($this->getParameter('image_directory') . $newFileName);
-                unlink($oldFileUploadedPath);
+                if (isset($oldFileUploadedPath)) unlink($oldFileUploadedPath);
             }
             
             $this->entityManager->flush();
