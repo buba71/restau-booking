@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\TimeSlotServices;
 
+use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class WeeklyTimeSlots 
+/**
+ * Retrieve the restaurant timeslots of current week.
+ */
+final class RestaurantWeeklyTimeSlots 
 {
-    public function __construct(private EntityManagerInterface $entityManagerInterface)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
         date_default_timezone_set("Europe/Paris");
     }
@@ -21,7 +25,7 @@ final class WeeklyTimeSlots
      * 
      * @return array<TimeSlot>
      */
-    public function retrieveRestaurantWeeklyTimeSlots(array $currentWeeklyDays, int $restaurantId): array
+    public function retrieveRestaurantWeeklyTimeSlots(int $restaurantId, array $currentWeeklyDays, int $todayNumber): array
     {
         $restaurant = $this->entityManager->getRepository(Restaurant::class)->findOneBy(['id' => $restaurantId]); 
 
@@ -52,6 +56,35 @@ final class WeeklyTimeSlots
             return $a->getDayOfWeek() <=> $b->getDayOfWeek();
         });
 
-        return $timeSlots;
+        return $this->formatTimeSlotsToCalendar($timeSlots, $todayNumber);
+    }
+
+    /**
+     * Reorder timeSlots starting from today from restaurant timeslots list.
+     * @param array $timeSlots
+     * @param int $todayNumber
+     * 
+     * @return array
+     */
+    private function formatTimeSlotsToCalendar(array $timeSlots, int $todayNumber): array
+    {
+        $array_front = [];
+        $array_back = [];
+
+        for($index = 0; $index < count($timeSlots); $index++) {
+            if ($timeSlots[$index]->getDayOfWeek() === $todayNumber) {
+                // Get the start day of calendar.
+                $array_front = array_slice($timeSlots, $index, 1);
+            }
+            if ($timeSlots[$index]->getDayOfWeek() > $todayNumber) {
+                // Get the remaining days.
+                array_push($array_front, $timeSlots[$index]);
+            } else if ($timeSlots[$index]->getDayOfWeek() < $todayNumber){
+                // Get the days before the start day of calendar.
+                $array_back[] = $timeSlots[$index];
+            }            
+        }
+
+        return [...$array_front, ...$array_back];
     }
 }

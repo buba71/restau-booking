@@ -6,8 +6,6 @@ namespace App\Services\TimeSlotServices;
 
 use App\Entity\Restaurant;
 use App\Entity\TimeSlot;
-use DateTime;
-
 final class DefaultTimeSlotsFactory
 {
     public const AM_TIME = [
@@ -32,24 +30,19 @@ final class DefaultTimeSlotsFactory
         ]
     ];
 
-    private DateTime $startAtAm;
-    private DateTime $closeAtAm;
-    private DateTime $startAtPm;
-    private DateTime $closeAtPm;
+    private \DateTime $startAtAm;
+    private \DateTime $closeAtAm;
+    private \DateTime $startAtPm;
+    private \DateTime $closeAtPm;
 
     public function __construct()
     {
         date_default_timezone_set('Europe/Paris');
-
-        // TODO => create private factory method.
-        $this->startAtAm = new DateTime('@-0');
-        $this->startAtAm->setTime(self::AM_TIME['start']['hour'], self::AM_TIME['start']['min']);
-        $this->closeAtAm = new DateTime('@-0');
-        $this->closeAtAm->setTime(self::AM_TIME['close']['hour'], self::AM_TIME['close']['min']);
-        $this->startAtPm = new DateTime('@-0');
-        $this->startAtPm->setTime(self::PM_TIME['start']['hour'], self::PM_TIME['start']['min']);
-        $this->closeAtPm = new DateTime('@-0');
-        $this->closeAtPm->setTime(self::PM_TIME['close']['hour'], self::PM_TIME['close']['min']);
+        
+        $this->startAtAm = $this->time(self::AM_TIME['start']['hour'], self::AM_TIME['start']['min']);        
+        $this->closeAtAm = $this->time(self::AM_TIME['close']['hour'], self::AM_TIME['close']['min']);        
+        $this->startAtPm = $this->time(self::PM_TIME['start']['hour'], self::PM_TIME['start']['min']);        
+        $this->closeAtPm = $this->time(self::PM_TIME['close']['hour'], self::PM_TIME['close']['min']);
     }
 
     public function createTimeSlots(Restaurant $restaurant)
@@ -68,5 +61,10 @@ final class DefaultTimeSlotsFactory
         }
         // Set the number of Sunday.
         $restaurant->getTimeSlots()->last()->setDayOfWeek(0);
+    }
+
+    private function time(int $hour, int $minute): \DateTime
+    {
+        return (new \DateTime('@-0'))->setTime($hour, $minute);
     }
 }

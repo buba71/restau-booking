@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Booking;
 use App\Entity\Restaurant;
+use App\Entity\User;
 use App\Services\TimeSlotServices\DefaultTimeSlotsFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -54,6 +56,54 @@ final class AppFixtures extends Fixture
 
             $manager->persist($restaurant);
         }
+
+        /**
+         * Fixtures for functionnal tests.
+         */
+
+        // Set restaurant Manager.
+        $user = new User();
+        $user->setEmail('johnDoe@test.com');
+        $user->setPassword('password');
+        $user->setFirstName('john');
+        $user->setLastName('doe');
+        $user->setPhone('0652124514');
+        $user->setRoles(['ROLE_MANAGER']);
+        
+        // Set customer.
+        $cutomerUser = new User();
+        $cutomerUser->setEmail('customer@test.com');
+        $cutomerUser->setPassword('password');
+        $cutomerUser->setFirstName('john');
+        $cutomerUser->setLastName('doe');
+        $cutomerUser->setPhone('0652124514');
+        $cutomerUser->setRoles(['ROLE_CUSTOMER']);
+
+        $manager->persist($cutomerUser);
+        
+        // Set a booking.
+        $booking = new Booking();
+        $booking->setBookingDate(new \DateTime());
+        $booking->setCoversNumber('2');
+        $booking->setUser($cutomerUser);
+
+        $manager->persist($booking);
+
+        $restaurant = new Restaurant();
+        $restaurant->setName('La clé des champs');
+        $restaurant->setAddress('1, avenue de Paris');
+        $restaurant->setZipcode('75000');
+        $restaurant->setCity('PARIS');
+        $restaurant->setPhone('0112451571');
+        $restaurant->setBookingEnabled(true);
+        $restaurant->setOrderEnabled(true);
+        $restaurant->addBooking($booking);
+        $restaurant->setUser($user);
+
+        $user->setRestaurant($restaurant);
+
+        $manager->persist($restaurant);
+        $manager->persist($user);        
 
         $manager->flush();
     }

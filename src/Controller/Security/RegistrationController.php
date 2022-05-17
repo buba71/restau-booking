@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
-use App\Entity\TimeSlot;
 use App\Entity\User;
 use App\Form\CustomerType;
 use App\Form\ManagerType;
+use App\Services\TimeSlotServices\DefaultTimeSlotsFactory;
 use App\Services\UploadFilesServices\ImageUpLoaderHelper;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,8 +55,12 @@ final class RegistrationController extends AbstractController
     }
 
     #[Route('/register_manager', name: 'register_manager')]
-    public function registerManager(ImageUpLoaderHelper $imageUpLoaderHelper, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
+    public function registerManager(
+        DefaultTimeSlotsFactory $defaultTimeSlotsFactory,
+        ImageUpLoaderHelper $imageUpLoaderHelper,
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher
+    ): Response {
         $user = new User();
 
         $form = $this->createForm(ManagerType::class, $user);
@@ -86,35 +89,10 @@ final class RegistrationController extends AbstractController
                 $newFileName = $imageUpLoaderHelper->uploadRestaurantImage($uploadedFile);
                 $restaurant->setImageFilePath($this->getParameter('image_directory') . $newFileName);
             }
-            
-            // TODO refacto set default timeSlots to unix timestamp with timeslot time.
-            
-            $startAtAm = new DateTime('@-0');
-            $startAtAm->setTime(10, 00);
-            $closeAtAm = new DateTime('@-0');
-            $closeAtAm->setTime(14, 00);
-            $startAtPm = new DateTime('@-0');
-            $startAtPm->setTime(18, 00);
-            $closeAtPm = new DateTime('@-0');
-            $closeAtPm->setTime(22, 00);
-            
+
             $user->getRestaurant()->setUser($user);
 
-            for ($i = 1; $i < 8; $i++) {
-
-                $timeSlot = new TimeSlot();
-                $timeSlot->setServiceStartAtAm($startAtAm);
-                $timeSlot->setServiceCloseAtAm($closeAtAm);
-                $timeSlot->setServiceStartAtPm($startAtPm);
-                $timeSlot->setServiceCloseAtPm($closeAtPm);
-                $timeSlot->setIntervalTime(30);
-
-                $timeSlot->setDayOfWeek($i);
-                $restaurant->addTimeSlot($timeSlot);
-            }
-            $restaurant->getTimeSlots()->last()->setDayOfWeek(0);
-
-            // Make class
+            $defaultTimeSlotsFactory->createTimeSlots($restaurant);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();

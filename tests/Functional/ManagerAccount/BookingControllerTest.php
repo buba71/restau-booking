@@ -21,8 +21,12 @@ final class BookinControllerTest extends WebTestCase
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
 
+        $user = $userRepository->findOneBy(['email' => 'johnDoe@test.com']);
+
+        $this->client->loginUser($user);
+
         $this->client->request('GET', '/manager/restaurant_bookings/show');
 
-        //static::assertResponseIsSuccessful();
+        static::assertResponseIsSuccessful();
     }
 }
