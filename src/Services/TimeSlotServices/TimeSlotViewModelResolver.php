@@ -10,6 +10,11 @@ use DateTime;
 
 final class TimeSlotViewModelResolver
 {
+    public function __construct()
+    {
+        date_default_timezone_set("Europe/Paris");
+    }
+
     public function resolve(TimeSlot $timeSlot)
     {
         return match($timeSlot->getType()) {
